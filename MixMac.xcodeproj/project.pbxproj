@@ -48,6 +48,8 @@
 		1B7943721A8F3BA400197FF3 /* Preferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Preferences.m; path = MixMac/Preferences.m; sourceTree = "<group>"; };
 		1B7943751A8F41AF00197FF3 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		1B7943761A8F41CD00197FF3 /* README */ = {isa = PBXFileReference; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		1B7943771A8F461800197FF3 /* MIXExceptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MIXExceptions.h; path = MixMac/MIXExceptions.h; sourceTree = "<group>"; };
+		1B7943781A8F46F600197FF3 /* DebugPrint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = DebugPrint.h; path = MixMac/DebugPrint.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,7 +145,9 @@
 			isa = PBXGroup;
 			children = (
 				1B7943711A8F3BA400197FF3 /* Preferences.h */,
+				1B7943781A8F46F600197FF3 /* DebugPrint.h */,
 				1B7943721A8F3BA400197FF3 /* Preferences.m */,
+				1B7943771A8F461800197FF3 /* MIXExceptions.h */,
 			);
 			name = Preferences;
 			sourceTree = "<group>";

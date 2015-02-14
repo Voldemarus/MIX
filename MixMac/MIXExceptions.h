@@ -1,0 +1,14 @@
+//
+//  MIXExceptions.h
+//  MixMac
+//
+//  Created by Водолазкий В.В. on 14.02.15.
+//  Copyright (c) 2015 Geomatix Laboratoriess S.R.O. All rights reserved.
+//
+
+
+// Invalid index for the memory cell. Should be in range [0..MIX_MEMORY_SIZE)
+extern NSString * const MIXExceptionInvalidMemoryCellIndex;
+
+// invalud number for ndex register. Should be in range [1..MIX_INDEX_REGISTERS]
+extern NSString * const MIXExceptionInvalidIndexRegister;

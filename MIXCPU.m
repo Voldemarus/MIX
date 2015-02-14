@@ -9,6 +9,23 @@
 #import "MIXCPU.h"
 #import "Preferences.h"
 
+#import "DebugPrint.h"
+
+@interface MIXCPU() {
+	MIXWORD memory[MIX_MEMORY_SIZE];		// internal Memory
+	
+	MIXINDEX indexRegister[MIX_INDEX_REGISTERS];
+	
+	MIXWORD	accumultor;						// register A
+	MIXWORD	extension;						// register X
+}
+
+@end
+
+NSString * const MIXExceptionInvalidMemoryCellIndex	=	@"MIXExceptionInvalidMemoryCellIndex";
+NSString * const MIXExceptionInvalidIndexRegister	=	@"MIXExceptionInvalidIndexRegister";
+
+
 @implementation MIXCPU
 
 + (MIXCPU *) sharedInstance
@@ -30,6 +47,179 @@
 	}
 	return self;
 }
+
+#pragma mark - Public methods
+
+- (void) resetCPU
+{
+	// clear memory
+	for (int i = 0; i < MIX_MEMORY_SIZE; i++) {
+		MIXWORD cell = memory[i];
+		cell.sign = 0;
+		for (int j = 0; j < MIX_WORD_SIZE; j++) {
+			cell.byte[j] = 0;
+		}
+	}
+}
+
+- (void) setMemoryWord:(MIXWORD)aWord forCellIndex:(int) index
+{
+	if (index < 0 || index >= MIX_MEMORY_SIZE) {
+		[NSException raise:MIXExceptionInvalidMemoryCellIndex
+					format:RStr(MIXExceptionInvalidMemoryCellIndex)];
+		return;
+	}
+	MIXWORD cell = memory[index];
+	cell.sign = aWord.sign;
+	for (int i = 0; i < MIX_WORD_SIZE; i++) {
+		cell.byte[i] = aWord.byte[i];
+	}
+}
+
+- (MIXWORD) memoryWordForCellIndex:(int) index
+{
+	MIXWORD result;
+	if (index < 0 || index >= MIX_MEMORY_SIZE) {
+		[NSException raise:MIXExceptionInvalidMemoryCellIndex
+					format:RStr(MIXExceptionInvalidMemoryCellIndex)];
+		return result;
+	}
+	MIXWORD cell = memory[index];
+	result.sign = cell.sign ;
+	for (int i = 0; i < MIX_WORD_SIZE; i++) {
+		result.byte[i] = cell.byte[i];
+	}
+	return result;
+}
+
+#pragma mark - properties getter/seeter methods
+
+- (MIXWORD) A
+{
+	MIXWORD result;
+	result.sign = accumultor.sign;
+	for (int i = 0; i < MIX_WORD_SIZE; i++) {
+		result.byte[i] = accumultor.byte[i];
+	}
+	return result;
+}
+
+- (void) setA:(MIXWORD) newA
+{
+	accumultor.sign = newA.sign;
+	for (int i = 0; i < MIX_WORD_SIZE; i++) {
+		accumultor.byte[i] = newA.byte[i];
+	}
+}
+
+- (MIXWORD) X
+{
+	MIXWORD result;
+	result.sign = extension.sign;
+	for (int i = 0; i < MIX_WORD_SIZE; i++) {
+		result.byte[i] = extension.byte[i];
+	}
+	return result;
+}
+
+- (void) setX:(MIXWORD)X
+{
+	extension.sign = X.sign;
+	for (int i = 0; i < MIX_WORD_SIZE; i++) {
+		extension.byte[i] = X.byte[i];
+	}
+}
+
+- (void) setIndexRegister:(MIXINDEX) aValue withNumber:(int)aIndex
+{
+	if (aIndex < 1 || aIndex > MIX_INDEX_REGISTERS) {
+		[NSException raise:MIXExceptionInvalidIndexRegister
+					format:RStr(MIXExceptionInvalidIndexRegister)];
+		return;
+	}
+	MIXINDEX result = indexRegister[aIndex-1];
+	result.sign = aValue.sign;
+	result.indexByte[0] = aValue.indexByte[0];
+	result.indexByte[1] = aValue.indexByte[1];
+}
+
+- (MIXINDEX) indexRegisterValue:(int)aIndex
+{
+	MIXINDEX result;
+	// OPTION BASE 1  !!!
+	if (aIndex < 1 || aIndex > MIX_INDEX_REGISTERS) {
+		[NSException raise:MIXExceptionInvalidIndexRegister
+					format:RStr(MIXExceptionInvalidIndexRegister)];
+		return result;
+	}
+	MIXINDEX indexReg = indexRegister[aIndex-1];
+	result.sign = indexReg.sign;
+	result.indexByte[0] = indexReg.indexByte[0];
+	result.indexByte[1] = indexReg.indexByte[1];
+	return result;
+}
+
+
+- (MIXINDEX) index1
+{
+	return [self indexRegisterValue:1];
+}
+
+- (void) setIndex1:(MIXINDEX)index1
+{
+	[self setIndexRegister:index1 withNumber:1];
+}
+
+- (MIXINDEX) index2
+{
+	return [self indexRegisterValue:2];
+}
+
+- (void) setIndex2:(MIXINDEX)index1
+{
+	[self setIndexRegister:index1 withNumber:2];
+}
+
+- (MIXINDEX) index3
+{
+	return [self indexRegisterValue:3];
+}
+
+- (void) setIndex3:(MIXINDEX)index1
+{
+	[self setIndexRegister:index1 withNumber:3];
+}
+
+- (MIXINDEX) index4
+{
+	return [self indexRegisterValue:4];
+}
+
+- (void) setIndex4:(MIXINDEX)index1
+{
+	[self setIndexRegister:index1 withNumber:4];
+}
+
+- (MIXINDEX) index5
+{
+	return [self indexRegisterValue:5];
+}
+
+- (void) setIndex5:(MIXINDEX)index1
+{
+	[self setIndexRegister:index1 withNumber:5];
+}
+
+- (MIXINDEX) index6
+{
+	return [self indexRegisterValue:6];
+}
+
+- (void) setIndex6:(MIXINDEX)index1
+{
+	[self setIndexRegister:index1 withNumber:6];
+}
+
 
 #pragma mark - Internal service methods
 
