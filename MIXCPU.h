@@ -34,13 +34,17 @@ typedef struct {
 	Byte byte[MIX_WORD_SIZE];
 } MIXWORD;
 
+// index Register consists of two bytes and sign - it is enough to address any cell in
+// current memory space
 typedef struct {
 	BOOL sign;
 	Byte indexByte[2];
 } MIXINDEX;
 
+// Comparasion flag register can get one of three meaningful values
 typedef enum
 {
+	MIX_NOT_SET	=	-100,
 	MIX_LESS	=	-1,
 	MIX_EQUAL,
 	MIX_GREATER,

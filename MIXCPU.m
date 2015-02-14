@@ -57,9 +57,18 @@ NSString * const MIXExceptionInvalidIndexRegister	=	@"MIXExceptionInvalidIndexRe
 - (void) resetCPU
 {
 	// Clear flags
-	comparasionFlag = MIX_EQUAL;
+	comparasionFlag = MIX_NOT_SET;
 	overflowFlag = NO;
-
+	
+	MIXWORD emptyCell;
+	self.A = emptyCell;
+	self.X = emptyCell;
+	MIXINDEX emptyIndex;
+	for (int i = 1; i <= MIX_INDEX_REGISTERS;i++) {
+		[self setIndexRegister:emptyIndex withNumber:i];
+	}
+	self.J = emptyIndex;
+	
 	// clear memory
 	for (int i = 0; i < MIX_MEMORY_SIZE; i++) {
 		MIXWORD cell = memory[i];
