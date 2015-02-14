@@ -17,6 +17,17 @@
 
 #define MIX_INDEX_REGISTERS	6				// amount of index registers in CPU
 
+#define MIX_IO_CHANNELS		20				// Total amount of i/o channels
+
+#define MT_AMOUNT			8				// Magnetic tapes / sequential read/write
+#define MT_START			0
+#define	MD_AMOUNT			8				// Magnetic disks / random i/o
+#define MD_OFFSET			MT_AMOUNT
+#define PUNCH_READER		(MT_AMOUNT+MD_AMOUNT)		// punchcard reader
+#define PUNCH_WRITER		(PUNCH_READER+1)			// punchcard writer
+#define PRINTER				(PUNCH_WRITER+1)			// printer
+#define PERFOLENTA			(PRINTER+1)					// punch ribbon
+
 // Memeory cell consists of 5 bytes and sign
 typedef struct {
 	BOOL sign;
