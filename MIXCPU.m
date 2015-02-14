@@ -15,9 +15,13 @@
 	MIXWORD memory[MIX_MEMORY_SIZE];		// internal Memory
 	
 	MIXINDEX indexRegister[MIX_INDEX_REGISTERS];
+
+	MIXINDEX	jumpRegister;					// register J
+	MIXWORD		accumultor;						// register A
+	MIXWORD		extension;						// register X
 	
-	MIXWORD	accumultor;						// register A
-	MIXWORD	extension;						// register X
+	BOOL overflowFlag;
+	MIX_COMPARASION comparasionFlag;
 }
 
 @end
@@ -52,6 +56,10 @@ NSString * const MIXExceptionInvalidIndexRegister	=	@"MIXExceptionInvalidIndexRe
 
 - (void) resetCPU
 {
+	// Clear flags
+	comparasionFlag = MIX_EQUAL;
+	overflowFlag = NO;
+
 	// clear memory
 	for (int i = 0; i < MIX_MEMORY_SIZE; i++) {
 		MIXWORD cell = memory[i];
@@ -130,6 +138,23 @@ NSString * const MIXExceptionInvalidIndexRegister	=	@"MIXExceptionInvalidIndexRe
 	}
 }
 
+
+- (MIXINDEX) J
+{
+	MIXINDEX result;
+	result.sign = jumpRegister.sign;
+	result.indexByte[0] = jumpRegister.indexByte[0];
+	result.indexByte[1] = jumpRegister.indexByte[1];
+	return result;
+}
+
+- (void) setJ:(MIXINDEX)J
+{
+	jumpRegister.sign = J.sign;
+	jumpRegister.indexByte[0] = J.indexByte[0];
+	jumpRegister.indexByte[1] = J.indexByte[1];
+}
+
 - (void) setIndexRegister:(MIXINDEX) aValue withNumber:(int)aIndex
 {
 	if (aIndex < 1 || aIndex > MIX_INDEX_REGISTERS) {
@@ -159,6 +184,15 @@ NSString * const MIXExceptionInvalidIndexRegister	=	@"MIXExceptionInvalidIndexRe
 	return result;
 }
 
+- (BOOL) overflow
+{
+	return overflowFlag;
+}
+
+- (MIX_COMPARASION) flag
+{
+	return comparasionFlag;
+}
 
 - (MIXINDEX) index1
 {
@@ -222,6 +256,7 @@ NSString * const MIXExceptionInvalidIndexRegister	=	@"MIXExceptionInvalidIndexRe
 
 
 #pragma mark - Internal service methods
+
 
 - (void) updateCPUCells
 {

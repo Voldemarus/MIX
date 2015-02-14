@@ -28,6 +28,14 @@ typedef struct {
 	Byte indexByte[2];
 } MIXINDEX;
 
+typedef enum
+{
+	MIX_LESS	=	-1,
+	MIX_EQUAL,
+	MIX_GREATER,
+} MIX_COMPARASION;
+
+
 @interface MIXCPU : NSObject
 
 @property (nonatomic, readwrite) BOOL sixBitByte;		// YES - 6 bit in bye, NO - 8 bit
@@ -43,6 +51,13 @@ typedef struct {
 @property (nonatomic, readwrite) MIXINDEX index4;
 @property (nonatomic, readwrite) MIXINDEX index5;
 @property (nonatomic, readwrite) MIXINDEX index6;
+
+@property (nonatomic, readwrite) MIXINDEX J;			// Jump address register
+
+@property (nonatomic, readonly)		BOOL overflow;		// overflow indocator
+@property (nonatomic, readonly) MIX_COMPARASION flag;	// comparasion result flag
+
+
 
 + (MIXCPU *) sharedInstance;
 
