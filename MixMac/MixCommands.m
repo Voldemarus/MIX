@@ -118,6 +118,7 @@
 	// Mnemonic, F, C, machine tacts  and description
 	return @[
 				@[ @"LDA", @(MIX_F_FIELD), @(CMD_LDA), @(2), RStr(@"Load accumulator")],
+				@[ @"LDX", @(MIX_F_FIELD), @(CMD_LDX), @(2), RStr(@"Load extension register")],
 			 ];
 }
 

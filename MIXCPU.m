@@ -367,6 +367,7 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 		//
 		switch (operCode) {
 			case CMD_LDA:		[self processLDACommand:command]; break;
+			case CMD_LDX:		[self processLDXCommand:command]; break;
 				
 			default: {
 				[NSException raise:MIXExceptionInvalidOperationCode
@@ -393,6 +394,23 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 	MIXWORD finalValue = [self extractFieldswithModifier:command.byte[3] from:valueToProcess];
 	// put result inti accumulator
 	self.A = finalValue;
+}
+
+// LDX - load accumulator with memory cell' value
+- (void) processLDXCommand:(MIXWORD) command
+{
+	NSInteger effectiveAddress = [self effectiveAddress:command];
+	// This address should pount to cell in memoty space
+	if (effectiveAddress < 0 || effectiveAddress >= MIX_MEMORY_SIZE) {
+		[NSException raise:MIXExceptionInvalidMemoryCellIndex
+					format:RStr(MIXExceptionInvalidMemoryCellIndex)];
+		return;
+	}
+	// Read value from the memory
+	MIXWORD valueToProcess = memory[effectiveAddress];
+	MIXWORD finalValue = [self extractFieldswithModifier:command.byte[3] from:valueToProcess];
+	// put result inti accumulator
+	self.X = finalValue;
 }
 
 
