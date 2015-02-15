@@ -90,9 +90,17 @@ typedef enum
 - (void) executeCurrentOperation;						// exec command on current J;
 
 
+
+
 // memory cells access. Data is copied from the CPU' memory
 - (void) setMemoryWord:(MIXWORD)aWord forCellIndex:(int) index;
 - (MIXWORD) memoryWordForCellIndex:(int) index;
+
+// Helpers to set/get simple integer values with  conversion
+// to MIXWORD structure
+- (void) storeNumber:(int)aValue forCellIndex:(int) index;
+- (int) memoryContentForCellIndex:(int)index;
+
 
 // access to index registers by their number [1..MIX_INDEX_REGISTERS]
 - (void) setIndexRegister:(MIXINDEX) aValue withNumber:(int)aIndex;

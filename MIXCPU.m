@@ -95,11 +95,12 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 					format:RStr(MIXExceptionInvalidMemoryCellIndex)];
 		return;
 	}
-	MIXWORD cell = memory[index];
+	MIXWORD cell;
 	cell.sign = aWord.sign;
 	for (int i = 0; i < MIX_WORD_SIZE; i++) {
 		cell.byte[i] = aWord.byte[i];
 	}
+	memory[index] = cell;
 }
 
 - (MIXWORD) memoryWordForCellIndex:(int) index
@@ -117,6 +118,36 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 	}
 	return result;
 }
+
+- (void) storeNumber:(int)aValue forCellIndex:(int) index
+{
+	MIXWORD storeValue;
+	if (aValue < 0) {
+		storeValue.sign = YES;
+		aValue = -aValue;
+	}
+	for (int i = MIX_WORD_SIZE; i >= 0; i--) {
+		Byte tmp = aValue & (self.sixBitByte ? 0x3F : 0xFF);
+		storeValue.byte[i] = tmp;
+		aValue >>= (self.sixBitByte ? 6 : 8);
+	}
+	[self setMemoryWord:storeValue forCellIndex:index];
+}
+
+- (int) memoryContentForCellIndex:(int)index
+{
+	int result;
+	MIXWORD memCell = memory[index];
+	for (int i=0; i < MIX_WORD_SIZE; i++) {
+		result += memCell.byte[i];
+		result <<= (self.sixBitByte ? 6 : 8);
+	}
+	if (memCell.sign) {
+		result = -result;
+	}
+	return result;
+}
+
 
 #pragma mark - properties getter/seeter methods
 
@@ -173,6 +204,8 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 	jumpRegister.indexByte[1] = J.indexByte[1];
 }
 
+#pragma mark Index Registers access
+
 - (void) setIndexRegister:(MIXINDEX) aValue withNumber:(int)aIndex
 {
 	if (aIndex < 1 || aIndex > MIX_INDEX_REGISTERS) {
@@ -201,6 +234,10 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 	result.indexByte[1] = indexReg.indexByte[1];
 	return result;
 }
+
+
+
+#pragma mark Auxillary Registers Access
 
 - (BOOL) overflow
 {
@@ -336,13 +373,15 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 		return src;
 	}
 	MIXWORD result;
+	result.sign = NO;			// it is set yo YES when initialized
+	for (int i = 0; i < MIX_WORD_SIZE; i++) result.byte[i] = 0;
 	if (fieldModifier == MIX_F_SIGNONLY) {
 		result.sign = src.sign;
 	} else {
 		// complex case - should analyze fields
-		Byte leftPos = (fieldModifier >> 3) & 0x7;
-		Byte rightPos = fieldModifier & 0x7;
-		if (rightPos > leftPos) {
+		int leftPos = (fieldModifier >> 3) & 0x7;
+		int rightPos = fieldModifier & 0x7;
+		if (rightPos < leftPos) {
 			[NSException raise:MIXExceptionInvalidFieldModifer
 						format:RStr(MIXExceptionInvalidFieldModifer)];
 		}
@@ -354,8 +393,8 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 		// now we'll select fields and place them to the right side
 		rightPos--;				// option base 0 in internal representation
 		leftPos--;
-		Byte outputPos = 4;		// last element
-		for (Byte i=rightPos; i >= leftPos; i--) {
+		int outputPos = 4;		// last element
+		for (int i = rightPos; i >= leftPos; i--) {
 			result.byte[outputPos--] = src.byte[i];
 		}
 	}

@@ -14,9 +14,11 @@
 	Byte opercode;
 	MIX_F operField;
 	NSString *commnadNote;
+	Byte machineTacts;
 }
 
-- (id) initCommandWithMnemonic:(NSString *)aMnemo commandCode:(Byte)aCode fieldType:(MIX_F)aField andDescription:(NSString *)aDescr;
+- (id) initCommandWithMnemonic:(NSString *)aMnemo commandCode:(Byte)aCode fieldType:(MIX_F)aField
+						mTacts:(Byte)aTacts andDescription:(NSString *)aDescr;
 
 @end
 
@@ -26,13 +28,15 @@
 @synthesize commandCode = opercode, defaultFField = operField,
 			mnemonic = mnemoCode, note = commnadNote;
 
-- (id) initCommandWithMnemonic:(NSString *)aMnemo commandCode:(Byte)aCode fieldType:(MIX_F)aField andDescription:(NSString *)aDescr
+- (id) initCommandWithMnemonic:(NSString *)aMnemo commandCode:(Byte)aCode fieldType:(MIX_F)aField
+						mTacts:(Byte)aTacts andDescription:(NSString *)aDescr
 {
 	if (self = [super init]) {
 		mnemoCode = aMnemo;
 		opercode = aCode;
 		operField = aField;
 		commnadNote = aDescr;
+		machineTacts = aTacts;
 	}
 	return self;
 }
@@ -76,9 +80,11 @@
 			NSString *mnemo = arr[0];
 			MIX_F field = [arr[1] intValue];
 			Byte operCode = [arr[2] intValue];
-			NSString *note = arr[3];
+			NSString *note = arr[4];
+			Byte aTact = [arr[3] intValue];
 			
-			MixCommand *command = [[MixCommand alloc] initCommandWithMnemonic:mnemo commandCode:operCode fieldType:field andDescription:note];
+			MixCommand *command = [[MixCommand alloc] initCommandWithMnemonic:mnemo commandCode:operCode
+																	fieldType:field mTacts:aTact andDescription:note];
 			NSString *codeString = [NSString stringWithFormat:@"%03d",operCode];
 			
 			[tmpCodeBase setObject:command forKey:codeString];
@@ -109,9 +115,9 @@
 
 + (NSArray *) commandList
 {
-	// Mnemonic, F, C and description
+	// Mnemonic, F, C, machine tacts  and description
 	return @[
-				@[ @"LDA", @(MIX_F_FIELD), @(CMD_LDA), RStr(@"Load accumulator")],
+				@[ @"LDA", @(MIX_F_FIELD), @(CMD_LDA), @(2), RStr(@"Load accumulator")],
 			 ];
 }
 

@@ -13,7 +13,7 @@
 		1B7943521A8F375400197FF3 /* Document.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B7943501A8F375400197FF3 /* Document.xib */; };
 		1B7943541A8F375400197FF3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1B7943531A8F375400197FF3 /* Images.xcassets */; };
 		1B7943571A8F375400197FF3 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B7943551A8F375400197FF3 /* MainMenu.xib */; };
-		1B7943631A8F375400197FF3 /* MixMacTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B7943621A8F375400197FF3 /* MixMacTests.m */; };
+		1B7943631A8F375400197FF3 /* LoadStoreCommandCPUTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B7943621A8F375400197FF3 /* LoadStoreCommandCPUTests.m */; };
 		1B79436F1A8F379A00197FF3 /* MIXCPU.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B79436E1A8F379A00197FF3 /* MIXCPU.m */; };
 		1B7943731A8F3BA400197FF3 /* Preferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B7943721A8F3BA400197FF3 /* Preferences.m */; };
 		1B79437B1A8F691A00197FF3 /* MixCommands.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B79437A1A8F691A00197FF3 /* MixCommands.m */; };
@@ -43,7 +43,7 @@
 		1B7943561A8F375400197FF3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		1B79435C1A8F375400197FF3 /* MixMacTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MixMacTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1B7943611A8F375400197FF3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1B7943621A8F375400197FF3 /* MixMacTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MixMacTests.m; sourceTree = "<group>"; };
+		1B7943621A8F375400197FF3 /* LoadStoreCommandCPUTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoadStoreCommandCPUTests.m; sourceTree = "<group>"; };
 		1B79436D1A8F379A00197FF3 /* MIXCPU.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MIXCPU.h; sourceTree = "<group>"; };
 		1B79436E1A8F379A00197FF3 /* MIXCPU.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MIXCPU.m; sourceTree = "<group>"; };
 		1B7943711A8F3BA400197FF3 /* Preferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Preferences.h; path = MixMac/Preferences.h; sourceTree = "<group>"; };
@@ -124,7 +124,7 @@
 		1B79435F1A8F375400197FF3 /* MixMacTests */ = {
 			isa = PBXGroup;
 			children = (
-				1B7943621A8F375400197FF3 /* MixMacTests.m */,
+				1B7943621A8F375400197FF3 /* LoadStoreCommandCPUTests.m */,
 				1B7943601A8F375400197FF3 /* Supporting Files */,
 			);
 			path = MixMacTests;
@@ -283,7 +283,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1B7943631A8F375400197FF3 /* MixMacTests.m in Sources */,
+				1B7943631A8F375400197FF3 /* LoadStoreCommandCPUTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

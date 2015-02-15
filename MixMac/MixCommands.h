@@ -21,6 +21,7 @@ typedef enum {
 @property (nonatomic, readonly) MIX_F defaultFField;
 @property (nonatomic, readonly, retain) NSString *mnemonic;
 @property (nonatomic, readonly, retain) NSString *note;
+@property (nonatomic, readonly) Byte	tacts;		// machine tacts required to preform command
 
 @end
 
