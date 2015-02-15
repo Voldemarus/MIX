@@ -12,3 +12,9 @@ extern NSString * const MIXExceptionInvalidMemoryCellIndex;
 
 // invalud number for ndex register. Should be in range [1..MIX_INDEX_REGISTERS]
 extern NSString * const MIXExceptionInvalidIndexRegister;
+
+// invalid operCode - not supported by current CPU
+extern NSString * const MIXExceptionInvalidOperationCode;
+
+// incorrect value fro field modifier
+extern NSString * const MIXExceptionInvalidFieldModifer;

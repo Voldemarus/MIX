@@ -16,6 +16,8 @@
 		1B7943631A8F375400197FF3 /* MixMacTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B7943621A8F375400197FF3 /* MixMacTests.m */; };
 		1B79436F1A8F379A00197FF3 /* MIXCPU.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B79436E1A8F379A00197FF3 /* MIXCPU.m */; };
 		1B7943731A8F3BA400197FF3 /* Preferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B7943721A8F3BA400197FF3 /* Preferences.m */; };
+		1B79437B1A8F691A00197FF3 /* MixCommands.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B79437A1A8F691A00197FF3 /* MixCommands.m */; };
+		1BCC3ED81A8F8BA90010C4F6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1BCC3ED71A8F8BA90010C4F6 /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +52,9 @@
 		1B7943761A8F41CD00197FF3 /* README */ = {isa = PBXFileReference; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		1B7943771A8F461800197FF3 /* MIXExceptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MIXExceptions.h; path = MixMac/MIXExceptions.h; sourceTree = "<group>"; };
 		1B7943781A8F46F600197FF3 /* DebugPrint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = DebugPrint.h; path = MixMac/DebugPrint.h; sourceTree = "<group>"; };
+		1B7943791A8F691A00197FF3 /* MixCommands.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MixCommands.h; path = MixMac/MixCommands.h; sourceTree = "<group>"; };
+		1B79437A1A8F691A00197FF3 /* MixCommands.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MixCommands.m; path = MixMac/MixCommands.m; sourceTree = "<group>"; };
+		1BCC3ED71A8F8BA90010C4F6 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +107,7 @@
 				1B7943531A8F375400197FF3 /* Images.xcassets */,
 				1B7943551A8F375400197FF3 /* MainMenu.xib */,
 				1B7943461A8F375400197FF3 /* Supporting Files */,
+				1BCC3ED71A8F8BA90010C4F6 /* Localizable.strings */,
 			);
 			path = MixMac;
 			sourceTree = "<group>";
@@ -137,6 +143,8 @@
 			children = (
 				1B79436D1A8F379A00197FF3 /* MIXCPU.h */,
 				1B79436E1A8F379A00197FF3 /* MIXCPU.m */,
+				1B7943791A8F691A00197FF3 /* MixCommands.h */,
+				1B79437A1A8F691A00197FF3 /* MixCommands.m */,
 			);
 			name = CPU;
 			sourceTree = "<group>";
@@ -242,6 +250,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1B7943521A8F375400197FF3 /* Document.xib in Resources */,
+				1BCC3ED81A8F8BA90010C4F6 /* Localizable.strings in Resources */,
 				1B7943541A8F375400197FF3 /* Images.xcassets in Resources */,
 				1B7943571A8F375400197FF3 /* MainMenu.xib in Resources */,
 			);
@@ -263,6 +272,7 @@
 			files = (
 				1B79434F1A8F375400197FF3 /* Document.m in Sources */,
 				1B79436F1A8F379A00197FF3 /* MIXCPU.m in Sources */,
+				1B79437B1A8F691A00197FF3 /* MixCommands.m in Sources */,
 				1B79434C1A8F375400197FF3 /* main.m in Sources */,
 				1B79434A1A8F375400197FF3 /* AppDelegate.m in Sources */,
 				1B7943731A8F3BA400197FF3 /* Preferences.m in Sources */,

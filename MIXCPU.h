@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "MixCommands.h"
+
 // Byte* -- local byte interpretation, per Knuth' original text byte contains 6 bits
 //			In this implemetation we can switch between 6 and 8 bits. To emphasize usage
 //			of local byte definiton asterisk is used.
@@ -58,7 +60,14 @@ typedef enum
 // set and get works in COPY mode.  
 @property (nonatomic, readwrite) MIXWORD A;				// accumulator
 @property (nonatomic, readwrite) MIXWORD X;				// extension register
+@property (nonatomic, readwrite) MIXINDEX J;			// Jump address register
 
+//
+// In MIX comcept this is internal / ovisible register, so we we wil not use any
+// complex anf hard methods to represent it as MIXINDEX. It is controlled
+// via jump commands and is incremented after each command. 
+//
+@property (nonatomic, readwrite) NSInteger PC;			// Program Counter
 
 @property (nonatomic, readwrite) MIXINDEX index1;		// helpers - to fast incex access
 @property (nonatomic, readwrite) MIXINDEX index2;
@@ -67,7 +76,6 @@ typedef enum
 @property (nonatomic, readwrite) MIXINDEX index5;
 @property (nonatomic, readwrite) MIXINDEX index6;
 
-@property (nonatomic, readwrite) MIXINDEX J;			// Jump address register
 
 @property (nonatomic, readonly)		BOOL overflow;		// overflow indocator
 @property (nonatomic, readonly) MIX_COMPARASION flag;	// comparasion result flag
@@ -79,7 +87,7 @@ typedef enum
 
 - (void) resetCPU;										// clear memory and registers
 
-
+- (void) executeCurrentOperation;						// exec command on current J;
 
 
 // memory cells access. Data is copied from the CPU' memory

@@ -12,11 +12,14 @@
 #import "DebugPrint.h"
 
 @interface MIXCPU() {
+	
+	MixCommands *commands;
+	
 	MIXWORD memory[MIX_MEMORY_SIZE];		// internal Memory
 	
 	MIXINDEX indexRegister[MIX_INDEX_REGISTERS];
 
-	MIXINDEX	jumpRegister;					// register J
+	MIXINDEX	jumpRegister;					// register J (Program Counter)
 	MIXWORD		accumultor;						// register A
 	MIXWORD		extension;						// register X
 	
@@ -28,9 +31,13 @@
 
 NSString * const MIXExceptionInvalidMemoryCellIndex	=	@"MIXExceptionInvalidMemoryCellIndex";
 NSString * const MIXExceptionInvalidIndexRegister	=	@"MIXExceptionInvalidIndexRegister";
+NSString * const MIXExceptionInvalidOperationCode	=	@"MIXExceptionInvalidOperationCode";
+NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldModifer";
 
 
 @implementation MIXCPU
+
+@synthesize PC;
 
 + (MIXCPU *) sharedInstance
 {
@@ -46,6 +53,7 @@ NSString * const MIXExceptionInvalidIndexRegister	=	@"MIXExceptionInvalidIndexRe
 	if (self = [super init]) {
 		self.sixBitByte = [Preferences sharedPreferences].byteHas6Bit;
 		
+		commands = [MixCommands sharedInstance];	// set up commands data
 		NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
 		[nc addObserver:self selector:@selector(byteSizeChanged:) name:VVVbyteSizeChanged object:nil];
 	}
@@ -63,6 +71,7 @@ NSString * const MIXExceptionInvalidIndexRegister	=	@"MIXExceptionInvalidIndexRe
 	MIXWORD emptyCell;
 	self.A = emptyCell;
 	self.X = emptyCell;
+	self.PC = 0;
 	MIXINDEX emptyIndex;
 	for (int i = 1; i <= MIX_INDEX_REGISTERS;i++) {
 		[self setIndexRegister:emptyIndex withNumber:i];
@@ -263,8 +272,148 @@ NSString * const MIXExceptionInvalidIndexRegister	=	@"MIXExceptionInvalidIndexRe
 	[self setIndexRegister:index1 withNumber:6];
 }
 
+#pragma mark - Execution methods
+
+//
+// Interprets content of the memory cell as command and eecute proper CPU command
+//
+- (void) executeCurrentOperation
+{
+	NSInteger effectiveAddr = [self executionAddr];
+	MIXWORD command = memory[effectiveAddr];
+	Byte operCode = command.byte[4];			// C Field
+	
+	MixCommand *cmd = [commands getCommandByCode:operCode];
+	if (!cmd) {
+		[NSException raise:MIXExceptionInvalidOperationCode format:RStr(MIXExceptionInvalidOperationCode)];
+	} else {
+		//
+		// Increment program counter
+		//
+		self.PC = self.PC+1;
+		if (self.PC >= MIX_MEMORY_SIZE) self.PC = 0;
+		//
+		// Decode CPU commands
+		//
+		switch (operCode) {
+			case CMD_LDA:		[self processLDACommand:command]; break;
+				
+			default: {
+				[NSException raise:MIXExceptionInvalidOperationCode
+							format:RStr(MIXExceptionInvalidOperationCode)];
+				return;
+			}
+		}
+	}
+}
+
+
+// LDA - load accumulator with memory cell' value
+- (void) processLDACommand:(MIXWORD) command
+{
+	NSInteger effectiveAddress = [self effectiveAddress:command];
+	// This address should pount to cell in memoty space
+	if (effectiveAddress < 0 || effectiveAddress >= MIX_MEMORY_SIZE) {
+		[NSException raise:MIXExceptionInvalidMemoryCellIndex
+					format:RStr(MIXExceptionInvalidMemoryCellIndex)];
+		return;
+	}
+	// Read value from the memory
+	MIXWORD valueToProcess = memory[effectiveAddress];
+	MIXWORD finalValue = [self extractFieldswithModifier:command.byte[3] from:valueToProcess];
+	// put result inti accumulator
+	self.A = finalValue;
+}
+
 
 #pragma mark - Internal service methods
+
+
+- (MIXWORD) extractFieldswithModifier:(MIX_F)fieldModifier from:(MIXWORD)src
+{
+	// special cases will be processed first
+	if (fieldModifier == MIX_F_FIELD) {
+		return src;
+	}
+	MIXWORD result;
+	if (fieldModifier == MIX_F_SIGNONLY) {
+		result.sign = src.sign;
+	} else {
+		// complex case - should analyze fields
+		Byte leftPos = (fieldModifier >> 3) & 0x7;
+		Byte rightPos = fieldModifier & 0x7;
+		if (rightPos > leftPos) {
+			[NSException raise:MIXExceptionInvalidFieldModifer
+						format:RStr(MIXExceptionInvalidFieldModifer)];
+		}
+		if (leftPos == 0) {
+			// sign should be copied
+			result.sign = src.sign;
+			leftPos = 1;
+		}
+		// now we'll select fields and place them to the right side
+		rightPos--;				// option base 0 in internal representation
+		leftPos--;
+		Byte outputPos = 4;		// last element
+		for (Byte i=rightPos; i >= leftPos; i--) {
+			result.byte[outputPos--] = src.byte[i];
+		}
+	}
+	return result;
+}
+
+//
+// Calculates effective address (memory cell index) from the J register
+// sign bit is not used, this is a pointer to absolute address
+//
+- (NSInteger) executionAddr
+{
+	Byte left = jumpRegister.indexByte[0];
+	Byte right = jumpRegister.indexByte[1];
+	NSInteger address;
+	address = left << (self.sixBitByte ? 6 : 8);
+	address += right;
+	
+	//
+	// Sanity check - wrap around memory_size
+	//
+	address = address % MIX_MEMORY_SIZE;
+
+	return address;
+}
+
+//
+// Calculates effective address of the data to be used in command
+// supplied in argument
+//
+- (NSInteger) effectiveAddress:(MIXWORD) command
+{
+	Byte addrLeft = command.byte[0];
+	Byte addrRight = command.byte[1];
+	NSInteger address = addrLeft << (self.sixBitByte ? 6 : 8);
+	address += addrRight;
+	if (command.sign) {
+		address = - address;
+	}
+	// apply index register if any
+	Byte index = command.byte[2];
+	if (index > 0) {
+		if (index > MIX_INDEX_REGISTERS) {
+			[NSException raise:MIXExceptionInvalidIndexRegister
+						format:RStr(MIXExceptionInvalidIndexRegister)];
+			return -10000;
+		}
+		MIXINDEX indexValue = [self indexRegisterValue:index];
+		NSInteger ind = indexValue.indexByte[0] << (self.sixBitByte ? 6 : 8);
+		ind += indexValue.indexByte[1];
+		if (indexValue.sign) {
+			ind = -ind;
+		}
+		address += ind;
+	}
+	return address;
+}
+
 
 
 - (void) updateCPUCells
