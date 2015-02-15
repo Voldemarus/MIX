@@ -106,4 +106,8 @@ typedef enum
 - (void) setIndexRegister:(MIXINDEX) aValue withNumber:(int)aIndex;
 - (MIXINDEX) indexRegisterValue:(int)aIndex;
 
+// Helpers to simplify access to Index Registers
+- (void) storeOffset:(int)offset inIndexRegister:(int)aIndex;
+- (int) offsetInIndexRegister:(int)aIndex;
+
 @end

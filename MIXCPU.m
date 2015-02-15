@@ -126,7 +126,7 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 		storeValue.sign = YES;
 		aValue = -aValue;
 	}
-	for (int i = MIX_WORD_SIZE; i >= 0; i--) {
+	for (int i = MIX_WORD_SIZE-1; i >= 0; i--) {
 		Byte tmp = aValue & (self.sixBitByte ? 0x3F : 0xFF);
 		storeValue.byte[i] = tmp;
 		aValue >>= (self.sixBitByte ? 6 : 8);
@@ -136,11 +136,16 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 
 - (int) memoryContentForCellIndex:(int)index
 {
-	int result;
+	int result = 0;
+	if (index < 0 || index >= MIX_MEMORY_SIZE) {
+		[NSException raise:MIXExceptionInvalidMemoryCellIndex
+					format:RStr(MIXExceptionInvalidMemoryCellIndex)];
+		return result;
+	}
 	MIXWORD memCell = memory[index];
 	for (int i=0; i < MIX_WORD_SIZE; i++) {
-		result += memCell.byte[i];
 		result <<= (self.sixBitByte ? 6 : 8);
+		result += memCell.byte[i];
 	}
 	if (memCell.sign) {
 		result = -result;
@@ -213,10 +218,11 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 					format:RStr(MIXExceptionInvalidIndexRegister)];
 		return;
 	}
-	MIXINDEX result = indexRegister[aIndex-1];
+	MIXINDEX result;
 	result.sign = aValue.sign;
 	result.indexByte[0] = aValue.indexByte[0];
 	result.indexByte[1] = aValue.indexByte[1];
+	indexRegister[aIndex-1] = result;
 }
 
 - (MIXINDEX) indexRegisterValue:(int)aIndex
@@ -235,6 +241,33 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 	return result;
 }
 
+- (void) storeOffset:(int)offset inIndexRegister:(int)aIndex
+{
+	MIXINDEX indexData;
+	if (offset < 0) {
+		indexData.sign = YES;
+		offset = -offset;
+	}
+	if (offset > MIX_MEMORY_SIZE) {
+		[NSException raise:MIXExceptionInvalidMemoryCellIndex format:RStr(MIXExceptionInvalidMemoryCellIndex)];
+		return;
+	}
+	indexData.indexByte[0] = offset >> (self.sixBitByte ? 6 : 8);
+	indexData.indexByte[1] = offset & (self.sixBitByte ? 0x3F : 0xFF);
+	
+	[self setIndexRegister:indexData withNumber:aIndex];
+}
+
+- (int) offsetInIndexRegister:(int)aIndex
+{
+	MIXINDEX ind = [self indexRegisterValue:aIndex];
+	int result = ind.indexByte[0] << (self.sixBitByte ? 6 : 8);
+	result += ind.indexByte[1];
+	if (ind.sign) {
+		result = -result;
+	}
+	return result;
+}
 
 
 #pragma mark Auxillary Registers Access

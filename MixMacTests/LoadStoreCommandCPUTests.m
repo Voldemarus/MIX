@@ -11,9 +11,11 @@
 
 #import "MIXCPU.h"
 
-#define TEST_CELL	2000			// memory cell where data is stored
-#define TEST_PC		0				// Program counter to store command for testing
+#define TEST_CELL		2000			// memory cell where data is stored
+#define TEST_PC			0				// Program counter to store command for testing
 
+#define TEST_CINDEX		2010			// cell in memory addressed with index offset
+#define TEST_CINDEX2	1500			// seconde cell whic his addressed by index register
 
 @interface MixMacTests : XCTestCase {
 	MIXCPU	*cpu;
@@ -186,7 +188,62 @@
 	for (int i = 0; i < MIX_WORD_SIZE-1; i++) {
 		XCTAssertEqual(cpu.A.byte[i], 0, @"LDA 2000 (1:1) should copy only 0th field from the memoryCell");
 	}
+	
+	// Prepare index registers
+	[cpu storeOffset:(TEST_CINDEX - TEST_CELL) inIndexRegister:2];			// I2
+	[cpu storeOffset:(TEST_CINDEX2 - TEST_CELL) inIndexRegister:3];			// I3
+	
+	NSLog(@"I2 = %d", [cpu offsetInIndexRegister:2]);
+	[self printIndex:cpu.index2];
+	XCTAssertEqual([cpu offsetInIndexRegister:2], (TEST_CINDEX - TEST_CELL),
+				   @"Index register should proper set positive offset");
+	
+	NSLog(@"I3 = %d", [cpu offsetInIndexRegister:3]);
+	[self printIndex:cpu.index3];
+	XCTAssertEqual([cpu offsetInIndexRegister:3], (TEST_CINDEX2 - TEST_CELL),
+				   @"Index register should proper set negative offset");
+	
+	int testvalue1 = 377;
+	[cpu storeNumber:testvalue1 forCellIndex:TEST_CINDEX];
+	NSLog(@"test value for I2 access test");
+	[self printMemoryCell:[cpu memoryWordForCellIndex:TEST_CINDEX]];
+	XCTAssertEqual(testvalue1, [cpu memoryContentForCellIndex:TEST_CINDEX], @"Value should be properly written to memory");
+	
+	int testValue3 = -2012;
+	NSLog(@"test value for I3 access test");
+	[cpu storeNumber:testValue3 forCellIndex:TEST_CINDEX2];
+	[self printMemoryCell:[cpu memoryWordForCellIndex:TEST_CINDEX2]];
+	XCTAssertEqual(testValue3, [cpu memoryContentForCellIndex:TEST_CINDEX2], @"Value should be properly written to memory");
+	
+	// Data prepared. synthesize command for indexed access
+	// LDA 2000, 2
+	command.byte[3] = 5;	// no modifier all fields are loaded
+	command.byte[2] = 2;	// I2		(effective address should be TEST_CINDEX)
+	
+	[cpu setMemoryWord:command forCellIndex:TEST_PC];
+	cpu.PC = TEST_PC;
+	cpu.A = oldA;			// clear Accumulator
 
+	[cpu executeCurrentOperation];
+	NSLog(@"LDA 2000,2  - accumulator after");
+	[self printMemoryCell:cpu.A];
+	isEqual = [self compareWordA:[cpu memoryWordForCellIndex:TEST_CINDEX] withWordB:cpu.A];
+	XCTAssertTrue(isEqual,@"value should be loaded with help of index register I2 from TEST_CINDEX cell");
+	
+	// LDA 2000, 3 -- negative offset is stored in index register
+
+	command.byte[2] = 3;
+	[cpu setMemoryWord:command forCellIndex:TEST_PC];
+	cpu.PC = TEST_PC;
+	cpu.A = oldA;			// clear Accumulator
+
+	[cpu executeCurrentOperation];
+	NSLog(@"LDA 2000,3  - accumulator after");
+	[self printMemoryCell:cpu.A];
+	isEqual = [self compareWordA:[cpu memoryWordForCellIndex:TEST_CINDEX2] withWordB:cpu.A];
+	XCTAssertTrue(isEqual,@"value should be loaded with help of index register I2 from TEST_CINDEX2 cell");
+
+	
 }
 
 - (void)testPerformanceExample {
@@ -205,6 +262,17 @@
 	NSLog(@"| %@ | %2d | %2d | %2d | %2d | %2d |", (cell.sign ? @"-" : @"+"),
 		  cell.byte[0], cell.byte[1], cell.byte[2], cell.byte[3], cell.byte[4]);
 	NSLog(@  "------------------------------");
+
+}
+
+
+- (void) printIndex:(MIXINDEX) cell
+{
+	NSLog(@  "---------------");
+	NSLog(@"| %@ | %2d | %2d |",
+		  (cell.sign ? @"-" : @"+"),
+		  cell.indexByte[0], cell.indexByte[1]);
+	NSLog(@  "---------------");
 
 }
 

@@ -10,7 +10,7 @@
 // Invalid index for the memory cell. Should be in range [0..MIX_MEMORY_SIZE)
 extern NSString * const MIXExceptionInvalidMemoryCellIndex;
 
-// invalud number for ndex register. Should be in range [1..MIX_INDEX_REGISTERS]
+// invalud number for index register. Should be in range [1..MIX_INDEX_REGISTERS]
 extern NSString * const MIXExceptionInvalidIndexRegister;
 
 // invalid operCode - not supported by current CPU
