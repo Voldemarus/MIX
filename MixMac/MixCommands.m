@@ -119,6 +119,13 @@
 	return @[
 				@[ @"LDA", @(MIX_F_FIELD), @(CMD_LDA), @(2), RStr(@"Load accumulator")],
 				@[ @"LDX", @(MIX_F_FIELD), @(CMD_LDX), @(2), RStr(@"Load extension register")],
+				@[ @"LD1", @(MIX_F_FIELD), @(CMD_LD1), @(2), RStr(@"Load index register 1")],
+				@[ @"LD2", @(MIX_F_FIELD), @(CMD_LD2), @(2), RStr(@"Load index register 2")],
+				@[ @"LD3", @(MIX_F_FIELD), @(CMD_LD3), @(2), RStr(@"Load index register 3")],
+				@[ @"LD4", @(MIX_F_FIELD), @(CMD_LD4), @(2), RStr(@"Load index register 4")],
+				@[ @"LD5", @(MIX_F_FIELD), @(CMD_LD5), @(2), RStr(@"Load index register 5")],
+				@[ @"LD6", @(MIX_F_FIELD), @(CMD_LD6), @(2), RStr(@"Load index register 6")],
+
 			 ];
 }
 

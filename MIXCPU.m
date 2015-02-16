@@ -73,6 +73,9 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 	self.X = emptyCell;
 	self.PC = 0;
 	MIXINDEX emptyIndex;
+	emptyIndex.sign = 0;
+	emptyIndex.indexByte[0] = 0;
+	emptyIndex.indexByte[1] = 0;
 	for (int i = 1; i <= MIX_INDEX_REGISTERS;i++) {
 		[self setIndexRegister:emptyIndex withNumber:i];
 	}
@@ -122,6 +125,10 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 - (void) storeNumber:(int)aValue forCellIndex:(int) index
 {
 	MIXWORD storeValue;
+	storeValue.sign = NO;
+	for (int i = 0; i < MIX_WORD_SIZE; i++) {
+		storeValue.byte[i] = 0;
+	}
 	if (aValue < 0) {
 		storeValue.sign = YES;
 		aValue = -aValue;
@@ -247,6 +254,8 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 	if (offset < 0) {
 		indexData.sign = YES;
 		offset = -offset;
+	} else {
+		indexData.sign = NO;
 	}
 	if (offset > MIX_MEMORY_SIZE) {
 		[NSException raise:MIXExceptionInvalidMemoryCellIndex format:RStr(MIXExceptionInvalidMemoryCellIndex)];
@@ -368,6 +377,12 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 		switch (operCode) {
 			case CMD_LDA:		[self processLDACommand:command]; break;
 			case CMD_LDX:		[self processLDXCommand:command]; break;
+			case CMD_LD1:
+			case CMD_LD2:
+			case CMD_LD3:
+			case CMD_LD4:
+			case CMD_LD5:
+			case CMD_LD6:		[self processLDICommand:command forRegister:(operCode-8)]; break;
 				
 			default: {
 				[NSException raise:MIXExceptionInvalidOperationCode
@@ -409,10 +424,36 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 	// Read value from the memory
 	MIXWORD valueToProcess = memory[effectiveAddress];
 	MIXWORD finalValue = [self extractFieldswithModifier:command.byte[3] from:valueToProcess];
-	// put result inti accumulator
+	// put result into receiver
 	self.X = finalValue;
 }
 
+//
+// LD(RegNum) -- load index register, regNum - from 1 to 6
+//
+- (void) processLDICommand:(MIXWORD) command forRegister:(int)indReg
+{
+	if (indReg < 1 || indReg > MIX_INDEX_REGISTERS) {
+		[NSException raise:MIXExceptionInvalidIndexRegister format:RStr(MIXExceptionInvalidIndexRegister)];
+		return;
+	}
+	NSInteger effectiveAddress = [self effectiveAddress:command];
+	// This address should pount to cell in memoty space
+	if (effectiveAddress < 0 || effectiveAddress >= MIX_MEMORY_SIZE) {
+		[NSException raise:MIXExceptionInvalidMemoryCellIndex
+					format:RStr(MIXExceptionInvalidMemoryCellIndex)];
+		return;
+	}
+	// Read value from the memory
+	MIXWORD valueToProcess = memory[effectiveAddress];
+	MIXWORD finalValue = [self extractFieldswithModifier:command.byte[3] from:valueToProcess];
+	MIXINDEX finalIndex;	// now convert final value to the index format
+	finalIndex.sign = finalValue.sign;
+	finalIndex.indexByte[0] = finalValue.byte[3];
+	finalIndex.indexByte[1] = finalValue.byte[4];
+	[self setIndexRegister:finalIndex withNumber:indReg];
+
+}
 
 #pragma mark - Internal service methods
 

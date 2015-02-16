@@ -430,6 +430,65 @@
 	XCTAssertTrue(isEqual,@"value should be loaded with help of index register I2 from TEST_CINDEX2 cell");
 }
 
+//
+// test each index register
+//
+- (void) testLDI
+{
+	for (int i = 1; i <= 6; i++) {
+		NSString *lds = [NSString stringWithFormat:@"LD%d",i];
+		MixCommand *ldaCommand = [[MixCommands sharedInstance] getCommandByMnemonic:lds];
+		XCTAssert(ldaCommand, @"%@ Command should be present in command list", lds);
+
+		NSLog(@" Test run for %@ command",lds);
+		// LDI 2000
+		MIXWORD command;
+		command.sign = NO;
+		command.byte[0] = 2000 >> 6;
+		command.byte[1] = 2000 & 0x3f;
+		command.byte[2] = 0;				// index Register
+		command.byte[3] = 5;				// field modifier
+		command.byte[4] = 8+i;				// command code, identifies index register used in this run of test
+	
+		[cpu setMemoryWord:command forCellIndex:TEST_PC];
+		cpu.PC = TEST_PC;
+	
+		MIXINDEX oldIndex = [cpu indexRegisterValue:i];
+		NSLog(@"LD%d 2000 - index register before", i);
+		[self printIndex:oldIndex];
+		[self printMemoryCell:command];
+	
+		[cpu executeCurrentOperation];
+		
+		MIXINDEX result = [cpu indexRegisterValue:i];
+		[self printIndex:result];
+		
+		// test index to index load
+		int secondIndex = i + 1;
+		if (secondIndex > MIX_INDEX_REGISTERS) secondIndex = 1;
+		
+		[cpu storeOffset:(TEST_CINDEX - TEST_CELL) inIndexRegister:secondIndex];
+		command.byte[2] = secondIndex;
+		
+		[self printMemoryCell:command];
+		int testValue = i*24+secondIndex;
+		[cpu storeNumber:testValue forCellIndex:TEST_CINDEX];
+		[self printMemoryCell:[cpu memoryWordForCellIndex:TEST_CINDEX]];
+		XCTAssertEqual(testValue, [cpu memoryContentForCellIndex:TEST_CINDEX], @"Value should be properly written to memory");
+
+		[cpu setMemoryWord:command forCellIndex:TEST_PC];
+		cpu.PC = TEST_PC;
+		
+		[cpu executeCurrentOperation];
+		result = [cpu indexRegisterValue:i];
+		NSLog(@"loaded with indexRegister offset");
+		[self printIndex:result];
+		XCTAssertEqual(testValue, [cpu offsetInIndexRegister:i],
+					   @"Index register should contian the same value we put into memory cell");
+	}
+
+}
+
 
 - (void)testPerformanceExample {
     // This is an example of a performance test case.
@@ -459,6 +518,24 @@
 		  cell.indexByte[0], cell.indexByte[1]);
 	NSLog(@  "---------------");
 
+}
+
+//
+// Compare index values
+//
+- (BOOL) compareIndexA:(MIXINDEX) iA andIndexB:(MIXINDEX) iB
+{
+	if (iA.sign != iB.sign) {
+		return NO;
+	}
+	if (iA.indexByte[0] != iB.indexByte[0]) {
+		return NO;
+	}
+	if (iA.indexByte[1] != iB.indexByte[1]) {
+		return NO;
+	}
+	
+	return YES;
 }
 
 //
