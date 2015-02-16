@@ -125,7 +125,9 @@
 				@[ @"LD4", @(MIX_F_FIELD), @(CMD_LD4), @(2), RStr(@"Load index register 4")],
 				@[ @"LD5", @(MIX_F_FIELD), @(CMD_LD5), @(2), RStr(@"Load index register 5")],
 				@[ @"LD6", @(MIX_F_FIELD), @(CMD_LD6), @(2), RStr(@"Load index register 6")],
-
+				@[ @"LDAN", @(MIX_F_FIELD), @(CMD_LDAN), @(2), RStr(@"Load accumulator negative")],
+				@[ @"LDXN", @(MIX_F_FIELD), @(CMD_LDXN), @(2), RStr(@"Load extension register negative")],
+				
 			 ];
 }
 

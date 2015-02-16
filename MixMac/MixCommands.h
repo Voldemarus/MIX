@@ -37,12 +37,15 @@ typedef enum {
 
 #pragma mark - Command codes to avoid typeouts in assembler/processor
 
-#define CMD_LDA	8
-#define CMD_LDX	15
-#define CMD_LD1	9
-#define CMD_LD2	10
-#define CMD_LD3	11
-#define CMD_LD4	12
-#define CMD_LD5	13
-#define CMD_LD6	14
+#define CMD_LDA		8
+#define CMD_LD1		9
+#define CMD_LD2		10
+#define CMD_LD3		11
+#define CMD_LD4		12
+#define CMD_LD5		13
+#define CMD_LD6		14
+#define CMD_LDX		15
+#define CMD_LDAN	16
+#define CMD_LDXN	23
+
 

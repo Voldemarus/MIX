@@ -73,7 +73,7 @@
 	command.byte[1] = 2000 & 0x3f;
 	command.byte[2] = 0;				// index Register
 	command.byte[3] = 5;				// field modifier
-	command.byte[4] = 8;				// command code
+	command.byte[4] = CMD_LDA;				// command code
 	
 	[cpu setMemoryWord:command forCellIndex:TEST_PC];
 	cpu.PC = TEST_PC;
@@ -259,7 +259,7 @@
 	command.byte[1] = 2000 & 0x3f;
 	command.byte[2] = 0;				// index Register
 	command.byte[3] = 5;				// field modifier
-	command.byte[4] = 15;				// command code
+	command.byte[4] = CMD_LDX;				// command code
 	
 	[cpu setMemoryWord:command forCellIndex:TEST_PC];
 	cpu.PC = TEST_PC;
@@ -448,7 +448,7 @@
 		command.byte[1] = 2000 & 0x3f;
 		command.byte[2] = 0;				// index Register
 		command.byte[3] = 5;				// field modifier
-		command.byte[4] = 8+i;				// command code, identifies index register used in this run of test
+		command.byte[4] = CMD_LDA+i;				// command code, identifies index register used in this run of test
 	
 		[cpu setMemoryWord:command forCellIndex:TEST_PC];
 		cpu.PC = TEST_PC;
@@ -490,12 +490,82 @@
 }
 
 
-- (void)testPerformanceExample {
-    // This is an example of a performance test case.
-    [self measureBlock:^{
-        // Put the code you want to measure the time of here.
-    }];
+//
+// Due to actual procedures to process LDA and LDAN are the same we'll test here only specific part -
+// sign inversion
+//
+- (void) testLDAN
+{
+	MixCommand *ldaCommand = [[MixCommands sharedInstance] getCommandByMnemonic:@"LDAN"];
+	XCTAssert(ldaCommand, @"LDAN Command should be present in command list");
+	
+	// LDA 2000
+	MIXWORD command;
+	command.sign = NO;
+	command.byte[0] = TEST_CELL >> 6;
+	command.byte[1] = TEST_CELL & 0x3f;
+	command.byte[2] = 0;				// index Register
+	command.byte[3] = 5;				// field modifier
+	command.byte[4] = CMD_LDAN;				// command code
+	
+	[cpu setMemoryWord:command forCellIndex:TEST_PC];
+	cpu.PC = TEST_PC;
+	
+	[cpu executeCurrentOperation];
+
+	MIXWORD accum = cpu.A;
+	MIXWORD cell = [cpu memoryWordForCellIndex:TEST_CELL];
+	
+	NSLog(@"Memory Cell:");
+	[self printMemoryCell:cell];
+	NSLog(@"accumulator");
+	[self printMemoryCell:accum];
+	
+	accum.sign = !accum.sign;
+	BOOL isEqual = [self compareWordA:accum withWordB:cell];
+	XCTAssertTrue(isEqual, @"accumilator should differ with sign only");
 }
+
+
+- (void) testLDXN
+{
+	MixCommand *ldaCommand = [[MixCommands sharedInstance] getCommandByMnemonic:@"LDXN"];
+	XCTAssert(ldaCommand, @"LDXN Command should be present in command list");
+	
+	// LDA 2000
+	MIXWORD command;
+	command.sign = NO;
+	command.byte[0] = 2000 >> 6;
+	command.byte[1] = 2000 & 0x3f;
+	command.byte[2] = 0;				// index Register
+	command.byte[3] = 5;				// field modifier
+	command.byte[4] = CMD_LDXN;				// command code
+	
+	[cpu setMemoryWord:command forCellIndex:TEST_PC];
+	cpu.PC = TEST_PC;
+	
+	[cpu executeCurrentOperation];
+	
+	MIXWORD accum = cpu.X;
+	MIXWORD cell = [cpu memoryWordForCellIndex:TEST_CELL];
+	
+	NSLog(@"Memory Cell:");
+	[self printMemoryCell:cell];
+	NSLog(@"accumulator");
+	[self printMemoryCell:accum];
+	
+	accum.sign = !accum.sign;
+	BOOL isEqual = [self compareWordA:accum withWordB:cell];
+	XCTAssertTrue(isEqual, @"X register should differ with sign only");
+
+}
+
+//- (void)testPerformanceExample {
+//    // This is an example of a performance test case.
+//    [self measureBlock:^{
+//        // Put the code you want to measure the time of here.
+//    }];
+//}
 
 
 #pragma mark - Service methoda

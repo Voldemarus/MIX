@@ -375,14 +375,16 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 		// Decode CPU commands
 		//
 		switch (operCode) {
-			case CMD_LDA:		[self processLDACommand:command]; break;
-			case CMD_LDX:		[self processLDXCommand:command]; break;
+			case CMD_LDA:		[self processLDACommand:command negate:NO]; break;
+			case CMD_LDX:		[self processLDXCommand:command negate:NO]; break;
 			case CMD_LD1:
 			case CMD_LD2:
 			case CMD_LD3:
 			case CMD_LD4:
 			case CMD_LD5:
-			case CMD_LD6:		[self processLDICommand:command forRegister:(operCode-8)]; break;
+			case CMD_LD6:		[self processLDICommand:command forRegister:(operCode-8) negate:NO]; break;
+			case CMD_LDAN:		[self processLDACommand:command negate:YES]; break;
+			case CMD_LDXN:		[self processLDXCommand:command negate:YES]; break;
 				
 			default: {
 				[NSException raise:MIXExceptionInvalidOperationCode
@@ -395,7 +397,7 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 
 
 // LDA - load accumulator with memory cell' value
-- (void) processLDACommand:(MIXWORD) command
+- (void) processLDACommand:(MIXWORD) command negate:(BOOL)negateFlag
 {
 	NSInteger effectiveAddress = [self effectiveAddress:command];
 	// This address should pount to cell in memoty space
@@ -407,12 +409,15 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 	// Read value from the memory
 	MIXWORD valueToProcess = memory[effectiveAddress];
 	MIXWORD finalValue = [self extractFieldswithModifier:command.byte[3] from:valueToProcess];
+	if (negateFlag) {
+		finalValue.sign = !finalValue.sign;
+	}
 	// put result inti accumulator
 	self.A = finalValue;
 }
 
 // LDX - load accumulator with memory cell' value
-- (void) processLDXCommand:(MIXWORD) command
+- (void) processLDXCommand:(MIXWORD) command negate:(BOOL)negateFlag
 {
 	NSInteger effectiveAddress = [self effectiveAddress:command];
 	// This address should pount to cell in memoty space
@@ -424,6 +429,9 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 	// Read value from the memory
 	MIXWORD valueToProcess = memory[effectiveAddress];
 	MIXWORD finalValue = [self extractFieldswithModifier:command.byte[3] from:valueToProcess];
+	if (negateFlag) {
+		finalValue.sign = !finalValue.sign;
+	}
 	// put result into receiver
 	self.X = finalValue;
 }
@@ -431,7 +439,7 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 //
 // LD(RegNum) -- load index register, regNum - from 1 to 6
 //
-- (void) processLDICommand:(MIXWORD) command forRegister:(int)indReg
+- (void) processLDICommand:(MIXWORD) command forRegister:(int)indReg negate:(BOOL)negateFlag
 {
 	if (indReg < 1 || indReg > MIX_INDEX_REGISTERS) {
 		[NSException raise:MIXExceptionInvalidIndexRegister format:RStr(MIXExceptionInvalidIndexRegister)];
@@ -448,7 +456,7 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 	MIXWORD valueToProcess = memory[effectiveAddress];
 	MIXWORD finalValue = [self extractFieldswithModifier:command.byte[3] from:valueToProcess];
 	MIXINDEX finalIndex;	// now convert final value to the index format
-	finalIndex.sign = finalValue.sign;
+	finalIndex.sign = (negateFlag ? !finalValue.sign :finalValue.sign);
 	finalIndex.indexByte[0] = finalValue.byte[3];
 	finalIndex.indexByte[1] = finalValue.byte[4];
 	[self setIndexRegister:finalIndex withNumber:indReg];

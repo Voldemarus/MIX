@@ -6,6 +6,11 @@
   Copyright (c) 2015 Geomatix Laboratoriess S.R.O. All rights reserved.
 */
 
+//
+// !!!!!!!!!!!!!	This is a base file, common ancestor to all localizations.
+//					Please do not edit it! If you want to add localization - creatte version
+//					of this file for your language.
+//
 
 //
 // Exception descriptions
@@ -20,4 +25,13 @@
 //
 // CPU code explanation
 //
-"Load accumulator" = "Load A register";
+"Load accumulator" = "Load accumulator (A) register";
+"Load extension register" = "Load extension (X) register";
+"Load index register 1" = "Load index register 1";
+"Load index register 2" = "Load index register 2";
+"Load index register 3" = "Load index register 3";
+"Load index register 4" = "Load index register 4";
+"Load index register 5" = "Load index register 5";
+"Load index register 6" = "Load index register 6";
+"Load accumulator negative" = "Load accumulator (A) negative";
+"Load extension register negative" = "Load extension (X) register negative";
