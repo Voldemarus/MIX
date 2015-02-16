@@ -35,3 +35,13 @@
 "Load index register 6" = "Load index register 6";
 "Load accumulator negative" = "Load accumulator (A) negative";
 "Load extension register negative" = "Load extension (X) register negative";
+"Load index register 1 negative"= "Load index register 1 negative";
+"Load index register 2 negative"= "Load index register 2 negative";
+"Load index register 3 negative"= "Load index register 3 negative";
+"Load index register 4 negative"= "Load index register 4 negative";
+"Load index register 5 negative"= "Load index register 5 negative";
+"Load index register 6 negative"= "Load index register 6 negative";
+
+
+
+

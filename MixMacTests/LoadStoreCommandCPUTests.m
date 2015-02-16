@@ -448,7 +448,7 @@
 		command.byte[1] = 2000 & 0x3f;
 		command.byte[2] = 0;				// index Register
 		command.byte[3] = 5;				// field modifier
-		command.byte[4] = CMD_LDA+i;				// command code, identifies index register used in this run of test
+		command.byte[4] = CMD_LDA+i;		// command code, identifies index register used in this run of test
 	
 		[cpu setMemoryWord:command forCellIndex:TEST_PC];
 		cpu.PC = TEST_PC;
@@ -486,7 +486,44 @@
 		XCTAssertEqual(testValue, [cpu offsetInIndexRegister:i],
 					   @"Index register should contian the same value we put into memory cell");
 	}
+}
 
+- (void) testLDIN
+{
+	for (int i = 1; i <= 6; i++) {
+		NSString *lds = [NSString stringWithFormat:@"LD%dN",i];
+		MixCommand *ldaCommand = [[MixCommands sharedInstance] getCommandByMnemonic:lds];
+		XCTAssert(ldaCommand, @"%@ Command should be present in command list", lds);
+		
+		NSLog(@" Test run for %@ command",lds);
+		// LDI 2000
+		MIXWORD command;
+		command.sign = NO;
+		command.byte[0] = TEST_CELL >> 6;
+		command.byte[1] = TEST_CELL & 0x3f;
+		command.byte[2] = 0;				// index Register
+		command.byte[3] = 5;				// field modifier
+		command.byte[4] = CMD_LDAN+i;		// command code, identifies index register used in this run of test
+		
+		[cpu setMemoryWord:command forCellIndex:TEST_PC];
+		cpu.PC = TEST_PC;
+		
+		MIXINDEX oldIndex = [cpu indexRegisterValue:i];
+		NSLog(@"LD%dN 2000 - index register before", i);
+		[self printIndex:oldIndex];
+		
+		[cpu executeCurrentOperation];
+		
+		MIXINDEX result = [cpu indexRegisterValue:i];
+		[self printIndex:result];
+		MIXWORD cell = [cpu memoryWordForCellIndex:TEST_CELL];
+		
+		BOOL isEqual = YES;
+		if (cell.sign == result.sign) isEqual = NO;
+		if (cell.byte[4] != result.indexByte[1]) isEqual = NO;
+		if (cell.byte[3] != result.indexByte[0]) isEqual = NO;
+		XCTAssertTrue(isEqual, @"index should contains last two bytes from mwmory word, but with different sign");
+	}
 }
 
 

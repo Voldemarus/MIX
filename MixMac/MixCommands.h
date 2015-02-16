@@ -46,6 +46,12 @@ typedef enum {
 #define CMD_LD6		14
 #define CMD_LDX		15
 #define CMD_LDAN	16
+#define CMD_LD1N	17
+#define CMD_LD2N	18
+#define CMD_LD3N	19
+#define CMD_LD4N	20
+#define CMD_LD5N	21
+#define CMD_LD6N	22
 #define CMD_LDXN	23
 
 

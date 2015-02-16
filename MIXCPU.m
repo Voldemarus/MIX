@@ -382,9 +382,15 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 			case CMD_LD3:
 			case CMD_LD4:
 			case CMD_LD5:
-			case CMD_LD6:		[self processLDICommand:command forRegister:(operCode-8) negate:NO]; break;
+			case CMD_LD6:		[self processLDICommand:command forRegister:(operCode-CMD_LDA) negate:NO]; break;
 			case CMD_LDAN:		[self processLDACommand:command negate:YES]; break;
 			case CMD_LDXN:		[self processLDXCommand:command negate:YES]; break;
+			case CMD_LD1N:
+			case CMD_LD2N:
+			case CMD_LD3N:
+			case CMD_LD4N:
+			case CMD_LD5N:
+			case CMD_LD6N:		[self processLDICommand:command forRegister:(operCode-CMD_LDAN) negate:YES]; break;
 				
 			default: {
 				[NSException raise:MIXExceptionInvalidOperationCode
