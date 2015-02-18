@@ -597,6 +597,159 @@
 
 }
 
+//
+// STZ - xero separate fields in target  memory cell
+//
+- (void) testSTZ
+{
+	MixCommand *ldaCommand = [[MixCommands sharedInstance] getCommandByMnemonic:@"STZ"];
+	XCTAssert(ldaCommand, @"STZ Command should be present in command list");
+	
+	// LDA 2000
+	MIXWORD command;
+	command.sign = NO;
+	command.byte[0] = 2000 >> 6;
+	command.byte[1] = 2000 & 0x3f;
+	command.byte[2] = 0;				// index Register
+	command.byte[3] = 5;				// field modifier
+	command.byte[4] = CMD_STZ;			// command code
+	
+	[cpu setMemoryWord:command forCellIndex:TEST_PC];
+	cpu.PC = TEST_PC;
+	
+	[cpu setMemoryWord:[self wordWithNegativeSign:YES andByte0:1 byte1:2 byte2:3 byte3:4 byte4:5] forCellIndex:TEST_CELL];
+	
+	MIXWORD oldValue = [cpu memoryWordForCellIndex:TEST_CELL];
+	
+	[cpu executeCurrentOperation];
+	
+	MIXWORD newValue = [cpu memoryWordForCellIndex:TEST_CELL];
+	
+	MIXWORD desiredValue = [self wordWithNegativeSign:NO andByte0:0 byte1:0 byte2:0 byte3:0 byte4:0];
+	
+	BOOL isEqual = [self compareWordA:newValue withWordB:desiredValue];
+	XCTAssertTrue(isEqual, @"STZ should clear all fields in target cell");
+	
+	[cpu setMemoryWord:oldValue forCellIndex:TEST_CELL];
+	
+	// modifier (0:0) -- sign only
+	
+	command.byte[3] = 0;
+	[cpu setMemoryWord:command forCellIndex:TEST_PC];
+	cpu.PC = TEST_PC;
+	[cpu executeCurrentOperation];
+	
+	newValue = [cpu memoryWordForCellIndex:TEST_CELL];
+	desiredValue = [self wordWithNegativeSign:NO andByte0:1 byte1:2 byte2:3 byte3:4 byte4:5];
+
+	isEqual = [self compareWordA:newValue withWordB:desiredValue];
+	XCTAssertTrue(isEqual, @"STZ  (0:0) should clear sign field in target cell only");
+	
+	
+	// modifier  (0:0) no sign  but all other fields
+	
+	command.byte[3] = 0;
+	[cpu setMemoryWord:command forCellIndex:TEST_PC];
+	cpu.PC = TEST_PC;
+	[cpu executeCurrentOperation];
+	
+	newValue = [cpu memoryWordForCellIndex:TEST_CELL];
+	desiredValue = [self wordWithNegativeSign:NO andByte0:1 byte1:2 byte2:3 byte3:4 byte4:5];
+	
+	isEqual = [self compareWordA:newValue withWordB:desiredValue];
+	XCTAssertTrue(isEqual, @"STZ  (0:0) should clear sign field in target cell only");
+	
+	
+	// modifier (1:5) no sign  but all other fields
+
+	[cpu setMemoryWord:oldValue forCellIndex:TEST_CELL];
+	
+	command.byte[3] = 1*8+5;
+	[cpu setMemoryWord:command forCellIndex:TEST_PC];
+	cpu.PC = TEST_PC;
+	[cpu executeCurrentOperation];
+	
+	newValue = [cpu memoryWordForCellIndex:TEST_CELL];
+	desiredValue = [self wordWithNegativeSign:YES andByte0:0 byte1:0 byte2:0 byte3:0 byte4:0];
+	
+//	[self printMemoryCell:newValue];
+	
+	isEqual = [self compareWordA:newValue withWordB:desiredValue];
+	XCTAssertTrue(isEqual, @"STZ  (0:0) should clear all fields in target cell except the sign field");
+	
+
+	// modifier (2:3)
+	
+	NSLog(@"STZ (2:3)");
+	
+	[cpu setMemoryWord:oldValue forCellIndex:TEST_CELL];
+	
+	command.byte[3] = 2*8+3;
+	[cpu setMemoryWord:command forCellIndex:TEST_PC];
+	cpu.PC = TEST_PC;
+	[cpu executeCurrentOperation];
+	
+	newValue = [cpu memoryWordForCellIndex:TEST_CELL];
+	desiredValue = [self wordWithNegativeSign:YES andByte0:1 byte1:0 byte2:0 byte3:4 byte4:5];
+	
+//	[self printMemoryCell:oldValue];
+//	[self printMemoryCell:newValue];
+//	[self printMemoryCell:desiredValue];
+	
+	isEqual = [self compareWordA:newValue withWordB:desiredValue];
+	XCTAssertTrue(isEqual, @"STZ  (0:0) should clear all fields in target cell except the sign field");
+	
+
+	// modifier (1:4)
+	
+	NSLog(@"STZ (1:4)");
+	
+	[cpu setMemoryWord:oldValue forCellIndex:TEST_CELL];
+	
+	command.byte[3] = 1*8+4;
+	[cpu setMemoryWord:command forCellIndex:TEST_PC];
+	cpu.PC = TEST_PC;
+	[cpu executeCurrentOperation];
+	
+	newValue = [cpu memoryWordForCellIndex:TEST_CELL];
+	desiredValue = [self wordWithNegativeSign:YES andByte0:0 byte1:0 byte2:0 byte3:0 byte4:5];
+	
+//	[self printMemoryCell:oldValue];
+//	[self printMemoryCell:newValue];
+//	[self printMemoryCell:desiredValue];
+	
+	isEqual = [self compareWordA:newValue withWordB:desiredValue];
+	XCTAssertTrue(isEqual, @"STZ  (0:0) should clear all fields in target cell except the sign field");
+	
+	// modifier (5:5)
+	
+	NSLog(@"STZ (5:5)");
+	
+	[cpu setMemoryWord:oldValue forCellIndex:TEST_CELL];
+	
+	command.byte[3] = 5*8+5;
+	[cpu setMemoryWord:command forCellIndex:TEST_PC];
+	cpu.PC = TEST_PC;
+	[cpu executeCurrentOperation];
+	
+	newValue = [cpu memoryWordForCellIndex:TEST_CELL];
+	desiredValue = [self wordWithNegativeSign:YES andByte0:1 byte1:2 byte2:3 byte3:4 byte4:0];
+	
+//	[self printMemoryCell:oldValue];
+//	[self printMemoryCell:newValue];
+//	[self printMemoryCell:desiredValue];
+	
+	isEqual = [self compareWordA:newValue withWordB:desiredValue];
+	XCTAssertTrue(isEqual, @"STZ  (0:0) should clear all fields in target cell except the sign field");
+	
+	
+
+	
+}
+
+
+
+
 //- (void)testPerformanceExample {
 //    // This is an example of a performance test case.
 //    [self measureBlock:^{
@@ -606,6 +759,21 @@
 
 
 #pragma mark - Service methoda
+
+- (MIXWORD) wordWithNegativeSign:(BOOL)aSign andByte0:(Byte) b0 byte1:(Byte) b1 byte2:(Byte) b2
+								byte3:(Byte) b3 byte4:(Byte) b4
+ {
+	MIXWORD testData;
+	testData.sign = aSign;
+	 testData.byte[0] = b0;
+	 testData.byte[1] = b1;
+	 testData.byte[2] = b2;
+	 testData.byte[3] = b3;
+	 testData.byte[4] = b4;
+	 
+	 return testData;
+}
+
 
 - (void) printMemoryCell:(MIXWORD)cell
 {

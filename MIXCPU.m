@@ -391,6 +391,17 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 			case CMD_LD4N:
 			case CMD_LD5N:
 			case CMD_LD6N:		[self processLDICommand:command forRegister:(operCode-CMD_LDAN) negate:YES]; break;
+			case CMD_STA:		[self processSTACommand:command]; break;
+			case CMD_STX:		[self processSTXCommand:command]; break;
+			case CMD_ST1:
+			case CMD_ST2:
+			case CMD_ST3:
+			case CMD_ST4:
+			case CMD_ST5:
+			case CMD_ST6:		[self processSTICommand:command forRegister:(operCode-CMD_STA)]; break;
+			case CMD_STJ:		[self processSTJCommand:command]; break;
+			case CMD_STZ:		[self processSTZCommand:command]; break;
+				
 				
 			default: {
 				[NSException raise:MIXExceptionInvalidOperationCode
@@ -418,7 +429,7 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 	if (negateFlag) {
 		finalValue.sign = !finalValue.sign;
 	}
-	// put result inti accumulator
+	// put result to accumulator
 	self.A = finalValue;
 }
 
@@ -438,7 +449,7 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 	if (negateFlag) {
 		finalValue.sign = !finalValue.sign;
 	}
-	// put result into receiver
+	// put result to X register
 	self.X = finalValue;
 }
 
@@ -469,8 +480,176 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 
 }
 
+//
+//	STA - store data from accumulator to memory cell
+//
+- (void) processSTACommand:(MIXWORD) command
+{
+	NSInteger effectiveAddress = [self effectiveAddress:command];
+	// This address should pount to cell in memoty space
+	if (effectiveAddress < 0 || effectiveAddress >= MIX_MEMORY_SIZE) {
+		[NSException raise:MIXExceptionInvalidMemoryCellIndex
+					format:RStr(MIXExceptionInvalidMemoryCellIndex)];
+		return;
+	}
+	// Read value from accumulator
+	MIXWORD valueToProcess = self.A;
+	MIXWORD finalValue = [self maskFieldsWithModifier:command.byte[3]
+												  forWord:memory[effectiveAddress]
+										 withModifier:valueToProcess];
+	// put result to memory cell
+	[self setMemoryWord:finalValue forCellIndex:(int)effectiveAddress];
+}
+
+//
+// STX - store data from extension registor to memory cell
+//
+- (void) processSTXCommand:(MIXWORD) command
+{
+	NSInteger effectiveAddress = [self effectiveAddress:command];
+	// This address should pount to cell in memoty space
+	if (effectiveAddress < 0 || effectiveAddress >= MIX_MEMORY_SIZE) {
+		[NSException raise:MIXExceptionInvalidMemoryCellIndex
+					format:RStr(MIXExceptionInvalidMemoryCellIndex)];
+		return;
+	}
+	// Read value from extension register
+	MIXWORD valueToProcess = self.X;
+	MIXWORD finalValue = [self maskFieldsWithModifier:command.byte[3]
+												   forWord:memory[effectiveAddress]
+										  withModifier:valueToProcess];
+	// put result to memory cell
+	[self setMemoryWord:finalValue forCellIndex:(int)effectiveAddress];
+}
+
+//
+// STZ - store +0 into memory cell
+//
+- (void) processSTZCommand:(MIXWORD) command
+{
+	NSInteger effectiveAddress = [self effectiveAddress:command];
+	// This address should pount to cell in memoty space
+	if (effectiveAddress < 0 || effectiveAddress >= MIX_MEMORY_SIZE) {
+		[NSException raise:MIXExceptionInvalidMemoryCellIndex
+					format:RStr(MIXExceptionInvalidMemoryCellIndex)];
+		return;
+	}
+	// create empty word
+	MIXWORD emptyWord;
+	emptyWord.sign = NO;
+	for (int i  = 0; i < MIX_WORD_SIZE; i++) {
+		emptyWord.byte[i] = 0;
+	}
+	MIXWORD result = [self maskFieldsWithModifier:command.byte[3]
+											  forWord:memory[effectiveAddress]
+									 withModifier:emptyWord];
+	[self setMemoryWord:result forCellIndex:(int)effectiveAddress];
+}
+
+//
+// STJ - store jump register into memory cell
+//
+- (void) processSTJCommand:(MIXWORD) command
+{
+	NSInteger effectiveAddress = [self effectiveAddress:command];
+	// This address should pount to cell in memoty space
+	if (effectiveAddress < 0 || effectiveAddress >= MIX_MEMORY_SIZE) {
+		[NSException raise:MIXExceptionInvalidMemoryCellIndex
+					format:RStr(MIXExceptionInvalidMemoryCellIndex)];
+		return;
+	}
+	// create empty word
+	MIXWORD emptyWord;
+	emptyWord.sign = NO;		// J is always non-negative!
+	for (int i  = 0; i < MIX_WORD_SIZE; i++) {
+		emptyWord.byte[i] = 0;
+	}
+	emptyWord.byte[3] = self.J.indexByte[0];
+	emptyWord.byte[4] = self.J.indexByte[1];
+	MIXWORD result = [self maskFieldsWithModifier:command.byte[3]
+											  forWord:memory[effectiveAddress]
+									 withModifier:emptyWord];
+	[self setMemoryWord:result forCellIndex:(int)effectiveAddress];
+
+}
+
+//
+// ST* - store index register into memory cell
+//
+- (void) processSTICommand:(MIXWORD) command forRegister:(int)indReg
+{
+	NSInteger effectiveAddress = [self effectiveAddress:command];
+	// This address should pount to cell in memoty space
+	if (effectiveAddress < 0 || effectiveAddress >= MIX_MEMORY_SIZE) {
+		[NSException raise:MIXExceptionInvalidMemoryCellIndex
+					format:RStr(MIXExceptionInvalidMemoryCellIndex)];
+		return;
+	}
+	// create empty word
+	MIXWORD emptyWord;
+	for (int i  = 0; i < MIX_WORD_SIZE; i++) {
+		emptyWord.byte[i] = 0;
+	}
+	MIXINDEX indexReg = [self indexRegisterValue:indReg];
+	emptyWord.byte[3] = indexReg.indexByte[0];
+	emptyWord.byte[4] = indexReg.indexByte[1];
+	MIXWORD result = [self maskFieldsWithModifier:command.byte[3]
+										  forWord:memory[effectiveAddress]
+									 withModifier:emptyWord];
+	[self setMemoryWord:result forCellIndex:(int)effectiveAddress];
+}
+
 #pragma mark - Internal service methods
 
+//
+// Method extracts right fields from the src word and replaces fields, defined by fieldModifier in msk
+// Returns resulted word
+//
+
+
+
+- (MIXWORD) maskFieldsWithModifier:(MIX_F) fieldModifier forWord:(MIXWORD) src withModifier:(MIXWORD) msk
+{
+	MIXWORD result;
+	// default case - just store the whole accumaulator into memory cell
+	if (fieldModifier == MIX_F_FIELD) return msk;
+	
+	result.sign = src.sign;
+	for (int i = 0; i < MIX_WORD_SIZE; i++) {
+		result.byte[i] = src.byte[i];
+	}
+	
+	if (fieldModifier == MIX_F_SIGNONLY) {
+		result.sign = msk.sign;
+		return result;
+	}
+	// now process step by step
+	int leftPos = (fieldModifier >> 3) & 0x7;
+	int rightPos = fieldModifier & 0x7;
+	if (rightPos < leftPos) {
+		[NSException raise:MIXExceptionInvalidFieldModifer
+					format:RStr(MIXExceptionInvalidFieldModifer)];
+	}
+	
+//	[self printMemoryCell:src];
+//	[self printMemoryCell:result];
+	
+	if (leftPos == 0) {
+		// sign should be copied
+		result.sign = msk.sign;
+		leftPos = 1;
+	}
+	int mskIndex = MIX_WORD_SIZE - rightPos + leftPos - 1;	// where start for mask
+	leftPos--;
+	for (int i = mskIndex; i < MIX_WORD_SIZE; i++) {
+		result.byte[leftPos++] = msk.byte[i];
+	}
+	return result;
+}
+
+//
+// Method extract fields, defined by mask and creates word to be placed into full registers - A or X
+//
 
 - (MIXWORD) extractFieldswithModifier:(MIX_F)fieldModifier from:(MIXWORD)src
 {
@@ -565,6 +744,29 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 {
 	
 }
+
+
+
+- (void) printMemoryCell:(MIXWORD)cell
+{
+	NSLog(@  "------------------------------");
+	NSLog(@"| %@ | %2d | %2d | %2d | %2d | %2d |", (cell.sign ? @"-" : @"+"),
+		  cell.byte[0], cell.byte[1], cell.byte[2], cell.byte[3], cell.byte[4]);
+	NSLog(@  "------------------------------");
+	
+}
+
+
+- (void) printIndex:(MIXINDEX) cell
+{
+	NSLog(@  "---------------");
+	NSLog(@"| %@ | %2d | %2d |",
+		  (cell.sign ? @"-" : @"+"),
+		  cell.indexByte[0], cell.indexByte[1]);
+	NSLog(@  "---------------");
+	
+}
+
 
 
 #pragma mark - Selectors

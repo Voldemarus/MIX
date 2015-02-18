@@ -41,7 +41,14 @@
 "Load index register 4 negative"= "Load index register 4 negative";
 "Load index register 5 negative"= "Load index register 5 negative";
 "Load index register 6 negative"= "Load index register 6 negative";
-
-
-
+"Store accumulator" = "Store accumulator";
+"Store extension register" = "Store extension register";
+"Store index register 1" = "Store index register 1";
+"Store index register 2" = "Store index register 2";
+"Store index register 3" = "Store index register 3";
+"Store index register 4" = "Store index register 4";
+"Store index register 5" = "Store index register 5";
+"Store index register 6" = "Store index register 6";
+"Store jump register" = "Store jump register";
+"Clear memory cell" = "Clear memory cell";
 

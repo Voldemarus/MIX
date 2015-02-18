@@ -53,5 +53,15 @@ typedef enum {
 #define CMD_LD5N	21
 #define CMD_LD6N	22
 #define CMD_LDXN	23
+#define CMD_STA		24
+#define CMD_ST1		25
+#define CMD_ST2		26
+#define CMD_ST3		27
+#define CMD_ST4		28
+#define CMD_ST5		29
+#define CMD_ST6		30
+#define CMD_STX		31
+#define CMD_STJ		32
+#define CMD_STZ		33
 
 

@@ -133,6 +133,16 @@
 				@[ @"LD4N", @(MIX_F_FIELD), @(CMD_LD4N), @(2), RStr(@"Load index register 4 negative")],
 				@[ @"LD5N", @(MIX_F_FIELD), @(CMD_LD5N), @(2), RStr(@"Load index register 5 negative")],
 				@[ @"LD6N", @(MIX_F_FIELD), @(CMD_LD6N), @(2), RStr(@"Load index register 6 negative")],
+				@[ @"STA", @(MIX_F_FIELD), @(CMD_STA), @(2), RStr(@"Store accumulator")],
+				@[ @"STX", @(MIX_F_FIELD), @(CMD_STX), @(2), RStr(@"Store extension register")],
+				@[ @"ST1", @(MIX_F_FIELD), @(CMD_ST1), @(2), RStr(@"Store index register 1")],
+				@[ @"ST2", @(MIX_F_FIELD), @(CMD_ST2), @(2), RStr(@"Store index register 2")],
+				@[ @"ST3", @(MIX_F_FIELD), @(CMD_ST3), @(2), RStr(@"Store index register 3")],
+				@[ @"ST4", @(MIX_F_FIELD), @(CMD_ST4), @(2), RStr(@"Store index register 4")],
+				@[ @"ST5", @(MIX_F_FIELD), @(CMD_ST5), @(2), RStr(@"Store index register 5")],
+				@[ @"ST6", @(MIX_F_FIELD), @(CMD_ST6), @(2), RStr(@"Store index register 6")],
+				@[ @"STJ", @(MIX_F_FIELD), @(CMD_STJ), @(2), RStr(@"Store jump register")],
+				@[ @"STZ", @(MIX_F_FIELD), @(CMD_STZ), @(2), RStr(@"Clear memory cell")],
 
 			 ];
 }
