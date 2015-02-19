@@ -917,7 +917,7 @@
 	BOOL isEqual = [self compareWordA:newValue withWordB:desiredValue];
 	XCTAssertTrue(isEqual, @"STA should store accumulator contents into memory cell");
 	
-	NSLog(@"STA (0:0) TEST_CELL");
+	NSLog(@"STX (0:0) TEST_CELL");
 	
 	[cpu setMemoryWord:oldValue forCellIndex:TEST_CELL];
 	
@@ -934,9 +934,9 @@
 	//	[self printMemoryCell:desiredValue];
 	
 	isEqual = [self compareWordA:newValue withWordB:desiredValue];
-	XCTAssertTrue(isEqual, @"STA  (0:0) should store sign field in target cell only");
+	XCTAssertTrue(isEqual, @"STX  (0:0) should store sign field in target cell only");
 	
-	NSLog(@"STA (1:5) TEST_CELL");
+	NSLog(@"STX (1:5) TEST_CELL");
 	
 	[cpu setMemoryWord:oldValue forCellIndex:TEST_CELL];
 	
@@ -954,10 +954,9 @@
 	//	[self printMemoryCell:desiredValue];
 	
 	isEqual = [self compareWordA:newValue withWordB:desiredValue];
-	XCTAssertTrue(isEqual, @"STA  (1:5) should store all fields except the sign");
+	XCTAssertTrue(isEqual, @"STX  (1:5) should store all fields except the sign");
 	
-	
-	NSLog(@"STA (2:3) TEST_CELL");
+	NSLog(@"STX (2:3) TEST_CELL");
 	
 	[cpu setMemoryWord:oldValue forCellIndex:TEST_CELL];
 	
@@ -975,9 +974,9 @@
 	//	[self printMemoryCell:desiredValue];
 	
 	isEqual = [self compareWordA:newValue withWordB:desiredValue];
-	XCTAssertTrue(isEqual, @"STA  (2:3) should store last 2 bytes from accumulator in the specified fields");
+	XCTAssertTrue(isEqual, @"STX  (2:3) should store last 2 bytes from accumulator in the specified fields");
 	
-	NSLog(@"STA (0:1) TEST_CELL");
+	NSLog(@"STX (0:1) TEST_CELL");
 	
 	[cpu setMemoryWord:oldValue forCellIndex:TEST_CELL];
 	
@@ -995,9 +994,9 @@
 	//	[self printMemoryCell:desiredValue];
 	
 	isEqual = [self compareWordA:newValue withWordB:desiredValue];
-	XCTAssertTrue(isEqual, @"STA  (0:1) should store sign byte and last byte from accumulator into MSB of memoty cell");
+	XCTAssertTrue(isEqual, @"STX  (0:1) should store sign byte and last byte from accumulator into MSB of memoty cell");
 	
-	NSLog(@"STA (2:2) TEST_CELL");
+	NSLog(@"STX (2:2) TEST_CELL");
 	
 	[cpu setMemoryWord:oldValue forCellIndex:TEST_CELL];
 	
@@ -1015,7 +1014,150 @@
 	//	[self printMemoryCell:desiredValue];
 	
 	isEqual = [self compareWordA:newValue withWordB:desiredValue];
-	XCTAssertTrue(isEqual, @"STA  (2:2) should store in selected fields two LSB from accumulator ");
+	XCTAssertTrue(isEqual, @"STX  (2:2) should store in selected fields two LSB from accumulator ");
+	
+}
+
+
+- (void) testSTJ
+{
+	NSLog(@"STJ test");
+	MixCommand *ldaCommand = [[MixCommands sharedInstance] getCommandByMnemonic:@"STJ"];
+	XCTAssert(ldaCommand, @"STJ Command should be present in command list");
+	
+	// LDA 2000
+	MIXWORD command;
+	command.sign = NO;
+	command.byte[0] = 2000 >> 6;
+	command.byte[1] = 2000 & 0x3f;
+	command.byte[2] = 0;				// index Register
+	command.byte[3] = 5;				// field modifier
+	command.byte[4] = CMD_STJ;			// command code
+	
+	[cpu setMemoryWord:command forCellIndex:TEST_PC];
+	cpu.PC = TEST_PC;
+	
+	[cpu setMemoryWord:command forCellIndex:TEST_PC];
+	cpu.PC = TEST_PC;
+	
+	[cpu setMemoryWord:[self wordWithNegativeSign:YES andByte0:1 byte1:2 byte2:3 byte3:4 byte4:5] forCellIndex:TEST_CELL];
+	
+	MIXWORD oldValue = [cpu memoryWordForCellIndex:TEST_CELL];
+	cpu.J = [self indexWithSign:NO byte0:7 andByte1:8];
+	
+	NSLog(@"STJ TEST_CELL");
+	
+	[cpu executeCurrentOperation];
+	
+	MIXWORD newValue = [cpu memoryWordForCellIndex:TEST_CELL];
+	MIXWORD desiredValue = [self wordWithNegativeSign:NO andByte0:0 byte1:0 byte2:0 byte3:7 byte4:8];
+	
+//		[self printMemoryCell:oldValue];
+//		[self printMemoryCell:newValue];
+//		[self printMemoryCell:desiredValue];
+
+	
+	BOOL isEqual = [self compareWordA:newValue withWordB:desiredValue];
+	XCTAssertTrue(isEqual, @"STJ should store accumulator contents into memory cell");
+	
+	NSLog(@"STJ (0:0) TEST_CELL");
+	
+	[cpu setMemoryWord:oldValue forCellIndex:TEST_CELL];
+	
+	command.byte[3] = 0;
+	[cpu setMemoryWord:command forCellIndex:TEST_PC];
+	cpu.PC = TEST_PC;
+	[cpu executeCurrentOperation];
+	
+	newValue = [cpu memoryWordForCellIndex:TEST_CELL];
+	desiredValue = [self wordWithNegativeSign:NO andByte0:1 byte1:2 byte2:3 byte3:4 byte4:5];
+	
+	//	[self printMemoryCell:oldValue];
+	//	[self printMemoryCell:newValue];
+	//	[self printMemoryCell:desiredValue];
+	
+	isEqual = [self compareWordA:newValue withWordB:desiredValue];
+	XCTAssertTrue(isEqual, @"STJ  (0:0) should store sign field in target cell only");
+	
+	NSLog(@"STJ (1:5) TEST_CELL");
+	
+	[cpu setMemoryWord:oldValue forCellIndex:TEST_CELL];
+	
+	command.byte[3] = 1*8+5;
+	[cpu setMemoryWord:command forCellIndex:TEST_PC];
+	cpu.PC = TEST_PC;
+	[cpu executeCurrentOperation];
+	
+	newValue = [cpu memoryWordForCellIndex:TEST_CELL];
+	desiredValue = [self wordWithNegativeSign:YES andByte0:0 byte1:0 byte2:0 byte3:7 byte4:8];
+	
+//		[self printMemoryCell:cpu.A];
+//		[self printMemoryCell:oldValue];
+//		[self printMemoryCell:newValue];
+//		[self printMemoryCell:desiredValue];
+	
+	isEqual = [self compareWordA:newValue withWordB:desiredValue];
+	XCTAssertTrue(isEqual, @"STJ  (1:5) should store all fields except the sign");
+	
+	NSLog(@"STJ (2:3) TEST_CELL");
+	
+	[cpu setMemoryWord:oldValue forCellIndex:TEST_CELL];
+	
+	command.byte[3] = 2*8+3;
+	[cpu setMemoryWord:command forCellIndex:TEST_PC];
+	cpu.PC = TEST_PC;
+	[cpu executeCurrentOperation];
+	
+	newValue = [cpu memoryWordForCellIndex:TEST_CELL];
+	desiredValue = [self wordWithNegativeSign:YES andByte0:1 byte1:7 byte2:8 byte3:4 byte4:5];
+	
+	//	[self printMemoryCell:cpu.A];
+	//	[self printMemoryCell:oldValue];
+	//	[self printMemoryCell:newValue];
+	//	[self printMemoryCell:desiredValue];
+	
+	isEqual = [self compareWordA:newValue withWordB:desiredValue];
+	XCTAssertTrue(isEqual, @"STJ  (2:3) should store last 2 bytes from accumulator in the specified fields");
+	
+	NSLog(@"STJ (0:1) TEST_CELL");
+	
+	[cpu setMemoryWord:oldValue forCellIndex:TEST_CELL];
+	
+	command.byte[3] = 0*8+1;
+	[cpu setMemoryWord:command forCellIndex:TEST_PC];
+	cpu.PC = TEST_PC;
+	[cpu executeCurrentOperation];
+	
+	newValue = [cpu memoryWordForCellIndex:TEST_CELL];
+	desiredValue = [self wordWithNegativeSign:NO andByte0:8 byte1:2 byte2:3 byte3:4 byte4:5];
+	
+	//	[self printMemoryCell:cpu.A];
+	//	[self printMemoryCell:oldValue];
+	//	[self printMemoryCell:newValue];
+	//	[self printMemoryCell:desiredValue];
+	
+	isEqual = [self compareWordA:newValue withWordB:desiredValue];
+	XCTAssertTrue(isEqual, @"STJ  (0:1) should store sign byte and last byte from accumulator into MSB of memoty cell");
+	
+	NSLog(@"STJ (2:2) TEST_CELL");
+	
+	[cpu setMemoryWord:oldValue forCellIndex:TEST_CELL];
+	
+	command.byte[3] = 2*8+2;
+	[cpu setMemoryWord:command forCellIndex:TEST_PC];
+	cpu.PC = TEST_PC;
+	[cpu executeCurrentOperation];
+	
+	newValue = [cpu memoryWordForCellIndex:TEST_CELL];
+	desiredValue = [self wordWithNegativeSign:YES andByte0:1 byte1:8 byte2:3 byte3:4 byte4:5];
+	
+	//	[self printMemoryCell:cpu.A];
+	//	[self printMemoryCell:oldValue];
+	//	[self printMemoryCell:newValue];
+	//	[self printMemoryCell:desiredValue];
+	
+	isEqual = [self compareWordA:newValue withWordB:desiredValue];
+	XCTAssertTrue(isEqual, @"STJ  (2:2) should store in selected fields two LSB from accumulator ");
 	
 }
 
@@ -1030,6 +1172,15 @@
 
 
 #pragma mark - Service methoda
+
+- (MIXINDEX) indexWithSign:(BOOL) aSign byte0:(Byte) b0 andByte1:(Byte) b1
+{
+	MIXINDEX result;
+	result.sign = aSign;
+	result.indexByte[0] = b0;
+	result.indexByte[1] = b1;
+	return result;
+}
 
 - (MIXWORD) wordWithNegativeSign:(BOOL)aSign andByte0:(Byte) b0 byte1:(Byte) b1 byte2:(Byte) b2
 								byte3:(Byte) b3 byte4:(Byte) b4

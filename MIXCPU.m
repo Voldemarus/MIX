@@ -358,8 +358,7 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 //
 - (void) executeCurrentOperation
 {
-	NSInteger effectiveAddr = [self executionAddr];
-	MIXWORD command = memory[effectiveAddr];
+	MIXWORD command = memory[self.PC];
 	Byte operCode = command.byte[4];			// C Field
 	
 	MixCommand *cmd = [commands getCommandByCode:operCode];
@@ -606,8 +605,6 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 // Returns resulted word
 //
 
-
-
 - (MIXWORD) maskFieldsWithModifier:(MIX_F) fieldModifier forWord:(MIXWORD) src withModifier:(MIXWORD) msk
 {
 	MIXWORD result;
@@ -630,10 +627,6 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 		[NSException raise:MIXExceptionInvalidFieldModifer
 					format:RStr(MIXExceptionInvalidFieldModifer)];
 	}
-	
-//	[self printMemoryCell:src];
-//	[self printMemoryCell:result];
-	
 	if (leftPos == 0) {
 		// sign should be copied
 		result.sign = msk.sign;
