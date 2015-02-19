@@ -534,11 +534,7 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 		return;
 	}
 	// create empty word
-	MIXWORD emptyWord;
-	emptyWord.sign = NO;
-	for (int i  = 0; i < MIX_WORD_SIZE; i++) {
-		emptyWord.byte[i] = 0;
-	}
+	MIXWORD emptyWord = [self createEmptyWord];
 	MIXWORD result = [self maskFieldsWithModifier:command.byte[3]
 											  forWord:memory[effectiveAddress]
 									 withModifier:emptyWord];
@@ -558,13 +554,9 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 		return;
 	}
 	// create empty word
-	MIXWORD emptyWord;
-	emptyWord.sign = NO;		// J is always non-negative!
-	for (int i  = 0; i < MIX_WORD_SIZE; i++) {
-		emptyWord.byte[i] = 0;
-	}
-	emptyWord.byte[3] = self.J.indexByte[0];
-	emptyWord.byte[4] = self.J.indexByte[1];
+	MIXWORD emptyWord = [self createEmptyWord];
+	emptyWord.byte[MIX_WORD_SIZE-2] = self.J.indexByte[0];
+	emptyWord.byte[MIX_WORD_SIZE-1] = self.J.indexByte[1];
 	MIXWORD result = [self maskFieldsWithModifier:command.byte[3]
 											  forWord:memory[effectiveAddress]
 									 withModifier:emptyWord];
@@ -585,13 +577,11 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 		return;
 	}
 	// create empty word
-	MIXWORD emptyWord;
-	for (int i  = 0; i < MIX_WORD_SIZE; i++) {
-		emptyWord.byte[i] = 0;
-	}
+	MIXWORD emptyWord = [self createEmptyWord];
 	MIXINDEX indexReg = [self indexRegisterValue:indReg];
-	emptyWord.byte[3] = indexReg.indexByte[0];
-	emptyWord.byte[4] = indexReg.indexByte[1];
+	emptyWord.sign = indexReg.sign;
+	emptyWord.byte[MIX_WORD_SIZE-2] = indexReg.indexByte[0];
+	emptyWord.byte[MIX_WORD_SIZE-1] = indexReg.indexByte[1];
 	MIXWORD result = [self maskFieldsWithModifier:command.byte[3]
 										  forWord:memory[effectiveAddress]
 									 withModifier:emptyWord];
@@ -761,6 +751,15 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 }
 
 
+- (MIXWORD) createEmptyWord
+{
+	MIXWORD emptyWord;
+	emptyWord.sign = NO;		// J is always non-negative!
+	for (int i  = 0; i < MIX_WORD_SIZE; i++) {
+		emptyWord.byte[i] = 0;
+	}
+	return emptyWord;
+}
 
 #pragma mark - Selectors
 
