@@ -143,7 +143,9 @@
 				@[ @"ST6", @(MIX_F_FIELD), @(CMD_ST6), @(2), RStr(@"Store index register 6")],
 				@[ @"STJ", @(MIX_F_FIELD), @(CMD_STJ), @(2), RStr(@"Store jump register")],
 				@[ @"STZ", @(MIX_F_FIELD), @(CMD_STZ), @(2), RStr(@"Clear memory cell")],
-
+				@[ @"ADD", @(MIX_F_FIELD), @(CMD_ADD), @(2), RStr(@"Add to Accumulator")],
+				@[ @"SUB", @(MIX_F_FIELD), @(CMD_SUB), @(2), RStr(@"Substract from Accumulator")],
+				
 			 ];
 }
 

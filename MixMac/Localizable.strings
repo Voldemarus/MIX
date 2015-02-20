@@ -51,4 +51,6 @@
 "Store index register 6" = "Store index register 6";
 "Store jump register" = "Store jump register";
 "Clear memory cell" = "Clear memory cell";
+"Add to Accumulator" = "Add to Accumulator";
+"Substract from Accumulator" = "Substract from Accumulator";
 

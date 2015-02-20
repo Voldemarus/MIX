@@ -40,7 +40,7 @@ typedef struct {
 // current memory space
 typedef struct {
 	BOOL sign;
-	Byte indexByte[2];
+	Byte indexByte[2];			// Use anothe field name to avoid accident typo!
 } MIXINDEX;
 
 // Comparasion flag register can get one of three meaningful values
@@ -86,10 +86,11 @@ typedef enum
 
 
 - (void) resetCPU;										// clear memory and registers
+- (void) clearFlags;									// clear Flag Registers;
 
 - (void) executeCurrentOperation;						// exec command on current J;
 
-
+- (long) maxInteger;
 
 
 // memory cells access. Data is copied from the CPU' memory
@@ -98,7 +99,7 @@ typedef enum
 
 // Helpers to set/get simple integer values with  conversion
 // to MIXWORD structure
-- (void) storeNumber:(int)aValue forCellIndex:(int) index;
+- (void) storeNumber:(long)aValue forCellIndex:(int) index;
 - (int) memoryContentForCellIndex:(int)index;
 
 

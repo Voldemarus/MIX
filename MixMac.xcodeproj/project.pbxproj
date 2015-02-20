@@ -18,6 +18,8 @@
 		1B7943731A8F3BA400197FF3 /* Preferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B7943721A8F3BA400197FF3 /* Preferences.m */; };
 		1B79437B1A8F691A00197FF3 /* MixCommands.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B79437A1A8F691A00197FF3 /* MixCommands.m */; };
 		1BCC3ED81A8F8BA90010C4F6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1BCC3ED71A8F8BA90010C4F6 /* Localizable.strings */; };
+		1BEF64621A96343A0039EBBE /* MIXTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BEF64611A96343A0039EBBE /* MIXTest.m */; };
+		1BEF64651A96366A0039EBBE /* ArithmeticTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BEF64641A96366A0039EBBE /* ArithmeticTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +57,10 @@
 		1B7943791A8F691A00197FF3 /* MixCommands.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MixCommands.h; path = MixMac/MixCommands.h; sourceTree = "<group>"; };
 		1B79437A1A8F691A00197FF3 /* MixCommands.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MixCommands.m; path = MixMac/MixCommands.m; sourceTree = "<group>"; };
 		1BCC3ED71A8F8BA90010C4F6 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
+		1BEF64601A96343A0039EBBE /* MIXTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MIXTest.h; sourceTree = "<group>"; };
+		1BEF64611A96343A0039EBBE /* MIXTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MIXTest.m; sourceTree = "<group>"; };
+		1BEF64631A96366A0039EBBE /* ArithmeticTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArithmeticTests.h; sourceTree = "<group>"; };
+		1BEF64641A96366A0039EBBE /* ArithmeticTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArithmeticTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +131,10 @@
 			isa = PBXGroup;
 			children = (
 				1B7943621A8F375400197FF3 /* LoadStoreCommandCPUTests.m */,
+				1BEF64631A96366A0039EBBE /* ArithmeticTests.h */,
+				1BEF64641A96366A0039EBBE /* ArithmeticTests.m */,
+				1BEF64601A96343A0039EBBE /* MIXTest.h */,
+				1BEF64611A96343A0039EBBE /* MIXTest.m */,
 				1B7943601A8F375400197FF3 /* Supporting Files */,
 			);
 			path = MixMacTests;
@@ -283,6 +293,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1BEF64621A96343A0039EBBE /* MIXTest.m in Sources */,
+				1BEF64651A96366A0039EBBE /* ArithmeticTests.m in Sources */,
 				1B7943631A8F375400197FF3 /* LoadStoreCommandCPUTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

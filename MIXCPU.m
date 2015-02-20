@@ -91,6 +91,23 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 	}
 }
 
+- (void) clearFlags
+{
+	overflowFlag = NO;
+	comparasionFlag = MIX_NOT_SET;
+}
+
+
+- (long) maxInteger
+{
+	long result = 0;
+	for (int i = 0; i < MIX_WORD_SIZE; i++) {
+		result = result << (self.sixBitByte ? 6 : 8);
+		result += (self.sixBitByte ? 0x3f : 0xff);
+	}
+	return result;
+}
+
 - (void) setMemoryWord:(MIXWORD)aWord forCellIndex:(int) index
 {
 	if (index < 0 || index >= MIX_MEMORY_SIZE) {
@@ -122,7 +139,7 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 	return result;
 }
 
-- (void) storeNumber:(int)aValue forCellIndex:(int) index
+- (void) storeNumber:(long)aValue forCellIndex:(int) index
 {
 	MIXWORD storeValue;
 	storeValue.sign = NO;
@@ -141,15 +158,21 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 	[self setMemoryWord:storeValue forCellIndex:index];
 }
 
+
 - (int) memoryContentForCellIndex:(int)index
 {
-	int result = 0;
 	if (index < 0 || index >= MIX_MEMORY_SIZE) {
 		[NSException raise:MIXExceptionInvalidMemoryCellIndex
 					format:RStr(MIXExceptionInvalidMemoryCellIndex)];
-		return result;
+		return 0;
 	}
 	MIXWORD memCell = memory[index];
+	return [self integerForMixWord:memCell];
+}
+
+- (int) integerForMixWord:(MIXWORD) memCell
+{
+	int result = 0;
 	for (int i=0; i < MIX_WORD_SIZE; i++) {
 		result <<= (self.sixBitByte ? 6 : 8);
 		result += memCell.byte[i];
@@ -400,7 +423,8 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 			case CMD_ST6:		[self processSTICommand:command forRegister:(operCode-CMD_STA)]; break;
 			case CMD_STJ:		[self processSTJCommand:command]; break;
 			case CMD_STZ:		[self processSTZCommand:command]; break;
-				
+			case CMD_ADD:		[self processADDCommand:command negate:NO]; break;
+			case CMD_SUB:		[self processADDCommand:command negate:YES]; break;
 				
 			default: {
 				[NSException raise:MIXExceptionInvalidOperationCode
@@ -586,6 +610,56 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 										  forWord:memory[effectiveAddress]
 									 withModifier:emptyWord];
 	[self setMemoryWord:result forCellIndex:(int)effectiveAddress];
+}
+
+//
+//	Add - add content of memory cell to accumulator
+//
+- (void) processADDCommand:(MIXWORD) command  negate:(BOOL)negateFlag
+{
+	NSInteger effectiveAddress = [self effectiveAddress:command];
+	// This address should pount to cell in memoty space
+	if (effectiveAddress < 0 || effectiveAddress >= MIX_MEMORY_SIZE) {
+		[NSException raise:MIXExceptionInvalidMemoryCellIndex
+					format:RStr(MIXExceptionInvalidMemoryCellIndex)];
+		return;
+	}
+	// Read value from the memory
+	MIXWORD valueToProcess = memory[effectiveAddress];
+	MIXWORD addValue = [self extractFieldswithModifier:command.byte[3] from:valueToProcess];
+	MIXWORD summator = self.A;
+	// Now we should add value from this word to the accumulator on per byte basis -
+	// starting from the LSB with carry bits between bytes
+	
+	// to save time and efforts - first find conventional sum :-)
+	long add1 = [self integerForMixWord:addValue];
+	if (negateFlag) add1 = -add1;
+	long sum = [self integerForMixWord:summator];
+	sum += add1;
+	
+	// and now decode result into MIXWORD format
+	if (sum < 0) {
+		sum = -sum;
+		summator.sign = YES;
+	} else {
+		summator.sign = NO;
+	}
+	BOOL specialCase = YES;
+	for (int i = MIX_WORD_SIZE-1; i >=0; i--) {
+		Byte part = sum & (self.sixBitByte ? 0x3F : 0xFF);
+		sum = sum >> (self.sixBitByte ? 6 : 8);
+		summator.byte[i] = part;
+		if (part > 0) specialCase = NO;
+	}
+	if (sum > 0) {
+		// set overflow bit
+		overflowFlag = YES;
+	}
+	// Very special case !!!   0 cannot be negative! 
+	if (overflowFlag && specialCase && summator.sign == YES) {
+		summator.sign = NO;
+	}
+	self.A = summator;
 }
 
 #pragma mark - Internal service methods

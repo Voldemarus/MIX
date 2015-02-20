@@ -9,53 +9,13 @@
 #import <Cocoa/Cocoa.h>
 #import <XCTest/XCTest.h>
 
-#import "MIXCPU.h"
+#import "MIXTest.h"
 
-#define TEST_CELL		2000			// memory cell where data is stored
-#define TEST_PC			0				// Program counter to store command for testing
-
-#define TEST_CINDEX		2010			// cell in memory addressed with index offset
-#define TEST_CINDEX2	1500			// seconde cell whic his addressed by index register
-
-@interface MixMacTests : XCTestCase {
-	MIXCPU	*cpu;
-}
+@interface LoadStoreTests : MIXTest
 
 @end
 
-@implementation MixMacTests
-
-- (void)setUp {
-    [super setUp];
-	cpu = [MIXCPU sharedInstance];
-	XCTAssert(cpu, @"CPU instance should be ceated");
-	
-	MIXWORD memoryCell;
-	memoryCell.sign = YES;
-	memoryCell.byte[0] = 80 >> 6;
-	memoryCell.byte[1] = 80 & 0x3f;
-	memoryCell.byte[2] = 3;
-	memoryCell.byte[3] = 5;
-	memoryCell.byte[4] = 4;
-	
-	NSLog(@"Value stored to memory");
-	[self printMemoryCell:memoryCell];
-	
-	[cpu setMemoryWord:memoryCell forCellIndex:TEST_CELL];
-	
-	NSLog(@"memory contents");
-	MIXWORD cellInMem = [cpu memoryWordForCellIndex:TEST_CELL];
-	[self printMemoryCell:cellInMem];
-	BOOL equal = [self compareWordA:memoryCell withWordB:cellInMem];
-	XCTAssertTrue(equal,@"Word should be properly written to memory and read back");
-}
-
-
-
-- (void)tearDown {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    [super tearDown];
-}
+@implementation LoadStoreTests
 
 #pragma mark -
 
@@ -75,7 +35,7 @@
 	command.byte[3] = 5;				// field modifier
 	command.byte[4] = CMD_LDA;				// command code
 	
-	[cpu setMemoryWord:command forCellIndex:TEST_PC];
+	[self.cpu setMemoryWord:command forCellIndex:TEST_PC];
 	cpu.PC = TEST_PC;
 	
 	MIXWORD oldA = cpu.A;
@@ -1314,87 +1274,6 @@
 //        // Put the code you want to measure the time of here.
 //    }];
 //}
-
-
-#pragma mark - Service methoda
-
-- (MIXINDEX) indexWithSign:(BOOL) aSign byte0:(Byte) b0 andByte1:(Byte) b1
-{
-	MIXINDEX result;
-	result.sign = aSign;
-	result.indexByte[0] = b0;
-	result.indexByte[1] = b1;
-	return result;
-}
-
-- (MIXWORD) wordWithNegativeSign:(BOOL)aSign andByte0:(Byte) b0 byte1:(Byte) b1 byte2:(Byte) b2
-								byte3:(Byte) b3 byte4:(Byte) b4
- {
-	MIXWORD testData;
-	testData.sign = aSign;
-	 testData.byte[0] = b0;
-	 testData.byte[1] = b1;
-	 testData.byte[2] = b2;
-	 testData.byte[3] = b3;
-	 testData.byte[4] = b4;
-	 
-	 return testData;
-}
-
-
-- (void) printMemoryCell:(MIXWORD)cell
-{
-	NSLog(@  "------------------------------");
-	NSLog(@"| %@ | %2d | %2d | %2d | %2d | %2d |", (cell.sign ? @"-" : @"+"),
-		  cell.byte[0], cell.byte[1], cell.byte[2], cell.byte[3], cell.byte[4]);
-	NSLog(@  "------------------------------");
-
-}
-
-
-- (void) printIndex:(MIXINDEX) cell
-{
-	NSLog(@  "---------------");
-	NSLog(@"| %@ | %2d | %2d |",
-		  (cell.sign ? @"-" : @"+"),
-		  cell.indexByte[0], cell.indexByte[1]);
-	NSLog(@  "---------------");
-
-}
-
-//
-// Compare index values
-//
-- (BOOL) compareIndexA:(MIXINDEX) iA andIndexB:(MIXINDEX) iB
-{
-	if (iA.sign != iB.sign) {
-		return NO;
-	}
-	if (iA.indexByte[0] != iB.indexByte[0]) {
-		return NO;
-	}
-	if (iA.indexByte[1] != iB.indexByte[1]) {
-		return NO;
-	}
-	
-	return YES;
-}
-
-//
-// Compare two words
-//
-- (BOOL) compareWordA:(MIXWORD) wordA withWordB:(MIXWORD) wordB
-{
-	if (wordA.sign != wordB.sign) {
-		return NO;
-	}
-	for (int i = 0; i < MIX_WORD_SIZE; i++) {
-		if (wordA.byte[i] != wordB.byte[i]) {
-			return NO;
-		}
-	}
-	return YES;
-}
 
 
 @end
