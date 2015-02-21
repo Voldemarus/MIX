@@ -732,7 +732,57 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 
 - (void) processDIVCommand:(MIXWORD) command
 {
+	NSInteger effectiveAddress = [self effectiveAddress:command];
+	// This address should pount to cell in memoty space
+	if (effectiveAddress < 0 || effectiveAddress >= MIX_MEMORY_SIZE) {
+		[NSException raise:MIXExceptionInvalidMemoryCellIndex
+					format:RStr(MIXExceptionInvalidMemoryCellIndex)];
+		return;
+	}
+	// Read value from the memory
+	MIXWORD valueToProcess = memory[effectiveAddress];
+	MIXWORD addValue = [self extractFieldswithModifier:command.byte[3] from:valueToProcess];
+	// Now we should add value from this word to the accumulator on per byte basis -
+	// starting from the LSB with carry bits between bytes
 	
+	long divider = [self integerForMixWord:addValue];
+	long src = [self integerForMixWord:self.A];
+
+	long abssrc = (src < 0 ? - src : src);
+	long absdiv = (divider < 0 ? -divider : divider);
+	BOOL oldASign = (src < 0);		// to be set into X after operation;
+	
+	if (divider == 0 || abssrc > absdiv ) {
+		self.A = [self createEmptyWord];
+		self.X = [self createEmptyWord];
+		overflowFlag = YES;
+		return;
+	}
+
+	src <<= (self.sixBitByte ? 6 : 8) * MIX_WORD_SIZE;
+	src += [self integerForMixWord:self.X];
+	
+	long integerPart = src / divider;
+	long fractionPart = src % divider;
+	BOOL newASign = (integerPart < 0);
+	
+	MIXWORD	ra, rx;
+	ra.sign = newASign;
+	rx.sign = oldASign;
+	
+	for (int i = MIX_WORD_SIZE-1; i >=0; i--) {
+		Byte part = integerPart & (self.sixBitByte ? 0x3F : 0xFF);
+		integerPart >>= (self.sixBitByte ? 6 : 8);
+		ra.byte[i] = part;
+	}
+
+	for (int i = MIX_WORD_SIZE-1; i >=0; i--) {
+		Byte part = fractionPart & (self.sixBitByte ? 0x3F : 0xFF);
+		fractionPart >>= (self.sixBitByte ? 6 : 8);
+		rx.byte[i] = part;
+	}
+	self.A = ra;		// MSW  - integer part
+	self.X = rx;		// LSW  - fractional part
 }
 
 #pragma mark - Internal service methods

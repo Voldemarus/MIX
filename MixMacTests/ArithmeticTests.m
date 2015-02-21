@@ -213,7 +213,115 @@
 		long result = [self longIntegerFromCpu];
 		XCTAssertEqual(result,add2[i]*add1[i], @"MUL should porperly substract content of memory cell from accumulator");
 	}
+	
+	// Special cases - examples from Knuth, Vol.1
+	
+	cpu.PC = TEST_PC;
+	
+	MIXWORD testValue =  [self wordWithNegativeSign:NO andByte0:1 byte1:1 byte2:1 byte3:1 byte4:1];
+	[cpu setMemoryWord:testValue forCellIndex:TEST_CELL];
+	cpu.A = testValue;
+	
+	[cpu executeCurrentOperation];
+	
+	MIXWORD expectedRA = [self wordWithNegativeSign:NO andByte0:0 byte1:1 byte2:2 byte3:3 byte4:4];
+	MIXWORD expectedRX = [self wordWithNegativeSign:NO andByte0:5 byte1:4 byte2:3 byte3:2 byte4:1];
+	
+	BOOL isEqual = [self compareWordA:cpu.A withWordB:expectedRA];
+	XCTAssertTrue(isEqual, @"accumulator value should be as declared in expected variable");
+	isEqual = [self compareWordA:cpu.X withWordB:expectedRX];
+	
+	XCTAssertTrue(isEqual, @"X register value should be as declared in expected variable");
+	
+	// MUL 2000 (1:1)
+	
+	cpu.A = [self mixWordFromInteger:112];
+	[cpu setMemoryWord:[self wordWithNegativeSign:NO andByte0:2 byte1:0 byte2:0 byte3:0 byte4:0] forCellIndex:TEST_CELL];
+	
+//	[self printMemoryCell:cpu.A];
+//	[self printMemoryCell:[cpu memoryWordForCellIndex:TEST_CELL]];
+//	NSLog(@"* * *");
+	
+	command.byte[3] = 1*8+1;			// (1:1) modifier
+	
+	[self.cpu setMemoryWord:command forCellIndex:TEST_PC];
+
+	cpu.PC = TEST_PC;
+
+	[cpu executeCurrentOperation];
+
+	long result = [self longIntegerFromCpu];
+	
+	XCTAssertEqual(result, 112*2,@"MUL should work with field modifiers as well");
+	
 }
+
+- (void) testDiv
+{
+	[cpu clearFlags];
+	XCTAssertFalse(cpu.overflow, @"Overflow flag should be cleared");
+	
+	MixCommand *ldaCommand = [[MixCommands sharedInstance] getCommandByMnemonic:@"DIV"];
+	XCTAssert(ldaCommand, @"DIV Command should be present in command list");
+	
+	// LDA 2000
+	MIXWORD command;
+	command.sign = NO;
+	command.byte[0] = 2000 >> 6;
+	command.byte[1] = 2000 & 0x3f;
+	command.byte[2] = 0;				// index Register
+	command.byte[3] = 5;				// field modifier
+	command.byte[4] = CMD_DIV;			// command code
+	
+	[self.cpu setMemoryWord:command forCellIndex:TEST_PC];
+
+
+	// Special cases - examples from Knuth, Vol.1
+	
+	cpu.PC = TEST_PC;
+	
+	MIXWORD testValue =  [self mixWordFromInteger:3];
+	[cpu setMemoryWord:testValue forCellIndex:TEST_CELL];
+	cpu.A = [self mixWordFromInteger:0];
+	cpu.x = [self mixWordFromInteger:17];
+	
+//	[self printMemoryCell:cpu.A];
+//	[self printMemoryCell:cpu.X];
+	
+	[self printMemoryCell:[cpu memoryWordForCellIndex:TEST_CELL]];
+
+	[cpu executeCurrentOperation];
+	
+//	NSLog(@"$$$$$$");
+//	[self printMemoryCell:cpu.A];
+//	[self printMemoryCell:cpu.X];
+	
+	MIXWORD expectedRA = [self mixWordFromInteger:5];
+	MIXWORD expectedRX = [self mixWordFromInteger:2];
+	
+	BOOL isEqual = [self compareWordA:cpu.A withWordB:expectedRA];
+	XCTAssertTrue(isEqual, @"accumulator value should be as declared in expected variable");
+	isEqual = [self compareWordA:cpu.X withWordB:expectedRX];
+	
+	XCTAssertTrue(isEqual, @"X register value should be as declared in expected variable");
+	
+	cpu.PC = TEST_PC;
+	[cpu setMemoryWord:[self mixWordFromInteger:0] forCellIndex:TEST_CELL];
+	
+	XCTAssertFalse(cpu.overflow, @"overflow flag should be not set initially");
+	
+	[cpu executeCurrentOperation];
+	
+	MIXWORD desiredResult = [self mixWordFromInteger:0];
+	XCTAssertTrue(cpu.overflow, @"overflow shoild be set after division to zero");
+	isEqual = [self compareWordA:cpu.A withWordB:desiredResult];
+	XCTAssertTrue(isEqual,@"A should be set to zero");
+	isEqual = [self compareWordA:cpu.X withWordB:desiredResult];
+	XCTAssertTrue(isEqual, @"X should be eaual to zero");
+	
+	
+}
+
 
 
 @end

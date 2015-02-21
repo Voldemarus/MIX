@@ -8,11 +8,36 @@ Inaompatibility:
 Bytes 0 and 1 in memory words are interpreted separately. So commands like LDA MEMORY (1:1)
 are valid, unlike version in the book.
 
-
 Knuth doesn't mention Program Counter as separate hardware register. Bu to work properly
 I introduced this register to the CPU model. When program counter exceeds size of memory (MIX_MEMORY_SIZE)
 it resets to 0 and continue without any exceptions generated.
 
-When index regster is loaded with value of memory cell higher three bytes are just ignored. In original version
+When index register is loaded with value of memory cell higher three bytes are just ignored. In original version
 content of index register in this case is undefined.
+
+When in DIV command divider is equal to 0 registers A and X become zero and overflow flag is set.
+
+* * * * *
+
+Commands in CPU Core debugged and supported with unit-tests for now  (8*8 Matrix):
+
+     0x00  0x01  0x02  0x03  0x04  0x05  0x06  0x07
+
+0x00   .    ADD   SUB   MUL   DIV    .     .     .
+
+0x10  LDA   LD1   LD2   LD3   LD4   LD5   LD6   LDX
+
+0x20  LDAN  LD1N  LD2N  LD3N  LD4N  LD5N  LD6N  LDXN
+
+0x30  STA   ST1   ST2   ST3   ST4   ST5   ST6   STX
+
+0x40  STJ   STZ    .     .     .     .     .     .
+
+0x50   .     .     .     .     .     .     .     .
+
+0x60   .     .     .     .     .     .     .     .
+
+0x70   .     .     .     .     .     .     .     .
+
+
 
