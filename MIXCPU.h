@@ -90,8 +90,8 @@ typedef enum
 
 - (void) executeCurrentOperation;						// exec command on current J;
 
-- (long) maxInteger;
-
+- (long) maxInteger;									// maximum value stored in one machine word
+- (long) maxDoubleWord;									// maximum calue stored as result of multiplication/division
 
 // memory cells access. Data is copied from the CPU' memory
 - (void) setMemoryWord:(MIXWORD)aWord forCellIndex:(int) index;
@@ -100,7 +100,7 @@ typedef enum
 // Helpers to set/get simple integer values with  conversion
 // to MIXWORD structure
 - (void) storeNumber:(long)aValue forCellIndex:(int) index;
-- (int) memoryContentForCellIndex:(int)index;
+- (long) memoryContentForCellIndex:(int)index;
 
 
 // access to index registers by their number [1..MIX_INDEX_REGISTERS]

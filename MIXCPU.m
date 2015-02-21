@@ -108,6 +108,17 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 	return result;
 }
 
+- (long) maxDoubleWord
+{
+	long result = 0;
+	for (int i = 0; i < MIX_WORD_SIZE*2; i++) {
+		result = result << (self.sixBitByte ? 6 : 8);
+		result += (self.sixBitByte ? 0x3f : 0xff);
+	}
+	return result;
+
+}
+
 - (void) setMemoryWord:(MIXWORD)aWord forCellIndex:(int) index
 {
 	if (index < 0 || index >= MIX_MEMORY_SIZE) {
@@ -159,7 +170,7 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 }
 
 
-- (int) memoryContentForCellIndex:(int)index
+- (long) memoryContentForCellIndex:(int)index
 {
 	if (index < 0 || index >= MIX_MEMORY_SIZE) {
 		[NSException raise:MIXExceptionInvalidMemoryCellIndex
@@ -170,7 +181,7 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 	return [self integerForMixWord:memCell];
 }
 
-- (int) integerForMixWord:(MIXWORD) memCell
+- (long) integerForMixWord:(MIXWORD) memCell
 {
 	int result = 0;
 	for (int i=0; i < MIX_WORD_SIZE; i++) {
@@ -425,6 +436,8 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 			case CMD_STZ:		[self processSTZCommand:command]; break;
 			case CMD_ADD:		[self processADDCommand:command negate:NO]; break;
 			case CMD_SUB:		[self processADDCommand:command negate:YES]; break;
+			case CMD_MUL:		[self processMULCommand:command]; break;
+			case CMD_DIV:		[self processDIVCommand:command]; break;
 				
 			default: {
 				[NSException raise:MIXExceptionInvalidOperationCode
@@ -660,6 +673,66 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 		summator.sign = NO;
 	}
 	self.A = summator;
+}
+
+- (void) processMULCommand:(MIXWORD) command
+{
+	NSInteger effectiveAddress = [self effectiveAddress:command];
+	// This address should pount to cell in memoty space
+	if (effectiveAddress < 0 || effectiveAddress >= MIX_MEMORY_SIZE) {
+		[NSException raise:MIXExceptionInvalidMemoryCellIndex
+					format:RStr(MIXExceptionInvalidMemoryCellIndex)];
+		return;
+	}
+	// Read value from the memory
+	MIXWORD valueToProcess = memory[effectiveAddress];
+	MIXWORD addValue = [self extractFieldswithModifier:command.byte[3] from:valueToProcess];
+	// Now we should add value from this word to the accumulator on per byte basis -
+	// starting from the LSB with carry bits between bytes
+	
+	long result = [self integerForMixWord:self.A];
+	long multiplier = [self integerForMixWord:addValue];
+	
+	result = result * multiplier;
+	
+	MIXWORD	ra, rx;
+	if (result < 0) {
+		result = -result;
+		ra.sign = YES;
+		rx.sign = YES;
+	} else {
+		ra.sign = NO;
+		rx.sign = NO;
+	}
+
+	BOOL specialCase = YES;
+	for (int i = MIX_WORD_SIZE-1; i >=0; i--) {
+		Byte part = result & (self.sixBitByte ? 0x3F : 0xFF);
+		result = result >> (self.sixBitByte ? 6 : 8);
+		rx.byte[i] = part;
+		if (part > 0) specialCase = NO;
+	}
+	for (int i = MIX_WORD_SIZE-1; i >=0; i--) {
+		Byte part = result & (self.sixBitByte ? 0x3F : 0xFF);
+		result = result >> (self.sixBitByte ? 6 : 8);
+		ra.byte[i] = part;
+		if (part > 0) specialCase = NO;
+	}
+	if (result > 0) {
+		overflowFlag = YES;
+	}
+	if (overflowFlag && specialCase && ra.sign == YES) {
+		ra.sign = NO;
+		rx.sign = NO;
+	}
+	self.A = ra;		// MSW
+	self.X = rx;		// LSW
+}
+
+
+- (void) processDIVCommand:(MIXWORD) command
+{
+	
 }
 
 #pragma mark - Internal service methods

@@ -145,6 +145,9 @@
 				@[ @"STZ", @(MIX_F_FIELD), @(CMD_STZ), @(2), RStr(@"Clear memory cell")],
 				@[ @"ADD", @(MIX_F_FIELD), @(CMD_ADD), @(2), RStr(@"Add to Accumulator")],
 				@[ @"SUB", @(MIX_F_FIELD), @(CMD_SUB), @(2), RStr(@"Substract from Accumulator")],
+				@[ @"MUL", @(MIX_F_FIELD), @(CMD_MUL), @(10), RStr(@"Multiply accumultor and memory cell")],
+				@[ @"DIV", @(MIX_F_FIELD), @(CMD_DIV), @(12), RStr(@"Divide accumulator to memory cell content")],
+				
 				
 			 ];
 }

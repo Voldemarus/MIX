@@ -59,7 +59,6 @@
 		1BCC3ED71A8F8BA90010C4F6 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		1BEF64601A96343A0039EBBE /* MIXTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MIXTest.h; sourceTree = "<group>"; };
 		1BEF64611A96343A0039EBBE /* MIXTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MIXTest.m; sourceTree = "<group>"; };
-		1BEF64631A96366A0039EBBE /* ArithmeticTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArithmeticTests.h; sourceTree = "<group>"; };
 		1BEF64641A96366A0039EBBE /* ArithmeticTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArithmeticTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -131,7 +130,6 @@
 			isa = PBXGroup;
 			children = (
 				1B7943621A8F375400197FF3 /* LoadStoreCommandCPUTests.m */,
-				1BEF64631A96366A0039EBBE /* ArithmeticTests.h */,
 				1BEF64641A96366A0039EBBE /* ArithmeticTests.m */,
 				1BEF64601A96343A0039EBBE /* MIXTest.h */,
 				1BEF64611A96343A0039EBBE /* MIXTest.m */,

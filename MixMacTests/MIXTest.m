@@ -189,5 +189,15 @@
 	return YES;
 }
 
+- (long) longIntegerFromCpu
+{
+	long msw = [self integerFromMIXWORD:cpu.A];
+	long lsw = [self integerFromMIXWORD:cpu.X];
+	
+	msw = msw << (cpu.sixBitByte ? 6 * MIX_WORD_SIZE : 8 * MIX_WORD_SIZE);
+	
+	return lsw + msw ;
+}
+
 
 @end

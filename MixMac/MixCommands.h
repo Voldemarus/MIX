@@ -39,6 +39,8 @@ typedef enum {
 
 #define CMD_ADD		1
 #define CMD_SUB		2
+#define CMD_MUL		3
+#define CMD_DIV		4
 #define CMD_LDA		8
 #define CMD_LD1		9
 #define CMD_LD2		10

@@ -40,4 +40,6 @@
 - (BOOL) compareIndexA:(MIXINDEX) iA andIndexB:(MIXINDEX) iB;
 - (BOOL) compareWordA:(MIXWORD) wordA withWordB:(MIXWORD) wordB;
 
+- (long) longIntegerFromCpu;				// get long from A:X pair;
+
 @end

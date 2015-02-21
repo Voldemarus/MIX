@@ -53,4 +53,7 @@
 "Clear memory cell" = "Clear memory cell";
 "Add to Accumulator" = "Add to Accumulator";
 "Substract from Accumulator" = "Substract from Accumulator";
+"Multiply accumultor and memory cell" = "Multiply accumultor and memory cell";
+"Divide accumulator to memory cell content" = "Divide accumulator to memory cell content";
+
 
