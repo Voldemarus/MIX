@@ -106,5 +106,37 @@
 	
 }
 
+- (void) testENTI
+{
+	long data[10] = { 120, 2345, -343, -4067, 1111, 1152, 3433, -2330, -221, -667 };
+	for (int indexNum = 1; indexNum <= MIX_INDEX_REGISTERS; indexNum++) {
+		NSString *mnemonic = [NSString stringWithFormat:@"ENT%d",indexNum];
+		
+		for (int i = 0; i < 10; i++) {
+			
+			// use default modifier for these tests
+			MIXWORD command = [self mixCommandForMnemonic:mnemonic withAddress:data[i] index:0 andModifier:MIX_F_NOTDEFINED];
+
+			[cpu setMemoryWord:command forCellIndex:TEST_PC];
+		
+			[cpu setIndexRegister:[self mixIndexFromInteger:0] withNumber:indexNum];	// initial value to index register
+			cpu.PC = TEST_PC;
+			
+			long accumulator = [self integerFromMIXINDEX:[cpu indexRegisterValue:indexNum]];
+			XCTAssertEqual(accumulator, 0, @"index register should be properly cleared");
+			
+			[cpu executeCurrentOperation];
+			
+			accumulator = [self integerFromMIXINDEX:[cpu indexRegisterValue:indexNum]];
+			NSLog(@"%@  %ld",mnemonic, data[i]);
+
+			XCTAssertEqual(accumulator, data[i], @"Data shpuld be loaded into index register properly");
+		}
+
+		
+	}
+
+}
+
 
 @end

@@ -930,21 +930,14 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 
 - (void) processRealENTI:(MIXWORD)command register:(int)indReg negative:(BOOL)negative
 {
+	
 	if (indReg < 1 || indReg > MIX_INDEX_REGISTERS) {
 		[NSException raise:MIXExceptionInvalidIndexRegister format:RStr(MIXExceptionInvalidIndexRegister)];
 		return;
 	}
 	NSInteger effectiveAddress = [self effectiveAddress:command];
 	// Read value from the memory
-	MIXINDEX finalIndex;	// now convert final value to the index format
-	BOOL sign = (effectiveAddress < 0);
-	if (sign) {
-		effectiveAddress = -effectiveAddress;
-	}
-	finalIndex.sign = (negative ? !sign : sign);
-	finalIndex.indexByte[1] = effectiveAddress & (self.sixBitByte ? 0x3f : 0xFF);
-	effectiveAddress >>= (self.sixBitByte ? 6 : 8);
-	finalIndex.indexByte[0] = effectiveAddress & (self.sixBitByte ? 0x3f : 0xFF);
+	MIXINDEX finalIndex = [self mixIndexFromInteger:effectiveAddress];
 	[self setIndexRegister:finalIndex withNumber:indReg];
 }
 	

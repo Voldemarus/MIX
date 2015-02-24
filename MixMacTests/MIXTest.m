@@ -110,8 +110,8 @@
 {
 	long result = 0;
 	for (int i = 0; i < 2; i++) {
+		result <<= (cpu.sixBitByte ? 6 : 8);
 		result += aIndex.indexByte[i];
-		result = result << (cpu.sixBitByte ? 6 : 8);
 	}
 	if (aIndex.sign) {
 		result = -result;
