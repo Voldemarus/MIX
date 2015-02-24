@@ -147,7 +147,42 @@
 				@[ @"SUB", @(MIX_F_FIELD), @(CMD_SUB), @(2), RStr(@"Substract from Accumulator")],
 				@[ @"MUL", @(MIX_F_FIELD), @(CMD_MUL), @(10), RStr(@"Multiply accumultor and memory cell")],
 				@[ @"DIV", @(MIX_F_FIELD), @(CMD_DIV), @(12), RStr(@"Divide accumulator to memory cell content")],
-				
+
+				@[ @"ENTA", @(MIX_F_SHORT2), @(CMD_ENTA), @(1), RStr(@"enter A")],
+				@[ @"ENTX", @(MIX_F_SHORT2), @(CMD_ENTX), @(1), RStr(@"Enter X")],
+				@[ @"ENT1", @(MIX_F_SHORT2), @(CMD_ENT1), @(1), RStr(@"Enter index register 1")],
+				@[ @"ENT2", @(MIX_F_SHORT2), @(CMD_ENT2), @(1), RStr(@"Enter index register 2")],
+				@[ @"ENT3", @(MIX_F_SHORT2), @(CMD_ENT3), @(1), RStr(@"Enter index register 3")],
+				@[ @"ENT4", @(MIX_F_SHORT2), @(CMD_ENT4), @(1), RStr(@"Enter index register 4")],
+				@[ @"ENT5", @(MIX_F_SHORT2), @(CMD_ENT5), @(1), RStr(@"Enter index register 5")],
+				@[ @"ENT6", @(MIX_F_SHORT2), @(CMD_ENT6), @(1), RStr(@"Enter index register 6")],
+
+				@[ @"ENNA", @(MIX_F_SHORT3), @(CMD_ENTA), @(1), RStr(@"enter A negative")],
+				@[ @"ENNX", @(MIX_F_SHORT3), @(CMD_ENTX), @(1), RStr(@"Enter X negative")],
+				@[ @"ENN1", @(MIX_F_SHORT3), @(CMD_ENT1), @(1), RStr(@"Enter index register 1 negative")],
+				@[ @"ENN2", @(MIX_F_SHORT3), @(CMD_ENT2), @(1), RStr(@"Enter index register 2 negative")],
+				@[ @"ENN3", @(MIX_F_SHORT3), @(CMD_ENT3), @(1), RStr(@"Enter index register 3 negative")],
+				@[ @"ENN4", @(MIX_F_SHORT3), @(CMD_ENT4), @(1), RStr(@"Enter index register 4 negative")],
+				@[ @"ENN5", @(MIX_F_SHORT3), @(CMD_ENT5), @(1), RStr(@"Enter index register 5 negative")],
+				@[ @"ENN6", @(MIX_F_SHORT3), @(CMD_ENT6), @(1), RStr(@"Enter index register 6 negative")],
+
+				@[ @"INCA", @(MIX_F_SIGNONLY), @(CMD_ENTA), @(1), RStr(@"Increment A")],
+				@[ @"DECA", @(MIX_F_SHORT1), @(CMD_ENTA), @(1), RStr(@"Decrement A")],
+				@[ @"INCX", @(MIX_F_SIGNONLY), @(CMD_ENTX), @(1), RStr(@"Increment X")],
+				@[ @"DECX", @(MIX_F_SHORT1), @(CMD_ENTX), @(1), RStr(@"Decrement X")],
+				@[ @"INC1", @(MIX_F_SIGNONLY), @(CMD_ENT1), @(1), RStr(@"Increment Index Register 1")],
+				@[ @"DEC1", @(MIX_F_SHORT1), @(CMD_ENT1), @(1), RStr(@"Decrement Index Register 1")],
+				@[ @"INC2", @(MIX_F_SIGNONLY), @(CMD_ENT2), @(1), RStr(@"Increment Index Register 2")],
+				@[ @"DEC2", @(MIX_F_SHORT1), @(CMD_ENT2), @(1), RStr(@"Decrement Index Register 2")],
+				@[ @"INC3", @(MIX_F_SIGNONLY), @(CMD_ENT3), @(1), RStr(@"Increment Index Register 3")],
+				@[ @"DEC3", @(MIX_F_SHORT1), @(CMD_ENT3), @(1), RStr(@"Decrement Index Register 3")],
+				@[ @"INC4", @(MIX_F_SIGNONLY), @(CMD_ENT4), @(1), RStr(@"Increment Index Register 4")],
+				@[ @"DEC4", @(MIX_F_SHORT1), @(CMD_ENT4), @(1), RStr(@"Decrement Index Register 4")],
+				@[ @"INC5", @(MIX_F_SIGNONLY), @(CMD_ENT5), @(1), RStr(@"Increment Index Register 5")],
+				@[ @"DEC5", @(MIX_F_SHORT1), @(CMD_ENT5), @(1), RStr(@"Decrement Index Register 5")],
+				@[ @"INC6", @(MIX_F_SIGNONLY), @(CMD_ENT6), @(1), RStr(@"Increment Index Register 6")],
+				@[ @"DEC6", @(MIX_F_SHORT1), @(CMD_ENT6), @(1), RStr(@"Decrement Index Register 6")],
+
 				
 			 ];
 }

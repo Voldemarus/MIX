@@ -3,10 +3,10 @@ and IDE to program it.
 
 Project is OS X oriented.
 
-Inaompatibility:
+Inсompatibility:
 
-Bytes 0 and 1 in memory words are interpreted separately. So commands like LDA MEMORY (1:1)
-are valid, unlike version in the book.
+Bytes 0 and 1 in memory words are interpreted separately. So commands like
+LDA MEMORY (1:1) are valid, unlike version in the book.
 
 Knuth doesn't mention Program Counter as separate hardware register. Bu to work properly
 I introduced this register to the CPU model. When program counter exceeds size of memory (MIX_MEMORY_SIZE)
@@ -35,7 +35,10 @@ Commands in CPU Core debugged and supported with unit-tests for now  (8*8 Matrix
 
 0x50   .     .     .     .     .     .     .     .
 
-0x60   .     .     .     .     .     .     .     .
+0x60   INCA  INC1  INC2  INC3  INC4  INC5  INC6  INCX		F = 0
+	   DECA  DEC1  DEC2  DEC3  DEC4  DEC5  DEC6  DECX		F = 1
+       ENTA  ENT1  ENT2  ENT3  ENT4  ENT5  ENT6  ENTX		F = 2
+       ENNA  ENN!  ENN2  ENN3  ENN4  ENN5  ENN6  ENNX		F = 3
 
 0x70   .     .     .     .     .     .     .     .
 

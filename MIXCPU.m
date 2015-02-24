@@ -108,6 +108,17 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 	return result;
 }
 
+- (long) maxIndex
+{
+	long result = 0;
+	for (int i = 0; i < 2; i++) {
+		result = result << (self.sixBitByte ? 6 : 8);
+		result += (self.sixBitByte ? 0x3f : 0xff);
+	}
+	return result;
+	
+}
+
 - (long) maxDoubleWord
 {
 	long result = 0;
@@ -385,7 +396,7 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 	[self setIndexRegister:index1 withNumber:6];
 }
 
-#pragma mark - Execution methods
+#pragma mark - Opercode processing methods
 
 //
 // Interprets content of the memory cell as command and eecute proper CPU command
@@ -438,6 +449,16 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 			case CMD_SUB:		[self processADDCommand:command negate:YES]; break;
 			case CMD_MUL:		[self processMULCommand:command]; break;
 			case CMD_DIV:		[self processDIVCommand:command]; break;
+			case CMD_ENTA:		[self processENTACommand:command accumulator:YES]; break;		// ENTA, ENNA, INCA, and DECA
+			case CMD_ENTX:		[self processENTACommand:command accumulator:NO]; break;		// ENTX, ENNX, INCX, and DECX
+			case CMD_ENT1:
+			case CMD_ENT2:
+			case CMD_ENT3:
+			case CMD_ENT4:
+			case CMD_ENT5:
+			case CMD_ENT6:		[self processENTICommand:command
+										 forRegister:(operCode-CMD_ENTA)]; break; //ENTI, ENNI, INCI, and DECI
+				
 				
 			default: {
 				[NSException raise:MIXExceptionInvalidOperationCode
@@ -513,7 +534,6 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 	finalIndex.indexByte[0] = finalValue.byte[3];
 	finalIndex.indexByte[1] = finalValue.byte[4];
 	[self setIndexRegister:finalIndex withNumber:indReg];
-
 }
 
 //
@@ -785,6 +805,150 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 	self.X = rx;		// LSW  - fractional part
 }
 
+- (void) processENTACommand:(MIXWORD) command accumulator:(BOOL) accum
+{
+	MIX_F modifier = command.byte[3];
+	switch (modifier) {
+		case MIX_F_SIGNONLY:		[self processINCACommand:command negative:NO accumulator: accum]; break;
+		case MIX_F_SHORT1:			[self processINCACommand:command negative:YES accumulator:accum]; break;
+		case MIX_F_SHORT2:			[self processRealEnta:command negative:NO accumulator:accum]; break;
+		case MIX_F_SHORT3:			[self processRealEnta:command negative:YES accumulator:accum]; break;
+		default : {
+			//
+			// For this set of command arbitrary modifier is not supporrted.
+			//
+			[NSException raise:MIXExceptionInvalidFieldModifer format:RStr(MIXExceptionInvalidFieldModifer)];
+		}
+	}
+}
+
+// Add content of the effective address field to accumulator
+- (void) processINCACommand:(MIXWORD) command negative:(BOOL)negative accumulator:(BOOL) accum
+{
+	NSInteger effectiveAddress = [self effectiveAddress:command];
+	long sum = [self integerForMixWord:(accum ? self.A : self.X)];
+	
+	if (negative) {
+		sum -= effectiveAddress;
+	} else {
+		sum += effectiveAddress;
+	}
+	MIXWORD summator;
+	// and now decode result into MIXWORD format
+	if (sum < 0) {
+		sum = -sum;
+		summator.sign = YES;
+	} else {
+		summator.sign = NO;
+	}
+	BOOL specialCase = YES;
+	for (int i = MIX_WORD_SIZE-1; i >=0; i--) {
+		Byte part = sum & (self.sixBitByte ? 0x3F : 0xFF);
+		sum = sum >> (self.sixBitByte ? 6 : 8);
+		summator.byte[i] = part;
+		if (part > 0) specialCase = NO;
+	}
+	if (sum > 0) {
+		// set overflow bit
+		overflowFlag = YES;
+	}
+	// Very special case !!!   0 cannot be negative!
+	if (overflowFlag && specialCase && summator.sign == YES) {
+		summator.sign = NO;
+	}
+	if (accum) {
+		self.A = summator;
+	} else {
+		self.X = summator;
+	}
+}
+	
+	
+- (void) processRealEnta:(MIXWORD) command negative:(BOOL) negative accumulator:(BOOL) accum
+{
+	NSInteger effectiveAddress = [self effectiveAddress:command];
+	MIXWORD newValue = [self mixWordFromInteger:effectiveAddress];
+	if (negative) {
+		newValue.sign = !newValue.sign;
+	}
+	if (accum) {
+		self.A = newValue;
+	} else {
+		self.X = newValue;
+	}
+}
+
+
+- (void) processENTICommand:(MIXWORD)command forRegister:(int) indRegister
+{
+	MIX_F modifier = command.byte[3];
+	switch (modifier) {
+		case MIX_F_SIGNONLY:		[self processINCICommand:command register:indRegister negative:NO]; break;
+		case MIX_F_SHORT1:			[self processINCICommand:command register:indRegister negative:YES]; break;
+		case MIX_F_SHORT2:			[self processRealENTI:command register:indRegister negative:NO]; break;
+		case MIX_F_SHORT3:			[self processRealENTI:command register:indRegister negative:YES]; break;
+		default : {
+			//
+			// For this set of command arbitrary modifier is not supporrted.
+			//
+			[NSException raise:MIXExceptionInvalidFieldModifer format:RStr(MIXExceptionInvalidFieldModifer)];
+		}
+	}
+}
+
+- (void) processINCICommand:(MIXWORD)command register:(int)indReg negative:(BOOL)negative
+{
+	if (indReg < 1 || indReg > MIX_INDEX_REGISTERS) {
+		[NSException raise:MIXExceptionInvalidIndexRegister format:RStr(MIXExceptionInvalidIndexRegister)];
+		return;
+	}
+	NSInteger effectiveAddress = [self effectiveAddress:command];
+	// Read value from the memory
+	MIXINDEX finalIndex = [self indexRegisterValue:indReg];
+	long sum = [self integerFromMIXINDEX:finalIndex];
+	if (negative) {
+		effectiveAddress = -effectiveAddress;
+	}
+	sum += effectiveAddress;
+	
+	// fill output valie
+	
+	if (sum < 0) {
+		finalIndex.sign = YES;
+		sum = -sum;
+	} else {
+		finalIndex.sign = NO;
+	}
+	finalIndex.indexByte[1] = sum & (self.sixBitByte ? 0x3f : 0xFF);
+	sum >>= (self.sixBitByte ? 6 : 8);
+	finalIndex.indexByte[0] = sum & (self.sixBitByte ? 0x3f : 0xFF);
+	[self setIndexRegister:finalIndex withNumber:indReg];
+	if (sum > 0) {
+		overflowFlag = YES;
+	}
+}
+
+- (void) processRealENTI:(MIXWORD)command register:(int)indReg negative:(BOOL)negative
+{
+	if (indReg < 1 || indReg > MIX_INDEX_REGISTERS) {
+		[NSException raise:MIXExceptionInvalidIndexRegister format:RStr(MIXExceptionInvalidIndexRegister)];
+		return;
+	}
+	NSInteger effectiveAddress = [self effectiveAddress:command];
+	// Read value from the memory
+	MIXINDEX finalIndex;	// now convert final value to the index format
+	BOOL sign = (effectiveAddress < 0);
+	if (sign) {
+		effectiveAddress = -effectiveAddress;
+	}
+	finalIndex.sign = (negative ? !sign : sign);
+	finalIndex.indexByte[1] = effectiveAddress & (self.sixBitByte ? 0x3f : 0xFF);
+	effectiveAddress >>= (self.sixBitByte ? 6 : 8);
+	finalIndex.indexByte[0] = effectiveAddress & (self.sixBitByte ? 0x3f : 0xFF);
+	[self setIndexRegister:finalIndex withNumber:indReg];
+}
+	
+
 #pragma mark - Internal service methods
 
 //
@@ -905,7 +1069,7 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 		if (index > MIX_INDEX_REGISTERS) {
 			[NSException raise:MIXExceptionInvalidIndexRegister
 						format:RStr(MIXExceptionInvalidIndexRegister)];
-			return -10000;
+			return - [self maxInteger];
 		}
 		MIXINDEX indexValue = [self indexRegisterValue:index];
 		NSInteger ind = indexValue.indexByte[0] << (self.sixBitByte ? 6 : 8);
@@ -968,5 +1132,55 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 	self.sixBitByte = [[note object] boolValue];
 	[self updateCPUCells];
 }
+
+
+#pragma mark - Internal data type converters
+
+- (MIXWORD) mixWordFromInteger:(long) sum
+{
+	MIXWORD summator;
+	if (sum < 0) {
+		sum = -sum;
+		summator.sign = YES;
+	} else {
+		summator.sign = NO;
+	}
+	for (int i = MIX_WORD_SIZE-1; i >=0; i--) {
+		Byte part = sum & (self.sixBitByte ? 0x3F : 0xFF);
+		sum = sum >> (self.sixBitByte ? 6 : 8);
+		summator.byte[i] = part;
+	}
+	return summator;
+}
+
+- (long) integerFromMIXINDEX:(MIXINDEX) aIndex
+{
+		long result = 0;
+		for (int i = 0; i < 2; i++) {
+			result += aIndex.indexByte[i];
+			result = result << (self.sixBitByte ? 6 : 8);
+		}
+		if (aIndex.sign) {
+			result = -result;
+		}
+		return result;
+}
+				
+- (MIXINDEX) mixIndexFromInteger:(long)aInt
+{
+		MIXINDEX result;
+		result.sign = (aInt < 0);
+		result.sign = (aInt < 0);
+		if (aInt < 0) {
+			aInt = -aInt;
+		}
+		for (int i = 1;i >= 0; i--) {
+			result.indexByte[i] = aInt & (self.sixBitByte ? 0x3f : 0xFF);
+			aInt = aInt >> (self.sixBitByte ? 6 : 8);
+		}
+		return result;
+}
+				
+
 
 @end

@@ -38,13 +38,41 @@
 }
 
 
-
-
 - (void)tearDown {
 	// Put teardown code here. This method is called after the invocation of each test method in the class.
 	[super tearDown];
 }
 
+#pragma mark - command generator
+
+- (MIXWORD) mixCommandForMnemonic:(NSString *)mnemoCode withAddress:(long) address
+							index:(int)indexReg
+					  andModifier:(MIX_F) modifier
+{
+
+	MIXWORD memoryCell;
+
+	
+	MixCommand *cmd = [[MixCommands sharedInstance] getCommandByMnemonic:mnemoCode];
+	XCTAssert(cmd, "@Command %@ should be present in commands list!", mnemoCode);
+	if (!cmd) {
+		return [self mixWordFromInteger:0];		// equivalent of NOP
+	}
+	
+	memoryCell.sign = (address < 0 ? YES : NO);
+	if (address < 0) {
+		address = -address;
+	}
+	XCTAssertTrue(address <= [cpu maxIndex], @"Value supplied as address should not exceed %ld", [cpu maxIndex]);
+	memoryCell.byte[1] = address & (cpu.sixBitByte ? 0x3f : 0xff);
+	address >>= (cpu.sixBitByte ? 6 : 8);
+	memoryCell.byte[0] = address & (cpu.sixBitByte ? 0x3f : 0xff);;
+	memoryCell.byte[2] = indexReg;
+	memoryCell.byte[3] = (modifier == MIX_F_NOTDEFINED ? cmd.defaultFField : modifier);
+	memoryCell.byte[4] = cmd.commandCode;
+
+	return memoryCell;
+}
 
 #pragma mark - Data conversion methods
 

@@ -26,6 +26,11 @@
 
 @property (nonatomic, retain) MIXCPU *cpu;
 
+// synthesize command for mnemonic, address  and optional arguments
+- (MIXWORD) mixCommandForMnemonic:(NSString *)mnemoCode withAddress:(long) address
+							index:(int)indexReg
+					  andModifier:(MIX_F) modifier;
+
 
 - (long) integerFromMIXWORD:(MIXWORD) aWord;
 - (MIXWORD) mixWordFromInteger:(long) aInt;

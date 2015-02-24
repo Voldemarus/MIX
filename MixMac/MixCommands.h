@@ -10,7 +10,11 @@
 
 // default value for F field in command
 typedef enum {
+	MIX_F_NOTDEFINED = -1,
 	MIX_F_SIGNONLY = 0,			// only sign is extracted
+	MIX_F_SHORT1 = 1,
+	MIX_F_SHORT2 = 2,
+	MIX_F_SHORT3 = 3,
 	MIX_F_FIELD = 5,			// the whole memory cell content
 	
 } MIX_F;
@@ -67,5 +71,14 @@ typedef enum {
 #define CMD_STX		31
 #define CMD_STJ		32
 #define CMD_STZ		33
+#define CMD_ENTA	48
+#define CMD_ENT1	49
+#define CMD_ENT2	50
+#define CMD_ENT3	51
+#define CMD_ENT4	52
+#define CMD_ENT5	53
+#define CMD_ENT6	54
+#define CMD_ENTX	55
+
 
 

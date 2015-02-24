@@ -55,5 +55,42 @@
 "Substract from Accumulator" = "Substract from Accumulator";
 "Multiply accumultor and memory cell" = "Multiply accumultor and memory cell";
 "Divide accumulator to memory cell content" = "Divide accumulator to memory cell content";
+"enter A" = "enter A";
+"Enter X" = "Enter X";
+"Enter index register 1" = "Enter index register 1";
+"Enter index register 2" = "Enter index register 2";
+"Enter index register 3" = "Enter index register 3";
+"Enter index register 4" = "Enter index register 4";
+"Enter index register 5" = "Enter index register 5";
+"Enter index register 6" = "Enter index register 6";
+
+"enter A negative" = "enter A negative";
+"Enter X negative" = "Enter X negative";
+"Enter index register 1 negative" = "Enter index register 1 negative";
+"Enter index register 2 negative" = "Enter index register 2 negative";
+"Enter index register 3 negative" = "Enter index register 3 negative";
+"Enter index register 4 negative" = "Enter index register 4 negative";
+"Enter index register 5 negative" = "Enter index register 5 negative";
+"Enter index register 6 negative" = "Enter index register 6 negative";
+
+"Increment A" = "Add constant to A";
+"Decrement A" = "Substract constant from A";
+"Increment X" = "Add constant X";
+"Decrement X" = "Substract constant from X";
+"Increment Index Register 1" = "Add constant to Index Register 1";
+"Decrement Index Register 1" = "Substract constant from Index Register 1";
+"Increment Index Register 2" = "Add constant to Index Register 2";
+"Decrement Index Register 2" = "Substract constant from Index Register 2";
+"Increment Index Register 3" = "Add constant to Index Register 3";
+"Decrement Index Register 3" = "Substract constant from Index Register 3";
+"Increment Index Register 4" = "Add constant to Index Register 4";
+"Decrement Index Register 4" = "Substract constant from Index Register 4";
+"Increment Index Register 5" = "Add constant to Index Register 5";
+"Decrement Index Register 5" = "Substract constant from Index Register 5";
+"Increment Index Register 6" = "Add constant to Index Register 6";
+"Decrement Index Register 6" = "Substract constant from Index Register 6";
+
+
+
 
 

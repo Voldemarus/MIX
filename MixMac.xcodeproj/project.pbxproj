@@ -20,6 +20,7 @@
 		1BCC3ED81A8F8BA90010C4F6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1BCC3ED71A8F8BA90010C4F6 /* Localizable.strings */; };
 		1BEF64621A96343A0039EBBE /* MIXTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BEF64611A96343A0039EBBE /* MIXTest.m */; };
 		1BEF64651A96366A0039EBBE /* ArithmeticTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BEF64641A96366A0039EBBE /* ArithmeticTests.m */; };
+		1BEF64671A99F7F50039EBBE /* EntFamilyTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BEF64661A99F7F50039EBBE /* EntFamilyTest.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +61,7 @@
 		1BEF64601A96343A0039EBBE /* MIXTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MIXTest.h; sourceTree = "<group>"; };
 		1BEF64611A96343A0039EBBE /* MIXTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MIXTest.m; sourceTree = "<group>"; };
 		1BEF64641A96366A0039EBBE /* ArithmeticTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArithmeticTests.m; sourceTree = "<group>"; };
+		1BEF64661A99F7F50039EBBE /* EntFamilyTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EntFamilyTest.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +133,7 @@
 			children = (
 				1B7943621A8F375400197FF3 /* LoadStoreCommandCPUTests.m */,
 				1BEF64641A96366A0039EBBE /* ArithmeticTests.m */,
+				1BEF64661A99F7F50039EBBE /* EntFamilyTest.m */,
 				1BEF64601A96343A0039EBBE /* MIXTest.h */,
 				1BEF64611A96343A0039EBBE /* MIXTest.m */,
 				1B7943601A8F375400197FF3 /* Supporting Files */,
@@ -294,6 +297,7 @@
 				1BEF64621A96343A0039EBBE /* MIXTest.m in Sources */,
 				1BEF64651A96366A0039EBBE /* ArithmeticTests.m in Sources */,
 				1B7943631A8F375400197FF3 /* LoadStoreCommandCPUTests.m in Sources */,
+				1BEF64671A99F7F50039EBBE /* EntFamilyTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

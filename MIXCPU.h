@@ -90,6 +90,7 @@ typedef enum
 
 - (void) executeCurrentOperation;						// exec command on current J;
 
+- (long) maxIndex;										// maximum value, stored in index
 - (long) maxInteger;									// maximum value stored in one machine word
 - (long) maxDoubleWord;									// maximum calue stored as result of multiplication/division
 
