@@ -90,6 +90,15 @@
 "Increment Index Register 6" = "Add constant to Index Register 6";
 "Decrement Index Register 6" = "Substract constant from Index Register 6";
 
+"Compare A" = "Compare A";
+"Compare X" = "Compare X";
+"Compare index register 1" = "Compare index register 1";
+"Compare index register 2" = "Compare index register 2";
+"Compare index register 3" = "Compare index register 3";
+"Compare index register 4" = "Compare index register 4";
+"Compare index register 5" = "Compare index register 5";
+"Compare index register 6" = "Compare index register 6";
+
 
 
 

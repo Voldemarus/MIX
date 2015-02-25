@@ -1,4 +1,4 @@
-This project contains my efforts to develop MIX processor emulator along eith assembler
+This project contains my efforts to develop MIX processor emulator along with assembler
 and IDE to program it.
 
 Project is OS X oriented.
@@ -40,7 +40,7 @@ Commands in CPU Core debugged and supported with unit-tests for now  (8*8 Matrix
        ENTA  ENT1  ENT2  ENT3  ENT4  ENT5  ENT6  ENTX		F = 2
        ENNA  ENN!  ENN2  ENN3  ENN4  ENN5  ENN6  ENNX		F = 3
 
-0x70   .     .     .     .     .     .     .     .
+0x70   CMPA  CMP1  CMP2  CMP3  CMP4  CMP5  CMP6  CMP7
 
 
 

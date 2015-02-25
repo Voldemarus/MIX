@@ -147,7 +147,6 @@
 				@[ @"SUB", @(MIX_F_FIELD), @(CMD_SUB), @(2), RStr(@"Substract from Accumulator")],
 				@[ @"MUL", @(MIX_F_FIELD), @(CMD_MUL), @(10), RStr(@"Multiply accumultor and memory cell")],
 				@[ @"DIV", @(MIX_F_FIELD), @(CMD_DIV), @(12), RStr(@"Divide accumulator to memory cell content")],
-
 				@[ @"ENTA", @(MIX_F_SHORT2), @(CMD_ENTA), @(1), RStr(@"enter A")],
 				@[ @"ENTX", @(MIX_F_SHORT2), @(CMD_ENTX), @(1), RStr(@"Enter X")],
 				@[ @"ENT1", @(MIX_F_SHORT2), @(CMD_ENT1), @(1), RStr(@"Enter index register 1")],
@@ -156,7 +155,6 @@
 				@[ @"ENT4", @(MIX_F_SHORT2), @(CMD_ENT4), @(1), RStr(@"Enter index register 4")],
 				@[ @"ENT5", @(MIX_F_SHORT2), @(CMD_ENT5), @(1), RStr(@"Enter index register 5")],
 				@[ @"ENT6", @(MIX_F_SHORT2), @(CMD_ENT6), @(1), RStr(@"Enter index register 6")],
-
 				@[ @"ENNA", @(MIX_F_SHORT3), @(CMD_ENTA), @(1), RStr(@"enter A negative")],
 				@[ @"ENNX", @(MIX_F_SHORT3), @(CMD_ENTX), @(1), RStr(@"Enter X negative")],
 				@[ @"ENN1", @(MIX_F_SHORT3), @(CMD_ENT1), @(1), RStr(@"Enter index register 1 negative")],
@@ -165,7 +163,6 @@
 				@[ @"ENN4", @(MIX_F_SHORT3), @(CMD_ENT4), @(1), RStr(@"Enter index register 4 negative")],
 				@[ @"ENN5", @(MIX_F_SHORT3), @(CMD_ENT5), @(1), RStr(@"Enter index register 5 negative")],
 				@[ @"ENN6", @(MIX_F_SHORT3), @(CMD_ENT6), @(1), RStr(@"Enter index register 6 negative")],
-
 				@[ @"INCA", @(MIX_F_SIGNONLY), @(CMD_ENTA), @(1), RStr(@"Increment A")],
 				@[ @"DECA", @(MIX_F_SHORT1), @(CMD_ENTA), @(1), RStr(@"Decrement A")],
 				@[ @"INCX", @(MIX_F_SIGNONLY), @(CMD_ENTX), @(1), RStr(@"Increment X")],
@@ -182,6 +179,14 @@
 				@[ @"DEC5", @(MIX_F_SHORT1), @(CMD_ENT5), @(1), RStr(@"Decrement Index Register 5")],
 				@[ @"INC6", @(MIX_F_SIGNONLY), @(CMD_ENT6), @(1), RStr(@"Increment Index Register 6")],
 				@[ @"DEC6", @(MIX_F_SHORT1), @(CMD_ENT6), @(1), RStr(@"Decrement Index Register 6")],
+				@[ @"CMPA", @(MIX_F_FIELD), @(CMD_CMPA), @(2), RStr(@"Compare A")],
+				@[ @"CMPX", @(MIX_F_FIELD), @(CMD_CMPX), @(2), RStr(@"Compare X")],
+				@[ @"CMP1", @(MIX_F_FIELD), @(CMD_CMP1), @(2), RStr(@"Compare index register 1")],
+				@[ @"CMP2", @(MIX_F_FIELD), @(CMD_CMP2), @(2), RStr(@"Compare index register 2")],
+				@[ @"CMP3", @(MIX_F_FIELD), @(CMD_CMP3), @(2), RStr(@"Compare index register 3")],
+				@[ @"CMP4", @(MIX_F_FIELD), @(CMD_CMP4), @(2), RStr(@"Compare index register 4")],
+				@[ @"CMP5", @(MIX_F_FIELD), @(CMD_CMP5), @(2), RStr(@"Compare index register 5")],
+				@[ @"CMP6", @(MIX_F_FIELD), @(CMD_CMP6), @(2), RStr(@"Compare index register 6")],
 
 				
 			 ];

@@ -79,6 +79,15 @@ typedef enum {
 #define CMD_ENT5	53
 #define CMD_ENT6	54
 #define CMD_ENTX	55
+#define CMD_CMPA	56
+#define	CMD_CMP1	57
+#define CMD_CMP2	58
+#define CMD_CMP3	59
+#define CMD_CMP4	60
+#define CMD_CMP5	61
+#define CMD_CMP6	62
+#define CMD_CMPX	63
+
 
 
 

@@ -458,6 +458,15 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 			case CMD_ENT5:
 			case CMD_ENT6:		[self processENTICommand:command
 										 forRegister:(operCode-CMD_ENTA)]; break; //ENTI, ENNI, INCI, and DECI
+			case CMD_CMPA:		[self processCMPAcommand:command accumulator:YES]; break;
+			case CMD_CMPX:		[self processCMPAcommand:command accumulator:NO]; break;
+			case CMD_CMP1:
+			case CMD_CMP2:
+			case CMD_CMP3:
+			case CMD_CMP4:
+			case CMD_CMP5:
+			case CMD_CMP6:		[self processCMPIcommand:command forRegister:(operCode - CMD_CMPA)]; break;
+				
 				
 				
 			default: {
@@ -944,6 +953,79 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 	[self setIndexRegister:finalIndex withNumber:indReg];
 }
 	
+- (void) processCMPAcommand:(MIXWORD)command accumulator:(BOOL) accumulator
+{
+	NSInteger effectiveAddress = [self effectiveAddress:command];
+	// This address should pount to cell in memoty space
+	if (effectiveAddress < 0 || effectiveAddress >= MIX_MEMORY_SIZE) {
+		[NSException raise:MIXExceptionInvalidMemoryCellIndex
+					format:RStr(MIXExceptionInvalidMemoryCellIndex)];
+		return;
+	}
+	// Read value from the memory
+	MIXWORD valueToProcess = memory[effectiveAddress];
+	// Noe we should extract fields, we need to create new words to compare
+	if (command.byte[3] == 0) {
+		// Per Knuth +0 and -0 are equal
+		comparasionFlag = MIX_EQUAL;
+		return;
+	}
+	MIXWORD memValue = [self extractFieldswithModifier:command.byte[3] from:valueToProcess];
+	MIXWORD accValue = [self extractFieldswithModifier:command.byte[3] from:(accumulator ? self.A : self.X)];
+	// convert to integers with proper signs
+	long mem = [self integerForMixWord:memValue];
+	long acc = [self integerForMixWord:accValue];
+	if (acc < mem) {
+		comparasionFlag = MIX_LESS;
+	} else if (acc > mem) {
+		comparasionFlag = MIX_GREATER;
+	} else {
+		comparasionFlag = MIX_EQUAL;
+	}
+}
+
+- (void) processCMPIcommand:(MIXWORD)command forRegister:(int)indReg
+{
+	if (indReg < 1 || indReg > MIX_INDEX_REGISTERS) {
+		[NSException raise:MIXExceptionInvalidIndexRegister format:RStr(MIXExceptionInvalidIndexRegister)];
+		return;
+	}
+	NSInteger effectiveAddress = [self effectiveAddress:command];
+	// This address should pount to cell in memoty space
+	if (effectiveAddress < 0 || effectiveAddress >= MIX_MEMORY_SIZE) {
+		[NSException raise:MIXExceptionInvalidMemoryCellIndex
+					format:RStr(MIXExceptionInvalidMemoryCellIndex)];
+		return;
+	}
+	// Read value from the memory
+	MIXWORD valueToProcess = memory[effectiveAddress];
+	MIXWORD finalValue = [self extractFieldswithModifier:command.byte[3] from:valueToProcess];
+	MIXINDEX finalIndex;	// now convert final value to the index format
+	finalIndex.sign = finalValue.sign;
+	for (int i = 0; i < 3 ; i++) {
+		finalIndex.indexByte[i] = 0;
+	} 
+	finalIndex.indexByte[0] = finalValue.byte[3];
+	finalIndex.indexByte[1] = finalValue.byte[4];
+	// Read value from the memory
+	// Noe we should extract fields, we need to create new words to compare
+	if (command.byte[3] == 0) {
+		// Per Knuth +0 and -0 are equal
+		comparasionFlag = MIX_EQUAL;
+		return;
+	}
+	MIXINDEX index = [self indexRegisterValue:indReg];
+	// convert to integers with proper signs
+	long mem = [self integerFromMIXINDEX:finalIndex];
+	long acc = [self integerFromMIXINDEX:index];
+	if (acc < mem) {
+		comparasionFlag = MIX_LESS;
+	} else if (acc > mem) {
+		comparasionFlag = MIX_GREATER;
+	} else {
+		comparasionFlag = MIX_EQUAL;
+	}
+}
 
 #pragma mark - Internal service methods
 

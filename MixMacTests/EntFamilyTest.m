@@ -34,7 +34,7 @@
 		[cpu executeCurrentOperation];
 		
 		accumulator = [self integerFromMIXWORD:cpu.A];
-		XCTAssertEqual(accumulator, data[i], @"Data shpuld be loaded into accumulator properly");
+		XCTAssertEqual(accumulator, data[i], @"Data should be loaded into accumulator properly");
 	}
 	// special case: if effective address is equal to 0, sign is derived from the command sign byte
 	//  ENTA -100, 4
@@ -76,7 +76,7 @@
 		[cpu executeCurrentOperation];
 		
 		accumulator = -[self integerFromMIXWORD:cpu.A];
-		XCTAssertEqual(accumulator, data[i], @"Data shpuld be loaded into accumulator properly");
+		XCTAssertEqual(accumulator, data[i], @"Data should be loaded into accumulator properly");
 	}
 }
 
@@ -107,7 +107,7 @@
 		[self printMemoryCell:cpu.X];
 		
 		accumulator = [self integerFromMIXWORD:cpu.X];
-		XCTAssertEqual(accumulator, data[i], @"Data shpuld be loaded into X register properly");
+		XCTAssertEqual(accumulator, data[i], @"Data should be loaded into X register properly");
 	}
 	// special case: if effective address is equal to 0, sign is derived from the command sign byte
 	//  ENTX -100, 4
@@ -155,7 +155,7 @@
 		[self printMemoryCell:cpu.X];
 		
 		accumulator = -[self integerFromMIXWORD:cpu.X];
-		XCTAssertEqual(accumulator, data[i], @"Data shpuld be loaded into X register properly");
+		XCTAssertEqual(accumulator, data[i], @"Data should be loaded into X register properly");
 	}
 	// special case: if effective address is equal to 0, sign is derived from the command sign byte
 	//  ENTX -100, 4
@@ -202,7 +202,7 @@
 			accumulator = [self integerFromMIXINDEX:[cpu indexRegisterValue:indexNum]];
 			NSLog(@"%@  %ld",mnemonic, data[i]);
 
-			XCTAssertEqual(accumulator, data[i], @"Data shpuld be loaded into index register properly");
+			XCTAssertEqual(accumulator, data[i], @"Data should be loaded into index register properly");
 		}
 	}
 }
@@ -232,7 +232,7 @@
 			accumulator = -[self integerFromMIXINDEX:[cpu indexRegisterValue:indexNum]];
 			NSLog(@"%@  %ld",mnemonic, data[i]);
 			
-			XCTAssertEqual(accumulator, data[i], @"Data shpuld be loaded into index register properly");
+			XCTAssertEqual(accumulator, data[i], @"Data should be loaded into index register properly");
 		}
 	}
 }
@@ -257,7 +257,7 @@
 		long accumulator = [self integerFromMIXWORD:cpu.A];
 		sum += data[i];
 		
-		XCTAssertEqual(accumulator, sum, @"Data shpuld be added to the accumulator");
+		XCTAssertEqual(accumulator, sum, @"Data should be added to the accumulator");
 	}
 	
 	// Test overflow flag
@@ -301,7 +301,7 @@
 		long accumulator = [self integerFromMIXWORD:cpu.A];
 		sum -= data[i];
 		
-		XCTAssertEqual(accumulator, sum, @"Data shpuld be substracted from the accumulator");
+		XCTAssertEqual(accumulator, sum, @"Data should be substracted from the accumulator");
 	}
 	
 	// Test overflow flag
@@ -346,7 +346,7 @@
 		long accumulator = [self integerFromMIXWORD:cpu.X];
 		sum += data[i];
 		
-		XCTAssertEqual(accumulator, sum, @"Data shpuld be added to the X register");
+		XCTAssertEqual(accumulator, sum, @"Data should be added to the X register");
 	}
 	
 	// Test overflow flag
@@ -390,7 +390,7 @@
 		long accumulator = [self integerFromMIXWORD:cpu.X];
 		sum -= data[i];
 		
-		XCTAssertEqual(accumulator, sum, @"Data shpuld be substracted from the X register");
+		XCTAssertEqual(accumulator, sum, @"Data should be substracted from the X register");
 	}
 	
 	// Test overflow flag
@@ -443,7 +443,7 @@
 			accumulator = [self integerFromMIXINDEX:[cpu indexRegisterValue:indexNum]];
 			NSLog(@"%@  %ld",mnemonic, data[i]);
 			
-			XCTAssertEqual(accumulator, sum, @"Data shpuld be loaded into index register properly");
+			XCTAssertEqual(accumulator, sum, @"Data should be loaded into index register properly");
 		}
 		// Test overflow flag
 		[cpu clearFlags];
@@ -496,7 +496,7 @@
 			accumulator = [self integerFromMIXINDEX:[cpu indexRegisterValue:indexNum]];
 			NSLog(@"%@  %ld",mnemonic, data[i]);
 			
-			XCTAssertEqual(accumulator, sum, @"Data shpuld be loaded into index register properly");
+			XCTAssertEqual(accumulator, sum, @"Data should be loaded into index register properly");
 		}
 		// Test overflow flag
 		[cpu clearFlags];
