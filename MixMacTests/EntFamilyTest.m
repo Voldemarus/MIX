@@ -237,7 +237,184 @@
 	}
 }
 
+
+- (void) testINCA
+{
+	long data[10] = { 120, 2345, -343, -4067, 1111, 1152, 3433, -2330, -221, -667 };
+	
+	cpu.A = [self mixWordFromInteger:0];
+	long sum = 0;
+	for (int i = 0; i < 10; i++) {
+		// use default modifier for these tests
+		MIXWORD command = [self mixCommandForMnemonic:@"INCA" withAddress:data[i] index:0 andModifier:MIX_F_NOTDEFINED];
 		
+		[cpu setMemoryWord:command forCellIndex:TEST_PC];
+
+		cpu.PC = TEST_PC;
+		
+		[cpu executeCurrentOperation];
+		
+		long accumulator = [self integerFromMIXWORD:cpu.A];
+		sum += data[i];
+		
+		XCTAssertEqual(accumulator, sum, @"Data shpuld be added to the accumulator");
+	}
+	
+	// Test overflow flag
+	[cpu clearFlags];
+	XCTAssertFalse(cpu.overflow, @"Overflow flag should be cleared");
+	
+	cpu.A = [self mixWordFromInteger:[cpu maxInteger]];
+	
+	MIXWORD command = [self mixCommandForMnemonic:@"INCA" withAddress:1 index:0 andModifier:MIX_F_NOTDEFINED];
+	
+	[cpu setMemoryWord:command forCellIndex:TEST_PC];
+	cpu.PC = TEST_PC;
+	
+	[cpu executeCurrentOperation];
+	
+	long result = [self integerFromMIXWORD:cpu.A];
+	
+	XCTAssertFalse(cpu.A.sign, @"sign should not change!");
+	XCTAssertEqual(result, 0, @"accumulator should be equal to zero after increment");
+	XCTAssertTrue(cpu.overflow, @"Overflow flag should be set");
+
+	[cpu clearFlags];   // clean after yourself !
+}
+
+- (void) testDECA
+{
+	long data[10] = { 120, 2345, -343, -4067, 1111, 1152, 3433, -2330, -221, -667 };
+	
+	cpu.A = [self mixWordFromInteger:0];
+	long sum = 0;
+	for (int i = 0; i < 10; i++) {
+		// use default modifier for these tests
+		MIXWORD command = [self mixCommandForMnemonic:@"DECA" withAddress:data[i] index:0 andModifier:MIX_F_NOTDEFINED];
+		
+		[cpu setMemoryWord:command forCellIndex:TEST_PC];
+		
+		cpu.PC = TEST_PC;
+		
+		[cpu executeCurrentOperation];
+		
+		long accumulator = [self integerFromMIXWORD:cpu.A];
+		sum -= data[i];
+		
+		XCTAssertEqual(accumulator, sum, @"Data shpuld be substracted from the accumulator");
+	}
+	
+	// Test overflow flag
+	[cpu clearFlags];
+	XCTAssertFalse(cpu.overflow, @"Overflow flag should be cleared");
+	
+	cpu.A = [self mixWordFromInteger:-[cpu maxInteger]];
+	
+	MIXWORD command = [self mixCommandForMnemonic:@"DECA" withAddress:1 index:0 andModifier:MIX_F_NOTDEFINED];
+	
+	[cpu setMemoryWord:command forCellIndex:TEST_PC];
+	cpu.PC = TEST_PC;
+	
+	[cpu executeCurrentOperation];
+	
+	long result = [self integerFromMIXWORD:cpu.A];
+	
+	XCTAssertFalse(cpu.A.sign, @"sign should not change!");
+	XCTAssertEqual(result, 0, @"accumulator should be equal to zero after increment");
+	XCTAssertTrue(cpu.overflow, @"Overflow flag should be set");
+	
+	[cpu clearFlags];   // clean after yourself !
+}
+
+
+- (void) testINCX
+{
+	long data[10] = { 120, 2345, -343, -4067, 1111, 1152, 3433, -2330, -221, -667 };
+	
+	cpu.X = [self mixWordFromInteger:0];
+	long sum = 0;
+	for (int i = 0; i < 10; i++) {
+		// use default modifier for these tests
+		MIXWORD command = [self mixCommandForMnemonic:@"INCX" withAddress:data[i] index:0 andModifier:MIX_F_NOTDEFINED];
+		
+		[cpu setMemoryWord:command forCellIndex:TEST_PC];
+		
+		cpu.PC = TEST_PC;
+		
+		[cpu executeCurrentOperation];
+		
+		long accumulator = [self integerFromMIXWORD:cpu.X];
+		sum += data[i];
+		
+		XCTAssertEqual(accumulator, sum, @"Data shpuld be added to the X register");
+	}
+	
+	// Test overflow flag
+	[cpu clearFlags];
+	XCTAssertFalse(cpu.overflow, @"Overflow flag should be cleared");
+	
+	cpu.X = [self mixWordFromInteger:[cpu maxInteger]];
+	
+	MIXWORD command = [self mixCommandForMnemonic:@"INCX" withAddress:1 index:0 andModifier:MIX_F_NOTDEFINED];
+	
+	[cpu setMemoryWord:command forCellIndex:TEST_PC];
+	cpu.PC = TEST_PC;
+	
+	[cpu executeCurrentOperation];
+	
+	long result = [self integerFromMIXWORD:cpu.X];
+	
+	XCTAssertFalse(cpu.X.sign, @"sign should not change!");
+	XCTAssertEqual(result, 0, @"accumulator should be equal to zero after increment");
+	XCTAssertTrue(cpu.overflow, @"Overflow flag should be set");
+	
+	[cpu clearFlags];   // clean after yourself !
+}
+
+- (void) testDECX
+{
+	long data[10] = { 120, 2345, -343, -4067, 1111, 1152, 3433, -2330, -221, -667 };
+	
+	cpu.X = [self mixWordFromInteger:0];
+	long sum = 0;
+	for (int i = 0; i < 10; i++) {
+		// use default modifier for these tests
+		MIXWORD command = [self mixCommandForMnemonic:@"DECX" withAddress:data[i] index:0 andModifier:MIX_F_NOTDEFINED];
+		
+		[cpu setMemoryWord:command forCellIndex:TEST_PC];
+		
+		cpu.PC = TEST_PC;
+		
+		[cpu executeCurrentOperation];
+		
+		long accumulator = [self integerFromMIXWORD:cpu.X];
+		sum -= data[i];
+		
+		XCTAssertEqual(accumulator, sum, @"Data shpuld be substracted from the X register");
+	}
+	
+	// Test overflow flag
+	[cpu clearFlags];
+	XCTAssertFalse(cpu.overflow, @"Overflow flag should be cleared");
+	
+	cpu.X = [self mixWordFromInteger:-[cpu maxInteger]];
+	
+	MIXWORD command = [self mixCommandForMnemonic:@"DECX" withAddress:1 index:0 andModifier:MIX_F_NOTDEFINED];
+	
+	[cpu setMemoryWord:command forCellIndex:TEST_PC];
+	cpu.PC = TEST_PC;
+	
+	[cpu executeCurrentOperation];
+	
+	long result = [self integerFromMIXWORD:cpu.X];
+	
+	XCTAssertFalse(cpu.X.sign, @"sign should not change!");
+	XCTAssertEqual(result, 0, @"accumulator should be equal to zero after increment");
+	XCTAssertTrue(cpu.overflow, @"Overflow flag should be set");
+	
+	[cpu clearFlags];   // clean after yourself !
+}
+
 
 
 @end

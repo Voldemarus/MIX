@@ -844,7 +844,7 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 	BOOL specialCase = YES;
 	for (int i = MIX_WORD_SIZE-1; i >=0; i--) {
 		Byte part = sum & (self.sixBitByte ? 0x3F : 0xFF);
-		sum = sum >> (self.sixBitByte ? 6 : 8);
+		sum >>= (self.sixBitByte ? 6 : 8);
 		summator.byte[i] = part;
 		if (part > 0) specialCase = NO;
 	}
@@ -923,6 +923,7 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 	sum >>= (self.sixBitByte ? 6 : 8);
 	finalIndex.indexByte[0] = sum & (self.sixBitByte ? 0x3f : 0xFF);
 	[self setIndexRegister:finalIndex withNumber:indReg];
+	sum >>= (self.sixBitByte ? 6 : 8);	// test for overflow
 	if (sum > 0) {
 		overflowFlag = YES;
 	}
