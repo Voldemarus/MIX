@@ -912,7 +912,6 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 	sum += effectiveAddress;
 	
 	// fill output valie
-	
 	if (sum < 0) {
 		finalIndex.sign = YES;
 		sum = -sum;
@@ -1154,8 +1153,8 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 {
 		long result = 0;
 		for (int i = 0; i < 2; i++) {
-			result += aIndex.indexByte[i];
 			result = result << (self.sixBitByte ? 6 : 8);
+			result += aIndex.indexByte[i];
 		}
 		if (aIndex.sign) {
 			result = -result;
@@ -1166,7 +1165,6 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 - (MIXINDEX) mixIndexFromInteger:(long)aInt
 {
 		MIXINDEX result;
-		result.sign = (aInt < 0);
 		result.sign = (aInt < 0);
 		if (aInt < 0) {
 			aInt = -aInt;

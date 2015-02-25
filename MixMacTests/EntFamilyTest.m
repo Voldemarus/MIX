@@ -319,7 +319,7 @@
 	
 	long result = [self integerFromMIXWORD:cpu.A];
 	
-	XCTAssertFalse(cpu.A.sign, @"sign should not change!");
+	XCTAssertFalse(cpu.A.sign, @"sign should not change!");  // special case 0 cannot be negative
 	XCTAssertEqual(result, 0, @"accumulator should be equal to zero after increment");
 	XCTAssertTrue(cpu.overflow, @"Overflow flag should be set");
 	
@@ -415,6 +415,112 @@
 	[cpu clearFlags];   // clean after yourself !
 }
 
+- (void) testINCI
+{
+	long data[10] = { 120, 235, -343, -407, 111, 112, 343, -233, -221, -67 };
+	for (int indexNum = 1; indexNum <= MIX_INDEX_REGISTERS; indexNum++) {
+		
+		long sum = 0;
+		[cpu setIndexRegister:[self mixIndexFromInteger:0] withNumber:indexNum];	// initial value to index register
+		long accumulator = [self integerFromMIXINDEX:[cpu indexRegisterValue:indexNum]];
+		XCTAssertEqual(accumulator, 0, @"index register should be properly cleared");
+		
+		NSString *mnemonic = [NSString stringWithFormat:@"INC%d",indexNum];
+		
+		for (int i = 0; i < 10; i++) {
+			
+			// use default modifier for these tests
+			MIXWORD command = [self mixCommandForMnemonic:mnemonic withAddress:data[i] index:0 andModifier:MIX_F_NOTDEFINED];
+			
+			[cpu setMemoryWord:command forCellIndex:TEST_PC];
+			
+			cpu.PC = TEST_PC;
+			
+			[cpu executeCurrentOperation];
+			
+			sum += data[i];
+			
+			accumulator = [self integerFromMIXINDEX:[cpu indexRegisterValue:indexNum]];
+			NSLog(@"%@  %ld",mnemonic, data[i]);
+			
+			XCTAssertEqual(accumulator, sum, @"Data shpuld be loaded into index register properly");
+		}
+		// Test overflow flag
+		[cpu clearFlags];
+		XCTAssertFalse(cpu.overflow, @"Overflow flag should be cleared");
+		
+		[cpu setIndexRegister:[self mixIndexFromInteger:[cpu maxIndex]] withNumber:indexNum];
+		
+		MIXWORD command = [self mixCommandForMnemonic:mnemonic withAddress:1 index:0 andModifier:MIX_F_NOTDEFINED];
+		
+		[cpu setMemoryWord:command forCellIndex:TEST_PC];
+		cpu.PC = TEST_PC;
+		
+		[cpu executeCurrentOperation];
+		
+		long result = [self integerFromMIXINDEX:[cpu indexRegisterValue:indexNum]];
+		
+		XCTAssertFalse([cpu indexRegisterValue:indexNum].sign, @"sign should not change!");
+		XCTAssertEqual(result, 0, @"index register should be equal to zero after increment");
+		XCTAssertTrue(cpu.overflow, @"Overflow flag should be set");
+		
+		[cpu clearFlags];   // clean after yourself !
+	}
+}
+
+- (void) testDECI
+{
+	long data[10] = { 120, 235, -343, -407, 111, 112, 343, -233, -221, -67 };
+	for (int indexNum = 1; indexNum <= MIX_INDEX_REGISTERS; indexNum++) {
+		
+		long sum = 0;
+		[cpu setIndexRegister:[self mixIndexFromInteger:0] withNumber:indexNum];	// initial value to index register
+		long accumulator = [self integerFromMIXINDEX:[cpu indexRegisterValue:indexNum]];
+		XCTAssertEqual(accumulator, 0, @"index register should be properly cleared");
+		
+		NSString *mnemonic = [NSString stringWithFormat:@"DEC%d",indexNum];
+		
+		for (int i = 0; i < 10; i++) {
+			
+			// use default modifier for these tests
+			MIXWORD command = [self mixCommandForMnemonic:mnemonic withAddress:data[i] index:0 andModifier:MIX_F_NOTDEFINED];
+			
+			[cpu setMemoryWord:command forCellIndex:TEST_PC];
+			
+			cpu.PC = TEST_PC;
+			
+			[cpu executeCurrentOperation];
+			
+			sum -= data[i];
+			
+			accumulator = [self integerFromMIXINDEX:[cpu indexRegisterValue:indexNum]];
+			NSLog(@"%@  %ld",mnemonic, data[i]);
+			
+			XCTAssertEqual(accumulator, sum, @"Data shpuld be loaded into index register properly");
+		}
+		// Test overflow flag
+		[cpu clearFlags];
+		XCTAssertFalse(cpu.overflow, @"Overflow flag should be cleared");
+		
+		[cpu setIndexRegister:[self mixIndexFromInteger:-[cpu maxIndex]] withNumber:indexNum];
+		
+		MIXWORD command = [self mixCommandForMnemonic:mnemonic withAddress:1 index:0 andModifier:MIX_F_NOTDEFINED];
+		
+		[cpu setMemoryWord:command forCellIndex:TEST_PC];
+		cpu.PC = TEST_PC;
+		
+		[cpu executeCurrentOperation];
+		
+		long result = [self integerFromMIXINDEX:[cpu indexRegisterValue:indexNum]];
+		
+		XCTAssertTrue([cpu indexRegisterValue:indexNum].sign, @"sign should not change!");
+		XCTAssertEqual(result, 0, @"index register should be equal to zero after increment");
+		XCTAssertTrue(cpu.overflow, @"Overflow flag should be set");
+		
+		[cpu clearFlags];   // clean after yourself !
+
+	}
+}
 
 
 @end
