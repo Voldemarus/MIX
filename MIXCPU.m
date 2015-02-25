@@ -938,6 +938,9 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 	NSInteger effectiveAddress = [self effectiveAddress:command];
 	// Read value from the memory
 	MIXINDEX finalIndex = [self mixIndexFromInteger:effectiveAddress];
+	if (negative) {
+		finalIndex.sign = !finalIndex.sign;
+	}
 	[self setIndexRegister:finalIndex withNumber:indReg];
 }
 	
