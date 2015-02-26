@@ -117,6 +117,13 @@
 "Jump A nonzero" = "Jump A nonzero";
 "Jump A nonpositive" = "Jump A nonpositive";
 
+"Jump X negative" = "Jump X negative";
+"Jump X zero" =  "Jump X zero";
+"Jump X positive" = "Jump X positive";
+"Jump X nonnegative" = "Jump X nonnegative";
+"Jump X nonzero" = "Jump X nonzero";
+"Jump X nonpositive" = "Jump X nonpositive";
+
 
 
 

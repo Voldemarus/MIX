@@ -467,7 +467,8 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 			case CMD_CMP5:
 			case CMD_CMP6:		[self processCMPIcommand:command forRegister:(operCode - CMD_CMPA)]; break;
 			case CMD_JMP:		[self processJMPCommand:command]; break;
-			case CMD_JAN:		[self processJANCommand:command]; break;
+			case CMD_JAN:		[self processJANCommand:command accumulator:YES]; break;
+			case CMD_JXN:		[self processJANCommand:command accumulator:NO]; break;
 				
 			default: {
 				[NSException raise:MIXExceptionInvalidOperationCode
@@ -1073,7 +1074,7 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 }
 
 
-- (void) processJANCommand:(MIXWORD) command
+- (void) processJANCommand:(MIXWORD) command accumulator:(BOOL) isAccum
 {
 	MIX_F modifier = command.byte[3];
 	
@@ -1084,7 +1085,7 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 					format:RStr(MIXExceptionInvalidMemoryCellIndex)];
 		return;
 	}
-	long acc = [self integerForMixWord:self.A];
+	long acc = [self integerForMixWord:(isAccum ? self.A : self.X)];
 	BOOL updateJ = NO;
 	long oldPC = self.PC;
 	

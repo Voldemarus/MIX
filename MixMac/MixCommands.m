@@ -203,6 +203,12 @@
 				@[ @"JANN",	@(MIX_F_SHORT3), @(CMD_JAN), @(1), RStr(@"Jump A nonnegative")],
 				@[ @"JANZ",	@(MIX_F_SHORT4), @(CMD_JAN), @(1), RStr(@"Jump A nonzero")],
 				@[ @"JANP",	@(MIX_F_FIELD), @(CMD_JAN), @(1), RStr(@"Jump A nonpositive")],
+				@[ @"JXN",	@(MIX_F_SIGNONLY), @(CMD_JXN), @(1), RStr(@"Jump X negative")],
+				@[ @"JXZ",	@(MIX_F_SHORT1), @(CMD_JXN), @(1), RStr(@"Jump X zero")],
+				@[ @"JXP",	@(MIX_F_SHORT2), @(CMD_JXN), @(1), RStr(@"Jump X positive")],
+				@[ @"JXNN",	@(MIX_F_SHORT3), @(CMD_JXN), @(1), RStr(@"Jump X nonnegative")],
+				@[ @"JXNZ",	@(MIX_F_SHORT4), @(CMD_JXN), @(1), RStr(@"Jump X nonzero")],
+				@[ @"JXNP",	@(MIX_F_FIELD), @(CMD_JXN), @(1), RStr(@"Jump X nonpositive")],
 				
 			 ];
 }
