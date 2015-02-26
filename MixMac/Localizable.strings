@@ -110,6 +110,13 @@
 "Jump, on non equal" = "Jump, on non equal";
 "Jump, on less or equal" = "Jump, on less or equal";
 
+"Jump A negative" = "Jump A negative";
+"Jump A zero" =  "Jump A zero";
+"Jump A positive" = "Jump A positive";
+"Jump A nonnegative" = "Jump A nonnegative";
+"Jump A nonzero" = "Jump A nonzero";
+"Jump A nonpositive" = "Jump A nonpositive";
+
 
 
 

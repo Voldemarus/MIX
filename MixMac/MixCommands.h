@@ -76,6 +76,7 @@ typedef enum {
 #define CMD_STJ		32
 #define CMD_STZ		33
 #define CMD_JMP		39
+#define CMD_JAN		40
 #define CMD_ENTA	48
 #define CMD_ENT1	49
 #define CMD_ENT2	50

@@ -197,7 +197,12 @@
 				@[ @"JGE",	@(MIX_F_SHORT7), @(CMD_JMP), @(1), RStr(@"Jump, on greater or equal")],
 				@[ @"JNE",	@(MIX_F_SHORT8), @(CMD_JMP), @(1), RStr(@"Jump, on non equal")],
 				@[ @"JLE",	@(MIX_F_SHORT9), @(CMD_JMP), @(1), RStr(@"Jump, on less or equal")],
-				
+				@[ @"JAN",	@(MIX_F_SIGNONLY), @(CMD_JAN), @(1), RStr(@"Jump A negative")],
+				@[ @"JAZ",	@(MIX_F_SHORT1), @(CMD_JAN), @(1), RStr(@"Jump A zero")],
+				@[ @"JAP",	@(MIX_F_SHORT2), @(CMD_JAN), @(1), RStr(@"Jump A positive")],
+				@[ @"JANN",	@(MIX_F_SHORT3), @(CMD_JAN), @(1), RStr(@"Jump A nonnegative")],
+				@[ @"JANZ",	@(MIX_F_SHORT4), @(CMD_JAN), @(1), RStr(@"Jump A nonzero")],
+				@[ @"JANP",	@(MIX_F_FIELD), @(CMD_JAN), @(1), RStr(@"Jump A nonpositive")],
 				
 			 ];
 }

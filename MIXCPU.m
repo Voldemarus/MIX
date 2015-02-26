@@ -467,7 +467,7 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 			case CMD_CMP5:
 			case CMD_CMP6:		[self processCMPIcommand:command forRegister:(operCode - CMD_CMPA)]; break;
 			case CMD_JMP:		[self processJMPCommand:command]; break;
-				
+			case CMD_JAN:		[self processJANCommand:command]; break;
 				
 			default: {
 				[NSException raise:MIXExceptionInvalidOperationCode
@@ -1070,7 +1070,41 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 		// Should be set for all commands except JSJ
 		self.J = [self mixIndexFromInteger:oldPC];
 	}
+}
+
+
+- (void) processJANCommand:(MIXWORD) command
+{
+	MIX_F modifier = command.byte[3];
 	
+	NSInteger effectiveAddress = [self effectiveAddress:command];
+	// This address should pount to cell in memoty space
+	if (effectiveAddress < 0 || effectiveAddress >= MIX_MEMORY_SIZE) {
+		[NSException raise:MIXExceptionInvalidMemoryCellIndex
+					format:RStr(MIXExceptionInvalidMemoryCellIndex)];
+		return;
+	}
+	long acc = [self integerForMixWord:self.A];
+	BOOL updateJ = NO;
+	long oldPC = self.PC;
+	
+	switch (modifier) {
+		case MIX_F_SIGNONLY:		if (acc < 0) { updateJ = YES; } break;		// JAN
+		case MIX_F_SHORT1:			if (acc == 0) { updateJ = YES; } break;		// JAZ
+		case MIX_F_SHORT2:			if (acc > 0) { updateJ = YES; } break;		// JAP
+		case MIX_F_SHORT3:			if (acc >= 0) { updateJ = YES; } break;		// JANN
+		case MIX_F_SHORT4:			if (acc != 0) { updateJ = YES; } break;		// JANZ
+		case MIX_F_FIELD:			if (acc <= 0) { updateJ = YES; } break;		// JANP
+		default:
+			[NSException raise:MIXExceptionInvalidFieldModifer
+						format:RStr(MIXExceptionInvalidFieldModifer)];
+	}
+	if (updateJ) {
+		// Should be set for all commands except JSJ
+		self.J = [self mixIndexFromInteger:oldPC];
+		self.PC = effectiveAddress;
+	}
+
 }
 
 
