@@ -15,8 +15,12 @@ typedef enum {
 	MIX_F_SHORT1 = 1,
 	MIX_F_SHORT2 = 2,
 	MIX_F_SHORT3 = 3,
+	MIX_F_SHORT4 = 4,
 	MIX_F_FIELD = 5,			// the whole memory cell content
-	
+	MIX_F_SHORT6 = 6,
+	MIX_F_SHORT7 = 7,
+	MIX_F_SHORT8 = 8,
+	MIX_F_SHORT9 = 9,
 } MIX_F;
 
 @interface MixCommand : NSObject
@@ -71,6 +75,7 @@ typedef enum {
 #define CMD_STX		31
 #define CMD_STJ		32
 #define CMD_STZ		33
+#define CMD_JMP		39
 #define CMD_ENTA	48
 #define CMD_ENT1	49
 #define CMD_ENT2	50

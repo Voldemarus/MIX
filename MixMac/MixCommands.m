@@ -187,7 +187,17 @@
 				@[ @"CMP4", @(MIX_F_FIELD), @(CMD_CMP4), @(2), RStr(@"Compare index register 4")],
 				@[ @"CMP5", @(MIX_F_FIELD), @(CMD_CMP5), @(2), RStr(@"Compare index register 5")],
 				@[ @"CMP6", @(MIX_F_FIELD), @(CMD_CMP6), @(2), RStr(@"Compare index register 6")],
-
+				@[ @"JMP",	@(MIX_F_SIGNONLY), @(CMD_JMP), @(1), RStr(@"Jump")],
+				@[ @"JSJ",	@(MIX_F_SHORT1), @(CMD_JMP), @(1), RStr(@"Jump, save J")],
+				@[ @"JOV",	@(MIX_F_SHORT2), @(CMD_JMP), @(1), RStr(@"Jump, on overflow")],
+				@[ @"JNOV",	@(MIX_F_SHORT3), @(CMD_JMP), @(1), RStr(@"Jump, on no overflow")],
+				@[ @"JL",	@(MIX_F_SHORT4), @(CMD_JMP), @(1), RStr(@"Jump, on less")],
+				@[ @"JE",	@(MIX_F_FIELD), @(CMD_JMP), @(1), RStr(@"Jump, on equal")],
+				@[ @"JG",	@(MIX_F_SHORT6), @(CMD_JMP), @(1), RStr(@"Jump, on greater")],
+				@[ @"JGE",	@(MIX_F_SHORT7), @(CMD_JMP), @(1), RStr(@"Jump, on greater or equal")],
+				@[ @"JNE",	@(MIX_F_SHORT8), @(CMD_JMP), @(1), RStr(@"Jump, on non equal")],
+				@[ @"JLE",	@(MIX_F_SHORT9), @(CMD_JMP), @(1), RStr(@"Jump, on less or equal")],
+				
 				
 			 ];
 }

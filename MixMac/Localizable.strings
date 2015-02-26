@@ -99,6 +99,17 @@
 "Compare index register 5" = "Compare index register 5";
 "Compare index register 6" = "Compare index register 6";
 
+"Jump" = "Jump";
+"Jump, save J" = "Jump, save J";
+"Jump, on overflow" = "Jump, on overflow";
+"Jump, on no overflow" = "Jump, on no overflow";
+"Jump, on less" = "Jump, on less";
+"Jump, on equal" = "Jump, on equal";
+"Jump, on greater" = "Jump, on greater";
+"Jump, on greater or equal" = "Jump, on greater or equal";
+"Jump, on non equal" = "Jump, on non equal";
+"Jump, on less or equal" = "Jump, on less or equal";
+
 
 
 

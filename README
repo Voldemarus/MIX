@@ -31,7 +31,7 @@ Commands in CPU Core debugged and supported with unit-tests for now  (8*8 Matrix
 
 0x30  STA   ST1   ST2   ST3   ST4   ST5   ST6   STX
 
-0x40  STJ   STZ    .     .     .     .     .     .
+0x40  STJ   STZ    .     .     .     .     .    JMP(*)
 
 0x50   .     .     .     .     .     .     .     .
 
@@ -43,4 +43,6 @@ Commands in CPU Core debugged and supported with unit-tests for now  (8*8 Matrix
 0x70   CMPA  CMP1  CMP2  CMP3  CMP4  CMP5  CMP6  CMP7
 
 
+
+(*) JMP, JSJ, JOV, JNOV, JL, JE, JG, JGE, JNE, JLE
 

@@ -466,7 +466,7 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 			case CMD_CMP4:
 			case CMD_CMP5:
 			case CMD_CMP6:		[self processCMPIcommand:command forRegister:(operCode - CMD_CMPA)]; break;
-				
+			case CMD_JMP:		[self processJMPCommand:command]; break;
 				
 				
 			default: {
@@ -1026,6 +1026,53 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 		comparasionFlag = MIX_EQUAL;
 	}
 }
+
+- (void) processJMPCommand:(MIXWORD) command
+{
+	MIX_F modifier = command.byte[3];
+	
+	NSInteger effectiveAddress = [self effectiveAddress:command];
+	// This address should pount to cell in memoty space
+	if (effectiveAddress < 0 || effectiveAddress >= MIX_MEMORY_SIZE) {
+		[NSException raise:MIXExceptionInvalidMemoryCellIndex
+					format:RStr(MIXExceptionInvalidMemoryCellIndex)];
+		return;
+	}
+	BOOL updateJ = NO;
+	long oldPC = self.PC;
+	switch (modifier) {
+		case MIX_F_SIGNONLY:	self.PC = effectiveAddress;	updateJ = YES; break;
+		case MIX_F_SHORT1:		self.PC = effectiveAddress;	updateJ = NO; break;
+		case MIX_F_SHORT2:		if (overflowFlag == YES) { overflowFlag = NO; updateJ = YES;
+															self.PC = effectiveAddress; } break;
+		case MIX_F_SHORT3:		if (overflowFlag == NO) { self.PC = effectiveAddress;
+															updateJ = YES; } break;
+		case MIX_F_SHORT4:		if (comparasionFlag == MIX_LESS) { self.PC = effectiveAddress;
+															updateJ = YES;} break;
+		case MIX_F_FIELD:		if (comparasionFlag == MIX_EQUAL) { self.PC = effectiveAddress;
+															updateJ = YES;} break;
+		case MIX_F_SHORT6:		if (comparasionFlag == MIX_GREATER) { self.PC = effectiveAddress;
+															updateJ = YES; } break;
+		case MIX_F_SHORT7:		if (comparasionFlag == MIX_GREATER || comparasionFlag == MIX_EQUAL) {
+															updateJ = YES;;
+															self.PC = effectiveAddress; } break;
+		case MIX_F_SHORT8:		if (comparasionFlag == MIX_GREATER || comparasionFlag == MIX_LESS) {
+															updateJ = YES;
+															self.PC = effectiveAddress; } break;
+		case MIX_F_SHORT9:		if (comparasionFlag == MIX_LESS || comparasionFlag == MIX_EQUAL) {
+															updateJ = YES;
+															self.PC = effectiveAddress; } break;
+  default:
+			[NSException raise:MIXExceptionInvalidFieldModifer
+						format:RStr(MIXExceptionInvalidFieldModifer)];
+	}
+	if (updateJ) {
+		// Should be set for all commands except JSJ
+		self.J = [self mixIndexFromInteger:oldPC];
+	}
+	
+}
+
 
 #pragma mark - Internal service methods
 
