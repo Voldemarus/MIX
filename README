@@ -33,12 +33,12 @@ Commands in CPU Core debugged and supported with unit-tests for now  (8*8 Matrix
 
 0x40  STJ   STZ    .     .     .     .     .    JMP(*)
 
-0x50  JAN   .     .     .     .     .     .		JXN		F = 0
-	  JAZ   .     .     .     .     .     .		JXZ		F = 1
-      JAP   .     .     .     .     .     .		JXP		F = 2
-      JANN  .     .     .     .     .     .		JXNN	F = 3
-	  JANZ  .     .     .     .     .     .		JXNZ	F = 4
-      JANP  .     .     .     .     .     .		JXNP	F = 5
+0x50  JAN   J1N   J2N   J3N   J4N   J5N   J6N   JXN		F = 0
+	  JAZ   J1Z   J2Z   J3Z   J4Z   J5Z   J6Z   JXZ		F = 1
+      JAP   J1P   J2P   J3P   J4P   J5P   J6P   JXP		F = 2
+      JANN  J1NN  J2NN  J3NN  J4NN  J5NN  J6NN  JXNN	F = 3
+	  JANZ  J1NZ  J2NZ  J3NZ  J4NZ  J5NZ  J6NZ  JXNZ	F = 4
+      JANP  J1NP  J2NP  J3NP  J4NP  J5NP  J6NP  JXNP	F = 5
 
 0x60  INCA  INC1  INC2  INC3  INC4  INC5  INC6  INCX	F = 0
       DECA  DEC1  DEC2  DEC3  DEC4  DEC5  DEC6  DECX	F = 1

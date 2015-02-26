@@ -469,6 +469,12 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 			case CMD_JMP:		[self processJMPCommand:command]; break;
 			case CMD_JAN:		[self processJANCommand:command accumulator:YES]; break;
 			case CMD_JXN:		[self processJANCommand:command accumulator:NO]; break;
+			case CMD_J1:
+			case CMD_J2:
+			case CMD_J3:
+			case CMD_J4:
+			case CMD_J5:
+			case CMD_J6:		[self processJINCommand:command forRegister:(operCode-CMD_JAN)]; break;
 				
 			default: {
 				[NSException raise:MIXExceptionInvalidOperationCode
@@ -1105,7 +1111,43 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 		self.J = [self mixIndexFromInteger:oldPC];
 		self.PC = effectiveAddress;
 	}
+}
 
+- (void) processJINCommand:(MIXWORD) command forRegister:(int)indReg
+{
+	if (indReg < 1 || indReg > MIX_INDEX_REGISTERS) {
+		[NSException raise:MIXExceptionInvalidIndexRegister format:RStr(MIXExceptionInvalidIndexRegister)];
+		return;
+	}
+	MIX_F modifier = command.byte[3];
+	
+	NSInteger effectiveAddress = [self effectiveAddress:command];
+	// This address should pount to cell in memoty space
+	if (effectiveAddress < 0 || effectiveAddress >= MIX_MEMORY_SIZE) {
+		[NSException raise:MIXExceptionInvalidMemoryCellIndex
+					format:RStr(MIXExceptionInvalidMemoryCellIndex)];
+		return;
+	}
+	long acc = [self integerFromMIXINDEX:[self indexRegisterValue:indReg]];
+	BOOL updateJ = NO;
+	long oldPC = self.PC;
+	
+	switch (modifier) {
+		case MIX_F_SIGNONLY:		if (acc < 0)  { updateJ = YES; } break;		// J*N
+		case MIX_F_SHORT1:			if (acc == 0) { updateJ = YES; } break;		// J*Z
+		case MIX_F_SHORT2:			if (acc > 0)  { updateJ = YES; } break;		// J*P
+		case MIX_F_SHORT3:			if (acc >= 0) { updateJ = YES; } break;		// J*NN
+		case MIX_F_SHORT4:			if (acc != 0) { updateJ = YES; } break;		// J*NZ
+		case MIX_F_FIELD:			if (acc <= 0) { updateJ = YES; } break;		// J*NP
+		default:
+			[NSException raise:MIXExceptionInvalidFieldModifer
+						format:RStr(MIXExceptionInvalidFieldModifer)];
+	}
+	if (updateJ) {
+		// Should be set for all commands except JSJ
+		self.J = [self mixIndexFromInteger:oldPC];
+		self.PC = effectiveAddress;
+	}
 }
 
 

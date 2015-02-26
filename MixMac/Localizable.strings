@@ -124,7 +124,44 @@
 "Jump X nonzero" = "Jump X nonzero";
 "Jump X nonpositive" = "Jump X nonpositive";
 
+"Jump Index Register 1 negative" = "Jump Index Register 1 negative";
+"Jump Index Register 1 zero" = "Jump Index Register 1 zero";
+"Jump Index Register 1 positive" = "Jump Index Register 1 positive";
+"Jump Index Register 1 nonnegative" = "Jump Index Register 1 nonnegative";
+"Jump Index Register 1 nonzero" = "Jump Index Register 1 nonzero";
+"Jump Index Register 1 nonpositive" = "Jump Index Register 1 nonpositive";
 
+"Jump Index Register 2 negative" = "Jump Index Register 2 negative";
+"Jump Index Register 2 zero" = "Jump Index Register 2 zero";
+"Jump Index Register 2 positive" = "Jump Index Register 2 positive";
+"Jump Index Register 2 nonnegative" = "Jump Index Register 2 nonnegative";
+"Jump Index Register 2 nonzero" = "Jump Index Register 2 nonzero";
+"Jump Index Register 2 nonpositive" = "Jump Index Register 2 nonpositive";
 
+"Jump Index Register 3 negative" = "Jump Index Register 3 negative";
+"Jump Index Register 3 zero" = "Jump Index Register 3 zero";
+"Jump Index Register 3 positive" = "Jump Index Register 3 positive";
+"Jump Index Register 3 nonnegative" = "Jump Index Register 3 nonnegative";
+"Jump Index Register 3 nonzero" = "Jump Index Register 3 nonzero";
+"Jump Index Register 3 nonpositive" = "Jump Index Register 3 nonpositive";
 
+"Jump Index Register 4 negative" = "Jump Index Register 4 negative";
+"Jump Index Register 4 zero" = "Jump Index Register 4 zero";
+"Jump Index Register 4 positive" = "Jump Index Register 4 positive";
+"Jump Index Register 4 nonnegative" = "Jump Index Register 4 nonnegative";
+"Jump Index Register 4 nonzero" = "Jump Index Register 4 nonzero";
+"Jump Index Register 4 nonpositive" = "Jump Index Register 4 nonpositive";
 
+"Jump Index Register 5 negative" = "Jump Index Register 5 negative";
+"Jump Index Register 5 zero" = "Jump Index Register 5 zero";
+"Jump Index Register 5 positive" = "Jump Index Register 5 positive";
+"Jump Index Register 5 nonnegative" = "Jump Index Register 5 nonnegative";
+"Jump Index Register 5 nonzero" = "Jump Index Register 5 nonzero";
+"Jump Index Register 5 nonpositive" = "Jump Index Register 5 nonpositive";
+
+"Jump Index Register 6 negative" = "Jump Index Register 6 negative";
+"Jump Index Register 6 zero" = "Jump Index Register 6 zero";
+"Jump Index Register 6 positive" = "Jump Index Register 6 positive";
+"Jump Index Register 6 nonnegative" = "Jump Index Register 6 nonnegative";
+"Jump Index Register 6 nonzero" = "Jump Index Register 6 nonzero";
+"Jump Index Register 6 nonpositive" = "Jump Index Register 6 nonpositive";

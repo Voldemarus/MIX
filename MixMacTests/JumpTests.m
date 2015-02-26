@@ -1024,5 +1024,275 @@
 	XCTAssertEqual(jreg, TEST_PC+1,@"Jump register should be updated");
 }
 
+- (void) testJIN
+{
+	
+	for (int i = 1; i < MIX_INDEX_REGISTERS; i++) {
+		NSString *mnemonic = [NSString stringWithFormat:@"J%dN",i];
+
+		MIXWORD command = [self mixCommandForMnemonic:mnemonic withAddress:TEST_CELL index:0 andModifier:MIX_F_NOTDEFINED];
+		
+		cpu.J = [self mixIndexFromInteger:0];
+		[cpu setMemoryWord:command forCellIndex:TEST_PC];
+		cpu.PC = TEST_PC;
+		
+		[cpu setIndexRegister:[self mixIndexFromInteger:-5] withNumber:i];
+		
+		[cpu executeCurrentOperation];
+		
+		XCTAssertEqual(cpu.PC, TEST_CELL, @"jump should not be performed");
+		long jreg = [self integerFromMIXINDEX:cpu.J];
+		XCTAssertEqual(jreg, TEST_PC+1,@"Jump register should be updated");
+		
+		[cpu setIndexRegister:[self mixIndexFromInteger:0] withNumber:i];
+
+		cpu.J = [self mixIndexFromInteger:0];
+		[cpu setMemoryWord:command forCellIndex:TEST_PC];
+		cpu.PC = TEST_PC;
+		
+		[cpu executeCurrentOperation];
+		
+		XCTAssertEqual(cpu.PC, TEST_PC+1, @"jump should not be performed");
+		jreg = [self integerFromMIXINDEX:cpu.J];
+		XCTAssertEqual(jreg, 0,@"Jump register should be updated");
+		
+		[cpu setIndexRegister:[self mixIndexFromInteger:10] withNumber:i];
+
+		cpu.J = [self mixIndexFromInteger:0];
+		[cpu setMemoryWord:command forCellIndex:TEST_PC];
+		cpu.PC = TEST_PC;
+		
+		[cpu executeCurrentOperation];
+		
+		XCTAssertEqual(cpu.PC, TEST_PC+1, @"jump should not be performed");
+		jreg = [self integerFromMIXINDEX:cpu.J];
+		XCTAssertEqual(jreg, 0,@"Jump register should be updated");
+
+	}
+}
+
+- (void) testJIZ
+{
+	for (int i = 1; i < MIX_INDEX_REGISTERS; i++) {
+		
+		NSString *mnemonic = [NSString stringWithFormat:@"J%dZ",i];
+		
+		MIXWORD command = [self mixCommandForMnemonic:mnemonic withAddress:TEST_CELL index:0 andModifier:MIX_F_NOTDEFINED];
+		
+		cpu.J = [self mixIndexFromInteger:0];
+		[cpu setMemoryWord:command forCellIndex:TEST_PC];
+		cpu.PC = TEST_PC;
+		
+		[cpu setIndexRegister:[self mixIndexFromInteger:0] withNumber:i];
+		
+		[cpu executeCurrentOperation];
+		
+		XCTAssertEqual(cpu.PC, TEST_CELL, @"jump should  be performed");
+		long jreg = [self integerFromMIXINDEX:cpu.J];
+		XCTAssertEqual(jreg, TEST_PC+1,@"Jump register should be updated");
+		
+		[cpu setIndexRegister:[self mixIndexFromInteger:10] withNumber:i];
+		cpu.J = [self mixIndexFromInteger:0];
+		[cpu setMemoryWord:command forCellIndex:TEST_PC];
+		cpu.PC = TEST_PC;
+		
+		[cpu executeCurrentOperation];
+		
+		XCTAssertEqual(cpu.PC, TEST_PC+1, @"jump should not be performed");
+		jreg = [self integerFromMIXINDEX:cpu.J];
+		XCTAssertEqual(jreg, 0,@"Jump register should be updated");
+		
+		[cpu setIndexRegister:[self mixIndexFromInteger:-10] withNumber:i];
+		
+		cpu.J = [self mixIndexFromInteger:0];
+		[cpu setMemoryWord:command forCellIndex:TEST_PC];
+		cpu.PC = TEST_PC;
+		
+		[cpu executeCurrentOperation];
+		
+		XCTAssertEqual(cpu.PC, TEST_PC+1, @"jump should not be performed");
+		jreg = [self integerFromMIXINDEX:cpu.J];
+		XCTAssertEqual(jreg, 0,@"Jump register should be updated");
+
+	}
+}
+
+- (void) testJIP
+{
+	for (int i = 1; i < MIX_INDEX_REGISTERS; i++) {
+		
+		NSString *mnemonic = [NSString stringWithFormat:@"J%dP",i];
+		
+		MIXWORD command = [self mixCommandForMnemonic:mnemonic withAddress:TEST_CELL index:0 andModifier:MIX_F_NOTDEFINED];
+		cpu.J = [self mixIndexFromInteger:0];
+		[cpu setMemoryWord:command forCellIndex:TEST_PC];
+		cpu.PC = TEST_PC;
+		
+		[cpu setIndexRegister:[self mixIndexFromInteger:10] withNumber:i];
+		
+		[cpu executeCurrentOperation];
+		
+		XCTAssertEqual(cpu.PC, TEST_CELL, @"jump should  be performed");
+		long jreg = [self integerFromMIXINDEX:cpu.J];
+		XCTAssertEqual(jreg, TEST_PC+1,@"Jump register should be updated");
+		
+		[cpu setIndexRegister:[self mixIndexFromInteger:0] withNumber:i];
+		cpu.J = [self mixIndexFromInteger:0];
+		[cpu setMemoryWord:command forCellIndex:TEST_PC];
+		cpu.PC = TEST_PC;
+		
+		[cpu executeCurrentOperation];
+		
+		XCTAssertEqual(cpu.PC, TEST_PC+1, @"jump should not be performed");
+		jreg = [self integerFromMIXINDEX:cpu.J];
+		XCTAssertEqual(jreg, 0,@"Jump register should be updated");
+		
+		[cpu setIndexRegister:[self mixIndexFromInteger:-10] withNumber:i];
+		
+		cpu.J = [self mixIndexFromInteger:0];
+		[cpu setMemoryWord:command forCellIndex:TEST_PC];
+		cpu.PC = TEST_PC;
+		
+		[cpu executeCurrentOperation];
+		
+		XCTAssertEqual(cpu.PC, TEST_PC+1, @"jump should not be performed");
+		jreg = [self integerFromMIXINDEX:cpu.J];
+		XCTAssertEqual(jreg, 0,@"Jump register should be updated");
+	}
+}
+
+- (void) testJINN
+{
+	for (int i = 1; i < MIX_INDEX_REGISTERS; i++) {
+		
+		NSString *mnemonic = [NSString stringWithFormat:@"J%dNN",i];
+		
+		MIXWORD command = [self mixCommandForMnemonic:mnemonic withAddress:TEST_CELL index:0 andModifier:MIX_F_NOTDEFINED];
+		cpu.J = [self mixIndexFromInteger:0];
+		[cpu setMemoryWord:command forCellIndex:TEST_PC];
+		cpu.PC = TEST_PC;
+		
+		[cpu setIndexRegister:[self mixIndexFromInteger:10] withNumber:i];
+		
+		[cpu executeCurrentOperation];
+		
+		XCTAssertEqual(cpu.PC, TEST_CELL, @"jump should  be performed");
+		long jreg = [self integerFromMIXINDEX:cpu.J];
+		XCTAssertEqual(jreg, TEST_PC+1,@"Jump register should be updated");
+		
+		[cpu setIndexRegister:[self mixIndexFromInteger:0] withNumber:i];
+		cpu.J = [self mixIndexFromInteger:0];
+		[cpu setMemoryWord:command forCellIndex:TEST_PC];
+		cpu.PC = TEST_PC;
+		
+		[cpu executeCurrentOperation];
+		
+		XCTAssertEqual(cpu.PC, TEST_CELL, @"jump should  be performed");
+		jreg = [self integerFromMIXINDEX:cpu.J];
+		XCTAssertEqual(jreg, TEST_PC+1,@"Jump register should be updated");
+		
+		[cpu setIndexRegister:[self mixIndexFromInteger:-10] withNumber:i];
+		
+		cpu.J = [self mixIndexFromInteger:0];
+		[cpu setMemoryWord:command forCellIndex:TEST_PC];
+		cpu.PC = TEST_PC;
+		
+		[cpu executeCurrentOperation];
+		
+		XCTAssertEqual(cpu.PC, TEST_PC+1, @"jump should not be performed");
+		jreg = [self integerFromMIXINDEX:cpu.J];
+		XCTAssertEqual(jreg, 0,@"Jump register should be updated");
+	}
+}
+
+- (void) testJINZ
+{
+	for (int i = 1; i < MIX_INDEX_REGISTERS; i++) {
+		
+		NSString *mnemonic = [NSString stringWithFormat:@"J%dNZ",i];
+		
+		MIXWORD command = [self mixCommandForMnemonic:mnemonic withAddress:TEST_CELL index:0 andModifier:MIX_F_NOTDEFINED];
+		cpu.J = [self mixIndexFromInteger:0];
+		[cpu setMemoryWord:command forCellIndex:TEST_PC];
+		cpu.PC = TEST_PC;
+		
+		[cpu setIndexRegister:[self mixIndexFromInteger:10] withNumber:i];
+		
+		[cpu executeCurrentOperation];
+		
+		XCTAssertEqual(cpu.PC, TEST_CELL, @"jump should  be performed");
+		long jreg = [self integerFromMIXINDEX:cpu.J];
+		XCTAssertEqual(jreg, TEST_PC+1,@"Jump register should be updated");
+		
+		[cpu setIndexRegister:[self mixIndexFromInteger:0] withNumber:i];
+		cpu.J = [self mixIndexFromInteger:0];
+		[cpu setMemoryWord:command forCellIndex:TEST_PC];
+		cpu.PC = TEST_PC;
+		
+		[cpu executeCurrentOperation];
+		
+		XCTAssertEqual(cpu.PC, TEST_PC+1, @"jump should  be performed");
+		jreg = [self integerFromMIXINDEX:cpu.J];
+		XCTAssertEqual(jreg, 0, @"Jump register should be updated");
+		
+		[cpu setIndexRegister:[self mixIndexFromInteger:-10] withNumber:i];
+		
+		cpu.J = [self mixIndexFromInteger:0];
+		[cpu setMemoryWord:command forCellIndex:TEST_PC];
+		cpu.PC = TEST_PC;
+		
+		[cpu executeCurrentOperation];
+		
+		XCTAssertEqual(cpu.PC, TEST_CELL, @"jump should not be performed");
+		jreg = [self integerFromMIXINDEX:cpu.J];
+		XCTAssertEqual(jreg, TEST_PC+1,@"Jump register should be updated");
+	}
+}
+
+- (void) testJINP
+{
+	for (int i = 1; i < MIX_INDEX_REGISTERS; i++) {
+		
+		NSString *mnemonic = [NSString stringWithFormat:@"J%dNP",i];
+		
+		MIXWORD command = [self mixCommandForMnemonic:mnemonic withAddress:TEST_CELL index:0 andModifier:MIX_F_NOTDEFINED];
+		
+		cpu.J = [self mixIndexFromInteger:0];
+		[cpu setMemoryWord:command forCellIndex:TEST_PC];
+		cpu.PC = TEST_PC;
+		
+		[cpu setIndexRegister:[self mixIndexFromInteger:10] withNumber:i];
+		
+		[cpu executeCurrentOperation];
+		
+		XCTAssertEqual(cpu.PC, TEST_PC+1, @"jump should  be performed");
+		long jreg = [self integerFromMIXINDEX:cpu.J];
+		XCTAssertEqual(jreg, 0, @"Jump register should be updated");
+		
+		[cpu setIndexRegister:[self mixIndexFromInteger:0] withNumber:i];
+		cpu.J = [self mixIndexFromInteger:0];
+		[cpu setMemoryWord:command forCellIndex:TEST_PC];
+		cpu.PC = TEST_PC;
+		
+		[cpu executeCurrentOperation];
+		
+		XCTAssertEqual(cpu.PC, TEST_CELL, @"jump should  be performed");
+		jreg = [self integerFromMIXINDEX:cpu.J];
+		XCTAssertEqual(jreg, TEST_PC+1, @"Jump register should be updated");
+		
+		[cpu setIndexRegister:[self mixIndexFromInteger:-10] withNumber:i];
+		
+		cpu.J = [self mixIndexFromInteger:0];
+		[cpu setMemoryWord:command forCellIndex:TEST_PC];
+		cpu.PC = TEST_PC;
+		
+		[cpu executeCurrentOperation];
+		
+		XCTAssertEqual(cpu.PC, TEST_CELL, @"jump should not be performed");
+		jreg = [self integerFromMIXINDEX:cpu.J];
+		XCTAssertEqual(jreg, TEST_PC+1,@"Jump register should be updated");
+	}
+}
+
 
 @end
