@@ -50,6 +50,7 @@ typedef enum {
 #define CMD_MUL		3
 #define CMD_DIV		4
 #define CMD_SLA		6
+#define CMD_MOVE	7
 #define CMD_LDA		8
 #define CMD_LD1		9
 #define CMD_LD2		10

@@ -245,13 +245,14 @@
 				@[ @"J6NN",	@(MIX_F_SHORT3), @(CMD_J6), @(1), RStr(@"Jump Index Register 6 nonnegative")],
 				@[ @"J6NZ",	@(MIX_F_SHORT4), @(CMD_J6), @(1), RStr(@"Jump Index Register 6 nonzero")],
 				@[ @"J6NP",	@(MIX_F_FIELD), @(CMD_J6), @(1), RStr(@"Jump Index Register 6 nonpositive")],
-
 				@[ @"SLA",	@(MIX_F_SIGNONLY), @(CMD_SLA), @(2), RStr(@"Shift left A")],
 				@[ @"SRA",	@(MIX_F_SHORT1), @(CMD_SLA), @(2), RStr(@"Shift right A")],
 				@[ @"SLAX",	@(MIX_F_SHORT2), @(CMD_SLA), @(2), RStr(@"Shift left AX")],
 				@[ @"SRAX",	@(MIX_F_SHORT3), @(CMD_SLA), @(2), RStr(@"Shift right AX")],
 				@[ @"SLC",	@(MIX_F_SHORT4), @(CMD_SLA), @(2), RStr(@"Shift left AX circularly")],
 				@[ @"SRC",	@(MIX_F_FIELD), @(CMD_SLA), @(2), RStr(@"Shift right AX circularly")],
+				@[ @"MOVE",	@(MIX_F_NOTDEFINED), @(CMD_MOVE), @(100), RStr(@"Move memory block")],
+				
 				
 				];
 }

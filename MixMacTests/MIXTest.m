@@ -52,7 +52,9 @@
 
 	MIXWORD memoryCell;
 
-	if (indexReg > 0) {
+	if ([mnemoCode isEqualToString:@"MOVE"]) {
+		NSLog(@"MOVE %ld (%d)", address, modifier);
+	} else if (indexReg > 0) {
 		NSLog(@"%@ %ld, %d", mnemoCode, address, indexReg);
 	} else {
 		NSLog(@"%@ %ld", mnemoCode, address);

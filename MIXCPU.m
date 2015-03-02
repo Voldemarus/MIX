@@ -476,6 +476,7 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 			case CMD_J5:
 			case CMD_J6:		[self processJINCommand:command forRegister:(operCode-CMD_JAN)]; break;
 			case CMD_SLA:		[self processSLACommand:command]; break;
+			case CMD_MOVE:		[self processMOVECommand:command]; break;
 				
 			default: {
 				[NSException raise:MIXExceptionInvalidOperationCode
@@ -1226,6 +1227,31 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 	self.X = backB;
 }
 
+- (void) processMOVECommand:(MIXWORD) command
+{
+	NSInteger repetionBytes = command.byte[3];									// count to move
+	if (repetionBytes == 0) return;
+	
+	int destAddr = (int)[self integerFromMIXINDEX:self.index1];				// Destination Address
+	if (destAddr < 0 || destAddr >= MIX_MEMORY_SIZE) {
+		[NSException raise:MIXExceptionInvalidMemoryCellIndex
+					format:RStr(MIXExceptionInvalidMemoryCellIndex)];
+		return;
+	}
+	int effectiveAddress = (int)[self effectiveAddress:command];				// SourceAddress
+	// This address should pount to cell in memoty space
+	if (effectiveAddress < 0 || effectiveAddress >= MIX_MEMORY_SIZE) {
+		[NSException raise:MIXExceptionInvalidMemoryCellIndex
+					format:RStr(MIXExceptionInvalidMemoryCellIndex)];
+		return;
+	}
+	for (int i = 0; i < repetionBytes; i++) {
+		MIXWORD tmp  = [self memoryWordForCellIndex:effectiveAddress++];
+		[self setMemoryWord:tmp forCellIndex:destAddr++];
+		if (effectiveAddress >= MIX_MEMORY_SIZE) { effectiveAddress = 0; }
+		if (destAddr >= MIX_MEMORY_SIZE) { destAddr = 0; }
+	}
+}
 
 #pragma mark - Internal service methods
 
