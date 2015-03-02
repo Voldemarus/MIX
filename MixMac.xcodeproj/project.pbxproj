@@ -20,6 +20,7 @@
 		1BCC3ED81A8F8BA90010C4F6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1BCC3ED71A8F8BA90010C4F6 /* Localizable.strings */; };
 		1BE9D4CF1A9E008800CB5187 /* CompareTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BE9D4CE1A9E008800CB5187 /* CompareTests.m */; };
 		1BE9D4D11A9E31E200CB5187 /* JumpTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BE9D4D01A9E31E200CB5187 /* JumpTests.m */; };
+		1BE9D4D41AA4419200CB5187 /* testShiftOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BE9D4D31AA4419200CB5187 /* testShiftOperations.m */; };
 		1BEF64621A96343A0039EBBE /* MIXTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BEF64611A96343A0039EBBE /* MIXTest.m */; };
 		1BEF64651A96366A0039EBBE /* ArithmeticTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BEF64641A96366A0039EBBE /* ArithmeticTests.m */; };
 		1BEF64671A99F7F50039EBBE /* EntFamilyTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BEF64661A99F7F50039EBBE /* EntFamilyTest.m */; };
@@ -62,6 +63,7 @@
 		1BCC3ED71A8F8BA90010C4F6 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		1BE9D4CE1A9E008800CB5187 /* CompareTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompareTests.m; sourceTree = "<group>"; };
 		1BE9D4D01A9E31E200CB5187 /* JumpTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JumpTests.m; sourceTree = "<group>"; };
+		1BE9D4D31AA4419200CB5187 /* testShiftOperations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = testShiftOperations.m; sourceTree = "<group>"; };
 		1BEF64601A96343A0039EBBE /* MIXTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MIXTest.h; sourceTree = "<group>"; };
 		1BEF64611A96343A0039EBBE /* MIXTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MIXTest.m; sourceTree = "<group>"; };
 		1BEF64641A96366A0039EBBE /* ArithmeticTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArithmeticTests.m; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 			isa = PBXGroup;
 			children = (
 				1BE9D4CE1A9E008800CB5187 /* CompareTests.m */,
+				1BE9D4D31AA4419200CB5187 /* testShiftOperations.m */,
 				1BE9D4D01A9E31E200CB5187 /* JumpTests.m */,
 				1B7943621A8F375400197FF3 /* LoadStoreCommandCPUTests.m */,
 				1BEF64641A96366A0039EBBE /* ArithmeticTests.m */,
@@ -304,6 +307,7 @@
 				1BE9D4D11A9E31E200CB5187 /* JumpTests.m in Sources */,
 				1BEF64651A96366A0039EBBE /* ArithmeticTests.m in Sources */,
 				1B7943631A8F375400197FF3 /* LoadStoreCommandCPUTests.m in Sources */,
+				1BE9D4D41AA4419200CB5187 /* testShiftOperations.m in Sources */,
 				1BEF64671A99F7F50039EBBE /* EntFamilyTest.m in Sources */,
 				1BE9D4CF1A9E008800CB5187 /* CompareTests.m in Sources */,
 			);

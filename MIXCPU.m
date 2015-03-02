@@ -475,6 +475,7 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 			case CMD_J4:
 			case CMD_J5:
 			case CMD_J6:		[self processJINCommand:command forRegister:(operCode-CMD_JAN)]; break;
+			case CMD_SLA:		[self processSLACommand:command]; break;
 				
 			default: {
 				[NSException raise:MIXExceptionInvalidOperationCode
@@ -1148,6 +1149,81 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 		self.J = [self mixIndexFromInteger:oldPC];
 		self.PC = effectiveAddress;
 	}
+}
+
+- (void) processSLACommand:(MIXWORD) command
+{
+	NSInteger effectiveAddress = [self effectiveAddress:command];
+	// This address should pount to cell in memoty space
+	if (effectiveAddress < 0 || effectiveAddress >= MIX_MEMORY_SIZE) {
+		[NSException raise:MIXExceptionInvalidMemoryCellIndex
+					format:RStr(MIXExceptionInvalidMemoryCellIndex)];
+		return;
+	}
+
+	MIX_F modifier = command.byte[3];
+	switch (modifier) {
+		case MIX_F_SIGNONLY:	[self shiftAccumulatorLeft:YES withAddress:effectiveAddress]; break;		// SLA
+		case MIX_F_SHORT1:		[self shiftAccumulatorLeft:NO  withAddress:effectiveAddress];  break;		// SRA
+		case MIX_F_SHORT2:		[self shiftAXLeft:YES withCycling:NO  withAddress:effectiveAddress]; break;	// SLAX
+		case MIX_F_SHORT3:		[self shiftAXLeft:NO withCycling:NO  withAddress:effectiveAddress]; break;	// SRAX
+		case MIX_F_SHORT4:		[self shiftAXLeft:YES withCycling:YES  withAddress:effectiveAddress]; break;// SLC
+		case MIX_F_FIELD:		[self shiftAXLeft:NO withCycling:YES  withAddress:effectiveAddress]; break;	// SRC
+		default:
+			[NSException raise:MIXExceptionInvalidFieldModifer
+						format:RStr(MIXExceptionInvalidFieldModifer)];
+	}
+}
+
+- (void) shiftAccumulatorLeft:(BOOL) toLeft  withAddress:(NSInteger)effectiveAddress
+{
+	MIXWORD result;
+	result.sign = self.A.sign;
+	for (int i = 0; i < MIX_WORD_SIZE; i++) {
+		result.byte[i] = 0;
+	}
+	if (effectiveAddress < MIX_WORD_SIZE) {
+		for (int i = 0; i < MIX_WORD_SIZE - effectiveAddress; i++) {
+			if (toLeft) {
+				result.byte[i] = self.A.byte[i+effectiveAddress];
+			} else {
+				result.byte[i+effectiveAddress] = self.A.byte[i];
+			}
+		}
+	}
+	self.A = result;
+}
+
+- (void) shiftAXLeft:(BOOL) toLeft withCycling:(BOOL)cycle  withAddress:(NSInteger)effectiveAddress
+{
+	Byte result[MIX_WORD_SIZE*2], tmp[MIX_WORD_SIZE*2];
+	NSInteger longReg = sizeof(result);
+	for (int i = 0; i < MIX_WORD_SIZE; i++) {
+		tmp[i] = self.A.byte[i];
+		tmp[i+MIX_WORD_SIZE] = self.X.byte[i];
+		result[i] = 0;
+		result[i+MIX_WORD_SIZE] = 0;
+	}
+	NSInteger finalElement = (cycle ? longReg : longReg - effectiveAddress);
+	if (finalElement > 0 && finalElement <= longReg) {
+		for (NSInteger i = 0; i < finalElement; i++) {
+			if (toLeft) {
+				result[i] = tmp[(i+effectiveAddress) % longReg];
+			} else {
+				result[(i+effectiveAddress) % longReg] = tmp[i];
+			}
+		}
+	}
+	// Fill back registers. Signs remain intact
+	MIXWORD backA, backB;
+	for (int i = 0; i < MIX_WORD_SIZE; i++) {
+		backA.byte[i] = result[i];
+		backB.byte[i] = result[i+MIX_WORD_SIZE];
+	}
+	backA.sign = self.A.sign;
+	backB.sign = self.X.sign;
+	self.A = backA;
+	self.X = backB;
 }
 
 

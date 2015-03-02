@@ -165,3 +165,12 @@
 "Jump Index Register 6 nonnegative" = "Jump Index Register 6 nonnegative";
 "Jump Index Register 6 nonzero" = "Jump Index Register 6 nonzero";
 "Jump Index Register 6 nonpositive" = "Jump Index Register 6 nonpositive";
+
+"Shift left A" = "Shift left A";
+"Shift right A" = "Shift right A";
+"Shift left AX" = "Shift left AX";
+"Shift right AX" = "Shift right AX";
+"Shift left AX circularly" = "Shift left AX circularly";
+"Shift right AX circularly" = "Shift right AX circularly";
+
+

@@ -52,7 +52,11 @@
 
 	MIXWORD memoryCell;
 
-	
+	if (indexReg > 0) {
+		NSLog(@"%@ %ld, %d", mnemoCode, address, indexReg);
+	} else {
+		NSLog(@"%@ %ld", mnemoCode, address);
+	}
 	MixCommand *cmd = [[MixCommands sharedInstance] getCommandByMnemonic:mnemoCode];
 	XCTAssert(cmd, "@Command %@ should be present in commands list!", mnemoCode);
 	if (!cmd) {
