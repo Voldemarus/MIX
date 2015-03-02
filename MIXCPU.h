@@ -53,6 +53,9 @@ typedef enum
 } MIX_COMPARASION;
 
 
+extern NSString * const MIXCPUHaltStateChanged;
+
+
 @interface MIXCPU : NSObject
 
 @property (nonatomic, readwrite) BOOL sixBitByte;		// YES - 6 bit in bye, NO - 8 bit
@@ -79,7 +82,7 @@ typedef enum
 
 @property (nonatomic, readonly)		BOOL overflow;		// overflow indocator
 @property (nonatomic, readonly) MIX_COMPARASION flag;	// comparasion result flag
-
+@property (nonatomic, readonly) BOOL haltStatus;		// YES if CPU in the Halt State
 
 
 + (MIXCPU *) sharedInstance;

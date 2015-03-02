@@ -46,6 +46,35 @@
 }
 
 
+- (void) testNOP
+{
+	MIXWORD command = [self mixCommandForMnemonic:@"NOP" withAddress:0 index:0 andModifier:MIX_F_NOTDEFINED];
+	[cpu setMemoryWord:command forCellIndex:TEST_PC];
+	cpu.PC = TEST_PC;
+
+	[cpu executeCurrentOperation];
+	
+	XCTAssertEqual(cpu.PC, TEST_PC+1, @"program counter shpuld be incremented");
+}
+
+- (void) testHlt
+{
+	[cpu resetCPU];
+	
+	XCTAssertFalse(cpu.haltStatus, @"should be resetted after reset");
+	MIXWORD command = [self mixCommandForMnemonic:@"HLT" withAddress:0 index:0 andModifier:MIX_F_NOTDEFINED];
+	[cpu setMemoryWord:command forCellIndex:TEST_PC];
+	cpu.PC = TEST_PC;
+	
+	[cpu executeCurrentOperation];
+	
+	XCTAssertEqual(cpu.PC, TEST_PC, @"program counter shpuld not be incremented");
+	XCTAssertTrue(cpu.haltStatus, @"should be halted");
+
+	
+}
+
+
 #pragma mark -
 
 - (void) prepareTestWithSrcAddress:(int)srcAddr destAddress:(int)dstAddr andRepetitionCount:(int)repeat

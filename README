@@ -23,7 +23,7 @@ Commands in CPU Core debugged and supported with unit-tests for now  (8*8 Matrix
 
      0x00  0x01  0x02  0x03  0x04  0x05  0x06  0x07
 
-0x00   .    ADD   SUB   MUL   DIV    .   SLA(-) MOVE
+0x00  NOP   ADD   SUB   MUL   DIV HLT(+) SLA(-) MOVE
 
 0x10  LDA   LD1   LD2   LD3   LD4   LD5   LD6   LDX
 
@@ -48,6 +48,7 @@ Commands in CPU Core debugged and supported with unit-tests for now  (8*8 Matrix
 0x70  CMPA  CMP1  CMP2  CMP3  CMP4  CMP5  CMP6  CMP7
 
 Notes:
+(+) HLT, NUM, CHR
 (-) SLA, SRA, SLAX, SRAX, SLC, SRC
 (*) JMP, JSJ, JOV, JNOV, JL, JE, JG, JGE, JNE, JLE
 

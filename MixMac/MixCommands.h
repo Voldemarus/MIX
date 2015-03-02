@@ -45,10 +45,12 @@ typedef enum {
 
 #pragma mark - Command codes to avoid typeouts in assembler/processor
 
+#define CMD_NOP		0
 #define CMD_ADD		1
 #define CMD_SUB		2
 #define CMD_MUL		3
 #define CMD_DIV		4
+#define CMD_HLT		5
 #define CMD_SLA		6
 #define CMD_MOVE	7
 #define CMD_LDA		8

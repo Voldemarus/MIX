@@ -11,6 +11,8 @@
 
 #import "DebugPrint.h"
 
+NSString * const MIXCPUHaltStateChanged = @"MIXCPUHaltStateChanged";
+
 @interface MIXCPU() {
 	
 	MixCommands *commands;
@@ -25,6 +27,8 @@
 	
 	BOOL overflowFlag;
 	MIX_COMPARASION comparasionFlag;
+	
+	BOOL		halt;
 }
 
 @end
@@ -89,6 +93,7 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 			cell.byte[j] = 0;
 		}
 	}
+	halt = NO;
 }
 
 - (void) clearFlags
@@ -261,6 +266,11 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 	jumpRegister.indexByte[1] = J.indexByte[1];
 }
 
+- (BOOL) haltStatus{
+	return halt;
+}
+
+
 #pragma mark Index Registers access
 
 - (void) setIndexRegister:(MIXINDEX) aValue withNumber:(int)aIndex
@@ -419,6 +429,7 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 		// Decode CPU commands
 		//
 		switch (operCode) {
+			case CMD_NOP:		break;
 			case CMD_LDA:		[self processLDACommand:command negate:NO]; break;
 			case CMD_LDX:		[self processLDXCommand:command negate:NO]; break;
 			case CMD_LD1:
@@ -477,6 +488,7 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 			case CMD_J6:		[self processJINCommand:command forRegister:(operCode-CMD_JAN)]; break;
 			case CMD_SLA:		[self processSLACommand:command]; break;
 			case CMD_MOVE:		[self processMOVECommand:command]; break;
+			case CMD_HLT:		[self processHaltCommand:command]; break;
 				
 			default: {
 				[NSException raise:MIXExceptionInvalidOperationCode
@@ -1252,6 +1264,28 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 		if (destAddr >= MIX_MEMORY_SIZE) { destAddr = 0; }
 	}
 }
+
+- (void) processHaltCommand:(MIXWORD) command
+{
+	Byte modifier = command.byte[3];
+	switch (modifier) {
+		case MIX_F_SHORT2:		[self processActualHalt]; break;
+			
+			
+		default:
+			[NSException raise:MIXExceptionInvalidFieldModifer
+						format:RStr(MIXExceptionInvalidFieldModifer)];
+	}
+}
+
+- (void) processActualHalt
+{
+	halt = YES;
+	self.PC = self.PC - 1;
+	if (self.PC < 0) { self.PC = MIX_MEMORY_SIZE - 1; }
+	[[NSNotificationCenter defaultCenter] postNotificationName:MIXCPUHaltStateChanged object:self];
+}
+
 
 #pragma mark - Internal service methods
 

@@ -76,7 +76,7 @@
 	memoryCell.byte[2] = indexReg;
 	memoryCell.byte[3] = (modifier == MIX_F_NOTDEFINED ? cmd.defaultFField : modifier);
 	memoryCell.byte[4] = cmd.commandCode;
-
+	
 	return memoryCell;
 }
 
