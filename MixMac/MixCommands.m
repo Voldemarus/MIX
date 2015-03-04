@@ -3,7 +3,7 @@
 //  MixMac
 //
 //  Created by Водолазкий В.В. on 14.02.15.
-//  Copyright (c) 2015 Geomatix Laboratoriess S.R.O. All rights reserved.
+//  Copyright (c) 2015 Geomatix Laboratoriy S.R.O. All rights reserved.
 //
 
 #import "MixCommands.h"
@@ -254,7 +254,8 @@
 				@[ @"MOVE",	@(MIX_F_NOTDEFINED), @(CMD_MOVE), @(1), RStr(@"Move memory block")],
 				@[ @"NOP",	@(MIX_F_NOTDEFINED), @(CMD_MOVE), @(1), RStr(@"No operation")],
 				@[ @"HLT",	@(MIX_F_SHORT2), @(CMD_HLT), @(10), RStr(@"Halt CPU")],
-				
+				@[ @"IN",	@(MIX_F_NOTDEFINED), @(CMD_IN), @(1), RStr(@"Input data")],
+				@[ @"OUT",	@(MIX_F_NOTDEFINED), @(CMD_OUT), @(1), RStr(@"Output data")],
 				];
 }
 

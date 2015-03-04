@@ -3,11 +3,11 @@
   MixMac
 
   Created by Водолазкий В.В. on 14.02.15.
-  Copyright (c) 2015 Geomatix Laboratoriess S.R.O. All rights reserved.
+  Copyright (c) 2015 Geomatix Laboratoriy S.R.O. All rights reserved.
 */
 
 //
-// !!!!!!!!!!!!!	This is a base file, common ancestor to all localizations.
+// !!!!!!!!!!!!!	This is a base English file, common ancestor to all localizations.
 //					Please do not edit it! If you want to add localization - creatte version
 //					of this file for your language.
 //
@@ -175,4 +175,16 @@
 
 "Move memory block" = "Move memory block";
 "No operation" = "No operation";
+"Input data" = "Input data";
+"Output data" = "Output data";
+
+"Magnetic Tape" = "Magnetic Tape";
+"Magnetic Disk" = "Magnetic Disk";
+"Punch card reader" = "Punch card reader";
+"Punch card writer" = "Punch card writer";
+"Line Printer" = "Line Printer";
+"Console teletype" = "Console teletype";
+"Perforated ribbon" = "Perforated ribbon";
+
+
 

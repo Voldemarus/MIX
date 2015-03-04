@@ -22,6 +22,7 @@
 		1BE9D4D11A9E31E200CB5187 /* JumpTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BE9D4D01A9E31E200CB5187 /* JumpTests.m */; };
 		1BE9D4D41AA4419200CB5187 /* testShiftOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BE9D4D31AA4419200CB5187 /* testShiftOperations.m */; };
 		1BE9D5031AA4A7D400CB5187 /* moveTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BE9D5021AA4A7D400CB5187 /* moveTest.m */; };
+		1BE9D5341AA61D5500CB5187 /* MIXFileCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BE9D5331AA61D5500CB5187 /* MIXFileCollection.m */; };
 		1BEF64621A96343A0039EBBE /* MIXTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BEF64611A96343A0039EBBE /* MIXTest.m */; };
 		1BEF64651A96366A0039EBBE /* ArithmeticTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BEF64641A96366A0039EBBE /* ArithmeticTests.m */; };
 		1BEF64671A99F7F50039EBBE /* EntFamilyTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BEF64661A99F7F50039EBBE /* EntFamilyTest.m */; };
@@ -66,6 +67,8 @@
 		1BE9D4D01A9E31E200CB5187 /* JumpTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JumpTests.m; sourceTree = "<group>"; };
 		1BE9D4D31AA4419200CB5187 /* testShiftOperations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = testShiftOperations.m; sourceTree = "<group>"; };
 		1BE9D5021AA4A7D400CB5187 /* moveTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = moveTest.m; sourceTree = "<group>"; };
+		1BE9D5321AA61D5500CB5187 /* MIXFileCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MIXFileCollection.h; sourceTree = "<group>"; };
+		1BE9D5331AA61D5500CB5187 /* MIXFileCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MIXFileCollection.m; sourceTree = "<group>"; };
 		1BEF64601A96343A0039EBBE /* MIXTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MIXTest.h; sourceTree = "<group>"; };
 		1BEF64611A96343A0039EBBE /* MIXTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MIXTest.m; sourceTree = "<group>"; };
 		1BEF64641A96366A0039EBBE /* ArithmeticTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArithmeticTests.m; sourceTree = "<group>"; };
@@ -168,6 +171,8 @@
 				1B79436E1A8F379A00197FF3 /* MIXCPU.m */,
 				1B7943791A8F691A00197FF3 /* MixCommands.h */,
 				1B79437A1A8F691A00197FF3 /* MixCommands.m */,
+				1BE9D5321AA61D5500CB5187 /* MIXFileCollection.h */,
+				1BE9D5331AA61D5500CB5187 /* MIXFileCollection.m */,
 			);
 			name = CPU;
 			sourceTree = "<group>";
@@ -237,7 +242,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0610;
-				ORGANIZATIONNAME = "Geomatix Laboratoriess S.R.O.";
+				ORGANIZATIONNAME = "Geomatix Laboratoriy S.R.O.";
 				TargetAttributes = {
 					1B7943421A8F375400197FF3 = {
 						CreatedOnToolsVersion = 6.1.1;
@@ -297,6 +302,7 @@
 				1B79436F1A8F379A00197FF3 /* MIXCPU.m in Sources */,
 				1B79437B1A8F691A00197FF3 /* MixCommands.m in Sources */,
 				1B79434C1A8F375400197FF3 /* main.m in Sources */,
+				1BE9D5341AA61D5500CB5187 /* MIXFileCollection.m in Sources */,
 				1B79434A1A8F375400197FF3 /* AppDelegate.m in Sources */,
 				1B7943731A8F3BA400197FF3 /* Preferences.m in Sources */,
 			);

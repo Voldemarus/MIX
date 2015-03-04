@@ -3,7 +3,7 @@
 //  MixMac
 //
 //  Created by Водолазкий В.В. on 14.02.15.
-//  Copyright (c) 2015 Geomatix Laboratoriess S.R.O. All rights reserved.
+//  Copyright (c) 2015 Geomatix Laboratoriy S.R.O. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -28,7 +28,8 @@
 #define PUNCH_READER		(MT_AMOUNT+MD_AMOUNT)		// punchcard reader
 #define PUNCH_WRITER		(PUNCH_READER+1)			// punchcard writer
 #define PRINTER				(PUNCH_WRITER+1)			// printer
-#define PERFOLENTA			(PRINTER+1)					// punch ribbon
+#define CONSOLE				(PRINTER+1)					// console input
+#define PERFOLENTA			(CONSOLE+1)					// punch ribbon
 
 // Memeory cell consists of 5 bytes and sign
 typedef struct {

@@ -3,7 +3,7 @@
 //  MixMac
 //
 //  Created by Водолазкий В.В. on 14.02.15.
-//  Copyright (c) 2015 Geomatix Laboratoriess S.R.O. All rights reserved.
+//  Copyright (c) 2015 Geomatix Laboratoriy S.R.O. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -79,6 +79,8 @@ typedef enum {
 #define CMD_STX		31
 #define CMD_STJ		32
 #define CMD_STZ		33
+#define CMD_IN		36
+#define CMD_OUT		37
 #define CMD_JMP		39
 #define CMD_JAN		40
 #define CMD_J1		41
