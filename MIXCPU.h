@@ -31,6 +31,15 @@
 #define CONSOLE				(PRINTER+1)					// console input
 #define PERFOLENTA			(CONSOLE+1)					// punch ribbon
 
+extern NSString * const DEVICE_MT;
+extern NSString * const DEVICE_MD;
+extern NSString * const DEVICE_PNR;
+extern NSString * const DEVICE_PNW;
+extern NSString * const DEVICE_LPR;
+extern NSString * const DEVICE_CON;
+extern NSString * const DEVICE_RIB;
+
+
 // Memeory cell consists of 5 bytes and sign
 typedef struct {
 	BOOL sign;
@@ -54,7 +63,17 @@ typedef enum
 } MIX_COMPARASION;
 
 
+// Notificators
 extern NSString * const MIXCPUHaltStateChanged;
+
+
+// Exceptions
+extern NSString * const MIXExceptionInvalidMemoryCellIndex;
+extern NSString * const MIXExceptionInvalidIndexRegister;
+extern NSString * const MIXExceptionInvalidOperationCode;
+extern NSString * const MIXExceptionInvalidFieldModifer;
+extern NSString * const MIXExceptionInvalidFileHandler;
+
 
 
 @interface MIXCPU : NSObject
@@ -81,7 +100,7 @@ extern NSString * const MIXCPUHaltStateChanged;
 @property (nonatomic, readwrite) MIXINDEX index6;
 
 
-@property (nonatomic, readonly)		BOOL overflow;		// overflow indocator
+@property (nonatomic, readonly)	BOOL overflow;			// overflow indocator
 @property (nonatomic, readonly) MIX_COMPARASION flag;	// comparasion result flag
 @property (nonatomic, readonly) BOOL haltStatus;		// YES if CPU in the Halt State
 
@@ -115,5 +134,26 @@ extern NSString * const MIXCPUHaltStateChanged;
 // Helpers to simplify access to Index Registers
 - (void) storeOffset:(int)offset inIndexRegister:(int)aIndex;
 - (int) offsetInIndexRegister:(int)aIndex;
+
+// Char conversion
+/**
+ 	Extracts chars from the word
+ */
+- (NSString *) charsFromWord:(MIXWORD) word;
+
+/**
+ 	Converts substring (up to MIX_WORD_SIZE) to the word
+ */
+- (MIXWORD) wordFromChars:(NSString *)chars;
+
+/**
+ 	returns char for the given code
+ */
+- (NSString *) charForCode:(long) code;
+
+/**
+ 	return code for the given char
+ */
+- (long) codeForChar:(NSString *)aChar;
 
 @end

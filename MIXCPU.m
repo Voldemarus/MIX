@@ -28,6 +28,7 @@ NSString * const MIXCPUHaltStateChanged = @"MIXCPUHaltStateChanged";
 	
 	BOOL overflowFlag;
 	MIX_COMPARASION comparasionFlag;
+	NSString *charList;
 	
 	BOOL		halt;
 }
@@ -38,7 +39,16 @@ NSString * const MIXExceptionInvalidMemoryCellIndex	=	@"MIXExceptionInvalidMemor
 NSString * const MIXExceptionInvalidIndexRegister	=	@"MIXExceptionInvalidIndexRegister";
 NSString * const MIXExceptionInvalidOperationCode	=	@"MIXExceptionInvalidOperationCode";
 NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldModifer";
+NSString * const MIXExceptionInvalidFileHandler		=	@"MIXExceptionInvalidFileHandler";
 
+
+NSString * const DEVICE_MT = @"MT";
+NSString * const DEVICE_MD = @"MD";
+NSString * const DEVICE_PNR = @"PNR";
+NSString * const DEVICE_PNW = @"PNW";
+NSString * const DEVICE_LPR = @"LPR";
+NSString * const DEVICE_CON = @"CON";
+NSString * const DEVICE_RIB = @"RIB";
 
 @implementation MIXCPU
 
@@ -57,7 +67,7 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 {
 	if (self = [super init]) {
 		self.sixBitByte = [Preferences sharedPreferences].byteHas6Bit;
-		
+		charList = @" ABCDEFGHI∆JKLMNOPQR∑∏STUVWXYZ0123456789.,()+-*/=$<>>@;'";
 		commands = [MixCommands sharedInstance];	// set up commands data
 		NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
 		[nc addObserver:self selector:@selector(byteSizeChanged:) name:VVVbyteSizeChanged object:nil];
@@ -211,6 +221,54 @@ NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldMod
 	return result;
 }
 
+#pragma mark - Char conversion
+
+// Create character representation for binary code
+- (NSString *) charForCode:(long) code
+{
+	if (code < 0 || code >= charList.length) {
+		return nil;
+	}
+	return [charList substringWithRange:NSMakeRange(code,1)];
+}
+
+// Get code for selected char
+- (long) codeForChar:(NSString *)aChar
+{
+	if (!aChar || aChar.length == 0) {
+		return NSNotFound;
+	}
+	aChar = [aChar uppercaseString];	// sanity check to avoid bugs with lowercase chars
+	NSRange index = [charList rangeOfString:aChar];
+	return  index.location;
+}
+
+/**
+ 	Converts content of the word to sequence of the chars
+ */
+- (NSString *) charsFromWord:(MIXWORD) word
+{
+	NSMutableString *result;
+	for (int i = 0; i < MIX_WORD_SIZE; i++) {
+		NSString *c = [self charForCode:word.byte[i]];
+		if (!c) {
+			c = @"□";
+		}
+		[result appendString:c];
+	}
+	return result;
+}
+
+- (MIXWORD) wordFromChars:(NSString *)chars
+{
+	MIXWORD result;
+	result.sign = NO;
+	for (int i = 0; i < MIX_WORD_SIZE; i++) {
+		NSString *currentChar = (i < chars.length ? [chars substringWithRange:NSMakeRange(i,1)] : @" ");
+		result.byte[i] = [self codeForChar:currentChar];
+	}
+	return result;
+}
 
 #pragma mark - properties getter/seeter methods
 
