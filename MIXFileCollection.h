@@ -24,8 +24,30 @@ typedef NS_ENUM(NSInteger, StreamDirection) {
 @property (nonatomic, readwrite) NSInteger blockSize;		// size of block in MIXWORDs
 @property (nonatomic, retain) NSString *deviceName;			// full device name, ex. MT1, MD3, PRN
 
+@property (nonatomic, readonly) NSInteger fileHandler;		// file Handler
+@property (nonatomic, readonly) StreamDirection direction;
+@property (nonatomic, readonly) BOOL charIO;				// YES - caracters, NO - binary
+
 @property (nonatomic, readonly) BOOL eof;					// end of file reached during read
 @property (nonatomic, readonly) BOOL bof;					// writer head is set to the beginning of file
+
+
+/**
+ 	Creates instance of file with parameters, defined in MixFileCollection
+ */
+- (instancetype) initFileWithParameters:(NSDictionary *)parameters;
+
+
+// Designated constructors
+
+- (instancetype) initMTFilewithDevice:(NSInteger) mtNum;
+- (instancetype) initMDFileWithDevice:(NSInteger) mdNum;
+- (instancetype) initPunchReader;
+- (instancetype) initPunchWriter;
+- (instancetype) initLinePrinter;
+- (instancetype) initConsole;
+- (instancetype) initPerfolenta;
+
 
 /**
  	pointer to current block, pointed by file handler
@@ -38,7 +60,7 @@ typedef NS_ENUM(NSInteger, StreamDirection) {
 - (void) closeFile;
 
 /**
- 	Read blocks fro m the current position. Non complete block is filled with zero MIX words at the end.
+ 	Read block from the current position. Non complete block is filled with zero MIX words at the end.
  */
 - (MIXWORD *) readBlock;
 

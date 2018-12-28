@@ -66,16 +66,6 @@ typedef enum
 // Notificators
 extern NSString * const MIXCPUHaltStateChanged;
 
-
-// Exceptions
-extern NSString * const MIXExceptionInvalidMemoryCellIndex;
-extern NSString * const MIXExceptionInvalidIndexRegister;
-extern NSString * const MIXExceptionInvalidOperationCode;
-extern NSString * const MIXExceptionInvalidFieldModifer;
-extern NSString * const MIXExceptionInvalidFileHandler;
-
-
-
 @interface MIXCPU : NSObject
 
 @property (nonatomic, readwrite) BOOL sixBitByte;		// YES - 6 bit in bye, NO - 8 bit

@@ -11,6 +11,7 @@
 
 #import "MIXCPU.h"
 #import "DebugPrint.h"
+#import "MIXExceptions.h"
 
 
 // NSCoding protocol identifiers
@@ -21,12 +22,15 @@ NSString * const MIX_SEQ_FILE_BLOCKSIZE	=	@"MIX_SEQ_FILE_BLOCKSIZE";
 NSString * const MIX_SEQ_FILE_DEVNAME	=	@"MIX_SEQ_FILE_DEVNAME";
 NSString * const MIX_SEQ_FILE_BLOCK_NO	=	@"MIX_SEQ_FILE_BLOCK_NO_";
 NSString * const MIX_SEQ_FILE_WORD		=	@"MSW";
+NSString * const MIX_SEQ_FILE_DEVCODE	=	@"MSDCODE";
+NSString * const MIX_SEQ_FILE_DEVNUM	=	@"MSCDEVNUM";
 
 
 @interface MIXSeqFile () {
+	NSInteger handlerNumber;
+	
 }
-@property (nonatomic, readwrite) 	MIXWORD *block;	// pointer to current block of MIXWORDs
-
+@property (nonatomic, readwrite) 	MIXWORD *block;	// pointer to file content of MIXWORDs
 
 @end
 
@@ -36,6 +40,121 @@ NSString * const MIX_SEQ_FILE_WORD		=	@"MSW";
 @synthesize fileSize, filePosition, blockSize;
 @synthesize deviceName;
 
+/**
+ Dictionary:
+ 		MIX_SEQ_FILE_DEVCODE	:		DEVICE_NAME_KEY
+ 		MIX_SEQ_FILE_DEVNUM		:		0..MAXAMOUNT for given DEVICE_NAME_KEY
+ 		DEVICE_NAME_KEY			:		@[Array from deviceParameters]
+ 
+ 
+ */
+- (instancetype) initFileWithParameters:(NSDictionary *)parameters
+{
+	if (self = [super init]) {
+		self.filePosition = 0;
+		NSString *devKey = [parameters[MIX_SEQ_FILE_DEVCODE] uppercaseString];
+		NSInteger devNum = [parameters[MIX_SEQ_FILE_DEVNUM] integerValue];
+		NSArray *params = parameters[devKey];
+		if (!params) {
+			return nil;
+		}
+		NSInteger startNum = [params[0] integerValue];		// Minimal fileHandler num
+		NSInteger maxAmount = [params[1] integerValue];		// Total amount of devices
+		self.blockSize = [params[2] integerValue];
+		_direction = [params[3] integerValue];
+		_charIO = [params[4] boolValue];
+		if (devNum < 0 || devNum >= maxAmount) {
+			// invalid device number !
+			return nil;
+		}
+		handlerNumber = startNum + devNum;
+		self.deviceName = [NSString stringWithFormat:@"%@%ld", devKey,(long)devNum];
+		self.filePosition = 0;
+		self.fileSize = 0;
+		
+	}
+	return self;
+}
+
+- (NSInteger) fileHandler
+{
+	return handlerNumber;
+}
+
+- (void) closeFile
+{
+	free(self.block);
+}
+
+
+- (MIXWORD *) readBlock
+{
+	MIXWORD *blockArray = malloc(sizeof(MIXWORD)*self.blockSize);
+	if (!blockArray) {
+		return nil;
+	}
+	memset(blockArray, 0, sizeof(MIXWORD)*self.blockSize);
+	NSInteger endOfBlock = self.filePosition + self.blockSize;
+	if (endOfBlock >= self.fileSize) {
+		endOfBlock = self.fileSize;
+	}
+	int destOffset = 0;
+	for (NSInteger i = self.filePosition; i < endOfBlock; i++) {
+		[self copyMixWord:self.block[i] toNewMixWord:blockArray[destOffset++]];
+	}
+	self.filePosition = endOfBlock;
+	return blockArray;
+}
+
+/**
+ 	filePosition is set to MIXWORD offset, but newPosition argument points to block number
+ */
+- (void) rewindToPosition:(NSInteger) newPosition
+{
+	if (newPosition <= 0) {
+		self.filePosition = 0;
+	}
+	NSInteger blockOffset = newPosition * self.blockSize;
+	if (self.fileSize >= blockOffset) {
+		// set up to the eof position
+		self.filePosition = self.fileSize;
+	} else {
+		self.filePosition = blockOffset;
+	}
+}
+
+/**
+ 	Due to file is sequential, when write operation is finished file size will be truncated
+ 	to the current position, so EOF will be set
+ 
+ */
+- (void) writeBlock:(MIXWORD *)aBlock
+{
+	NSInteger finalPosition = self.filePosition + self.blockSize;
+	if (finalPosition > self.fileSize) {
+		if (self.block) {
+			// Not enough memory allocated, assign more
+			self.block = realloc(self.block, self.fileSize+self.blockSize*sizeof(MIXWORD));
+		} else {
+			self.block = malloc(self.blockSize * sizeof(MIXWORD));
+		}
+	}
+	for (NSInteger i = 0; i < self.blockSize; i++) {
+		[self copyMixWord:aBlock[i] toNewMixWord:self.block[self.fileSize+i]];
+	}
+	self.fileSize += self.blockSize;
+	self.filePosition = self.fileSize;
+}
+
+- (BOOL) bof
+{
+	return (self.filePosition == 0);
+}
+
+- (BOOL) eof
+{
+	return (self.filePosition >= self.fileSize);
+}
 
 #pragma mark - NSCopying -
 
@@ -46,18 +165,14 @@ NSString * const MIX_SEQ_FILE_WORD		=	@"MSW";
 	newFile.fileSize = self.fileSize;
 	newFile.blockSize = self.blockSize;
 	newFile.deviceName = self.deviceName;
-	newFile.block = malloc(self.fileSize + 100 * self.blockSize);
+	newFile.block = malloc(self.fileSize );
 	if (self.fileSize > 0) {
 		memcpy(newFile.block, self.block, sizeof(MIXWORD)*self.fileSize);
 	}
 	return newFile;
 }
 
-- (void) closeFile
-{
-	free(self.block);
-}
-						   
+
 #pragma mark - NSCoding -
 
 - (id)initWithCoder:(NSCoder *)decoder
@@ -68,15 +183,11 @@ NSString * const MIX_SEQ_FILE_WORD		=	@"MSW";
 	self.blockSize = [decoder decodeIntegerForKey:MIX_SEQ_FILE_BLOCKSIZE];
 	self.deviceName = [decoder decodeObjectForKey:MIX_SEQ_FILE_DEVNAME];
 	// set up small reserve
-	self.block = malloc(sizeof(MIXWORD) * (self.fileSize + 100 * self.blockSize));
+	self.block = malloc(sizeof(MIXWORD) * self.fileSize);
 	for (NSInteger i = 0; i < self.fileSize; i++) {
 		NSString *bf = [NSString stringWithFormat:@"%@%ld",MIX_SEQ_FILE_WORD,(long)i];
 		MIXWORD cWord = [self decodeMixWord:decoder withKey:bf];
-		MIXWORD blockWord = self.block[i];
-		blockWord.sign = cWord.sign;
-		for (int k = 0; k < MIX_WORD_SIZE; k++) {
-			blockWord.byte[i] = cWord.byte[i];
-		}
+		[self copyMixWord:cWord toNewMixWord:self.block[i]];
 	}
 	return self;
 }
@@ -109,6 +220,29 @@ NSString * const MIX_SEQ_FILE_WORD		=	@"MSW";
 	for (int i = 0; i < MIX_WORD_SIZE; i++) {
 		NSString *byteFormat = [NSString stringWithFormat:@"%@_b_%d",key,i];
 		[aCoder encodeInt:mixWord.byte[i] forKey:byteFormat];
+	}
+}
+
+/**
+ 	value is malloced, don't forget to free !
+ */
+- (MIXWORD *) createMixWordCopy:(MIXWORD) old
+{
+	MIXWORD *new = malloc(sizeof(MIXWORD));
+	if (new) {
+		new->sign = old.sign;
+		for (int i = 0; i < MIX_WORD_SIZE; i++) {
+			new->byte[i] = old.byte[i];
+		}
+	}
+	return new;
+}
+
+- (void) copyMixWord:(MIXWORD) old toNewMixWord:(MIXWORD)newWord
+{
+	newWord.sign = old.sign;
+	for (int i = 0; i < MIX_WORD_SIZE; i++) {
+		newWord.byte[i] = old.byte[i];
 	}
 }
 

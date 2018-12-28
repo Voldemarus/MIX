@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1B55AD9021D4D68B0087A1E0 /* DemoProg.mix in Resources */ = {isa = PBXBuildFile; fileRef = 1B55AD8F21D4D68B0087A1E0 /* DemoProg.mix */; };
 		1B79434A1A8F375400197FF3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B7943491A8F375400197FF3 /* AppDelegate.m */; };
 		1B79434C1A8F375400197FF3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B79434B1A8F375400197FF3 /* main.m */; };
 		1B79434F1A8F375400197FF3 /* Document.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B79434E1A8F375400197FF3 /* Document.m */; };
@@ -39,6 +40,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1B55AD8F21D4D68B0087A1E0 /* DemoProg.mix */ = {isa = PBXFileReference; lastKnownFileType = text; path = DemoProg.mix; sourceTree = "<group>"; };
 		1B7943431A8F375400197FF3 /* MixMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MixMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1B7943471A8F375400197FF3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1B7943481A8F375400197FF3 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -152,6 +154,7 @@
 				1BEF64601A96343A0039EBBE /* MIXTest.h */,
 				1BEF64611A96343A0039EBBE /* MIXTest.m */,
 				1B7943601A8F375400197FF3 /* Supporting Files */,
+				1B55AD8F21D4D68B0087A1E0 /* DemoProg.mix */,
 			);
 			path = MixMacTests;
 			sourceTree = "<group>";
@@ -290,6 +293,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B55AD9021D4D68B0087A1E0 /* DemoProg.mix in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

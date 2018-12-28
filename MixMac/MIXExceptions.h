@@ -18,3 +18,7 @@ extern NSString * const MIXExceptionInvalidOperationCode;
 
 // incorrect value fro field modifier
 extern NSString * const MIXExceptionInvalidFieldModifer;
+
+// invalid file handler. Should be in range 0..PERFOLENTA
+extern NSString * const MIXExceptionInvalidFileHandler;
+
