@@ -32,22 +32,34 @@ typedef NS_ENUM(NSInteger, StreamDirection) {
 @property (nonatomic, readonly) BOOL bof;					// writer head is set to the beginning of file
 
 
-/**
- 	Creates instance of file with parameters, defined in MixFileCollection
- */
-- (instancetype) initFileWithParameters:(NSDictionary *)parameters;
-
 
 // Designated constructors
 
-- (instancetype) initMTFilewithDevice:(NSInteger) mtNum;
-- (instancetype) initMDFileWithDevice:(NSInteger) mdNum;
-- (instancetype) initPunchReader;
-- (instancetype) initPunchWriter;
-- (instancetype) initLinePrinter;
-- (instancetype) initConsole;
-- (instancetype) initPerfolenta;
++ (instancetype) createMTFilewithDevice:(NSInteger) mtNum;
++ (instancetype) createMDFileWithDevice:(NSInteger) mdNum;
++ (instancetype) createPunchReader;
++ (instancetype) createPunchWriter;
++ (instancetype) createLinePrinter;
++ (instancetype) createConsole;
++ (instancetype) createPerfolenta;
 
+/**
+ 	Replaces initial part of the READ oriented file with array of MIXWORD
+ 	Designed to prepare inital set of data to be read in program
+ */
+- (void) fillReadBufferWithBlockData:(MIXWORD *)blockData;
+
+/**
+ 	Import content of the file from the external file. FikePosition is set to zero
+ 	Returns YES if operation is successful, NO otherwise
+ */
+- (BOOL) importDataFromFile:(NSString *)path;
+
+/**
+ 	Store content of the file in the external file. Fpormat depends on the
+ 	MIX device' type. Returns YES if operation finished sucessfully, NO -otherwise.
+ */
+- (BOOL) exportDataToFile:(NSString *) path;
 
 /**
  	pointer to current block, pointed by file handler
@@ -80,6 +92,19 @@ typedef NS_ENUM(NSInteger, StreamDirection) {
 
 @interface MIXFileCollection : NSObject  <NSCopying, NSCoding>
 
+/**
+ 	Set of file handlers which are opened 
+ */
+@property (nonatomic, readonly) NSArray *fileCollection;
+
++ (MIXFileCollection *) sharedCollection;
+
 + (NSDictionary *) deviceParameters;	// Returns list with device parameters
+
+- (void) addFile:(MIXSeqFile *)file;
+- (void) closeFile:(MIXSeqFile *) file;
+
+- (MIXSeqFile *) fileByName:(NSString *)fileName;
+- (MIXSeqFile *) fileByHandler:(NSInteger) fileHandler;
 
 @end

@@ -32,6 +32,12 @@ NSString * const MIX_SEQ_FILE_DEVNUM	=	@"MSCDEVNUM";
 }
 @property (nonatomic, readwrite) 	MIXWORD *block;	// pointer to file content of MIXWORDs
 
+/**
+ Creates instance of file with parameters, defined in MixFileCollection
+ */
+- (instancetype) initFileWithParameters:(NSDictionary *)parameters;
+
+
 @end
 
 
@@ -65,16 +71,68 @@ NSString * const MIX_SEQ_FILE_DEVNUM	=	@"MSCDEVNUM";
 		_charIO = [params[4] boolValue];
 		if (devNum < 0 || devNum >= maxAmount) {
 			// invalid device number !
+			[NSException raise:MIXExceptionInvalidDeviceNumber format:RStr(MIXExceptionInvalidDeviceNumber)];
 			return nil;
 		}
 		handlerNumber = startNum + devNum;
 		self.deviceName = [NSString stringWithFormat:@"%@%ld", devKey,(long)devNum];
 		self.filePosition = 0;
 		self.fileSize = 0;
-		
 	}
 	return self;
 }
+
+
++ (MIXSeqFile *) createWithKey:(NSString *)aDevName andNum:(NSInteger) aNum
+{
+	NSArray *parameters = [[MIXFileCollection deviceParameters] objectForKey:aDevName];
+	if (!parameters) {
+		return nil;
+	}
+	NSDictionary *params = @{
+							 MIX_SEQ_FILE_DEVCODE	:	aDevName,
+							 MIX_SEQ_FILE_DEVNUM	:	@(aNum),
+							 aDevName				:	parameters,
+							 };
+	MIXSeqFile *file = [[MIXSeqFile alloc] initFileWithParameters:params];
+	return file;
+}
+
++ (instancetype) createMTFilewithDevice:(NSInteger) mtNum
+{
+	return [MIXSeqFile createWithKey:DEVICE_MT andNum:mtNum];
+}
+
++ (instancetype) createMDFileWithDevice:(NSInteger) mdNum
+{
+	return [MIXSeqFile createWithKey:DEVICE_MD andNum:mdNum];
+}
+
++ (instancetype) createPunchReader
+{
+	return [MIXSeqFile createWithKey:DEVICE_PNR andNum:0];
+}
+
++ (instancetype) createPunchWriter
+{
+	return [MIXSeqFile createWithKey:DEVICE_PNW andNum:0];
+}
+
++ (instancetype) createLinePrinter
+{
+	return [MIXSeqFile createWithKey:DEVICE_LPR andNum:0];
+}
+
++ (instancetype) createConsole
+{
+	return [MIXSeqFile createWithKey:DEVICE_CON andNum:0];
+}
+
++ (instancetype) createPerfolenta
+{
+	return [MIXSeqFile createWithKey:DEVICE_RIB andNum:0];
+}
+
 
 - (NSInteger) fileHandler
 {
@@ -155,6 +213,25 @@ NSString * const MIX_SEQ_FILE_DEVNUM	=	@"MSCDEVNUM";
 {
 	return (self.filePosition >= self.fileSize);
 }
+
+#pragma mark - Import/Export
+
+- (void) fillReadBufferWithBlockData:(MIXWORD *)blockData
+{
+	
+}
+
+- (BOOL) importDataFromFile:(NSString *)path
+{
+	return NO;
+}
+
+- (BOOL) exportDataToFile:(NSString *) path
+{
+	
+	return NO;
+}
+
 
 #pragma mark - NSCopying -
 
@@ -263,7 +340,6 @@ NSString * const MIX_SEQ_FILE_COUNT		=	@"MIX_SEQ_FILE_COUNT";
 
 - (id) initWithArray:(NSArray *)deviceArray;
 
-@property (nonatomic, readonly) NSArray *fileCollection;
 
 @end
 
@@ -271,11 +347,24 @@ NSString * const MIX_SEQ_FILE_COUNT		=	@"MIX_SEQ_FILE_COUNT";
 
 @implementation MIXFileCollection
 
+
++ (MIXFileCollection *) sharedCollection
+{
+	static MIXFileCollection *__collection = nil;
+	if (!__collection) {
+		__collection = [[MIXFileCollection alloc] initWithArray:nil];
+	}
+	return __collection;
+}
+
+
 - (id) initWithArray:(NSArray *)deviceArray
 {
 	if (self = [super init]) {
 		if (deviceArray) {
 			fileCollection = [[NSMutableArray alloc] initWithArray:deviceArray copyItems:YES];
+		} else {
+			fileCollection = [NSMutableArray new];
 		}
 	}
 	return self;
@@ -330,6 +419,45 @@ NSString * const MIX_SEQ_FILE_COUNT		=	@"MIX_SEQ_FILE_COUNT";
 {
 	return [NSArray arrayWithArray:fileCollection];
 }
+
+- (void) addFile:(MIXSeqFile *)file
+{
+	MIXSeqFile *present = [self fileByName:file.deviceName];
+	if (!present) {
+		[fileCollection addObject:file];
+	}
+}
+- (void) closeFile:(MIXSeqFile *) file
+{
+	MIXSeqFile *present = [self fileByName:file.deviceName];
+	if (!present) {
+		[present closeFile];
+		[fileCollection removeObject:present];
+	}
+}
+
+- (MIXSeqFile *) fileByName:(NSString *)fileName
+{
+	for (MIXSeqFile *mf in fileCollection) {
+		if ([mf.deviceName isEqualToString:fileName]) {
+			return mf;
+		}
+	}
+	return nil;
+}
+
+- (MIXSeqFile *) fileByHandler:(NSInteger) fileHandler
+{
+	for (MIXSeqFile *mf in fileCollection) {
+		if (mf.fileHandler == fileHandler) {
+			return mf;
+		}
+	}
+	return nil;
+}
+
+
+
 
 #pragma mark - NSCopying -
 

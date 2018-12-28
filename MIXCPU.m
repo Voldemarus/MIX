@@ -40,6 +40,7 @@ NSString * const MIXExceptionInvalidIndexRegister	=	@"MIXExceptionInvalidIndexRe
 NSString * const MIXExceptionInvalidOperationCode	=	@"MIXExceptionInvalidOperationCode";
 NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldModifer";
 NSString * const MIXExceptionInvalidFileHandler		=	@"MIXExceptionInvalidFileHandler";
+NSString * const MIXExceptionInvalidDeviceNumber	=	@"MIXExceptionInvalidDeviceNumber";
 
 
 NSString * const DEVICE_MT = @"MT";

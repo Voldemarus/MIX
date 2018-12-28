@@ -22,3 +22,5 @@ extern NSString * const MIXExceptionInvalidFieldModifer;
 // invalid file handler. Should be in range 0..PERFOLENTA
 extern NSString * const MIXExceptionInvalidFileHandler;
 
+// invalid device number during attempt to create new file handler
+extern NSString * const MIXExceptionInvalidDeviceNumber;
