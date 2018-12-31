@@ -85,6 +85,7 @@ NSString * const DEVICE_RIB = @"RIB";
 	overflowFlag = NO;
 	
 	MIXWORD emptyCell;
+	memset(&emptyCell, 0, sizeof(MIXWORD));
 	self.A = emptyCell;
 	self.X = emptyCell;
 	self.PC = 0;
@@ -247,11 +248,11 @@ NSString * const DEVICE_RIB = @"RIB";
 /**
  	Converts content of the word to sequence of the chars
  */
-- (NSString *) charsFromWord:(MIXWORD) word
++ (NSString *) charsFromWord:(MIXWORD) word
 {
 	NSMutableString *result;
 	for (int i = 0; i < MIX_WORD_SIZE; i++) {
-		NSString *c = [self charForCode:word.byte[i]];
+		NSString *c = [MIXCPU charForCode:word.byte[i]];
 		if (!c) {
 			c = @"□";
 		}
@@ -260,13 +261,13 @@ NSString * const DEVICE_RIB = @"RIB";
 	return result;
 }
 
-- (MIXWORD) wordFromChars:(NSString *)chars
++ (MIXWORD) wordFromChars:(NSString *)chars
 {
 	MIXWORD result;
 	result.sign = NO;
 	for (int i = 0; i < MIX_WORD_SIZE; i++) {
 		NSString *currentChar = (i < chars.length ? [chars substringWithRange:NSMakeRange(i,1)] : @" ");
-		result.byte[i] = [self codeForChar:currentChar];
+		result.byte[i] = [MIXCPU codeForChar:currentChar];
 	}
 	return result;
 }
@@ -282,7 +283,6 @@ NSString * const DEVICE_RIB = @"RIB";
 	}
 	return result;
 }
-
 - (void) setA:(MIXWORD) newA
 {
 	accumultor.sign = newA.sign;

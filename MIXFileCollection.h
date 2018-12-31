@@ -59,7 +59,7 @@ typedef NS_ENUM(NSInteger, StreamDirection) {
  	Store content of the file in the external file. Fpormat depends on the
  	MIX device' type. Returns YES if operation finished sucessfully, NO -otherwise.
  */
-- (BOOL) exportDataToFile:(NSString *) path;
+- (BOOL) exportDataToFile:(NSString *) path asChar:(BOOL)aschar;
 
 /**
  	pointer to current block, pointed by file handler
@@ -98,6 +98,8 @@ typedef NS_ENUM(NSInteger, StreamDirection) {
 @property (nonatomic, readonly) NSArray *fileCollection;
 
 + (MIXFileCollection *) sharedCollection;
+
+- (void) clearFileCollection;
 
 + (NSDictionary *) deviceParameters;	// Returns list with device parameters
 

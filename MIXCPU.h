@@ -129,21 +129,21 @@ extern NSString * const MIXCPUHaltStateChanged;
 /**
  	Extracts chars from the word
  */
-- (NSString *) charsFromWord:(MIXWORD) word;
++ (NSString *) charsFromWord:(MIXWORD) word;
 
 /**
  	Converts substring (up to MIX_WORD_SIZE) to the word
  */
-- (MIXWORD) wordFromChars:(NSString *)chars;
++ (MIXWORD) wordFromChars:(NSString *)chars;
 
 /**
  	returns char for the given code
  */
-- (NSString *) charForCode:(long) code;
++ (NSString *) charForCode:(long) code;
 
 /**
  	return code for the given char
  */
-- (long) codeForChar:(NSString *)aChar;
++ (long) codeForChar:(NSString *)aChar;
 
 @end

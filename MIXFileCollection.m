@@ -75,7 +75,12 @@ NSString * const MIX_SEQ_FILE_DEVNUM	=	@"MSCDEVNUM";
 			return nil;
 		}
 		handlerNumber = startNum + devNum;
-		self.deviceName = [NSString stringWithFormat:@"%@%ld", devKey,(long)devNum];
+		if (startNum < PUNCH_READER) {
+			self.deviceName = [NSString stringWithFormat:@"%@%ld", devKey,(long)devNum];
+		} else {
+			// Do not add device number for unique devices like CON, LPR
+			self.deviceName = devKey;
+		}
 		self.filePosition = 0;
 		self.fileSize = 0;
 	}
@@ -223,14 +228,55 @@ NSString * const MIX_SEQ_FILE_DEVNUM	=	@"MSCDEVNUM";
 
 - (BOOL) importDataFromFile:(NSString *)path
 {
+	NSFileManager *fm = [NSFileManager defaultManager];
+	if ([fm fileExistsAtPath:path] == NO) {
+		return NO;
+	}
+	NSData *data = [[NSData alloc] initWithContentsOfFile:path];
+	// try to convert into proper data
+	NSError *error = nil;
+	MIXSeqFile *loaded = [NSKeyedUnarchiver unarchivedObjectOfClass:[MIXSeqFile class]
+														   fromData:data error:&error];
+	if (loaded) {
+		// copy data from these copy to the current file
+		
+	}
 	return NO;
 }
 
-- (BOOL) exportDataToFile:(NSString *) path
+- (BOOL) exportDataToFile:(NSString *) path asChar:(BOOL)aschar
 {
-	
-	return NO;
+	NSFileManager *fm = [NSFileManager defaultManager];
+	NSError *error = nil;
+	if ([fm fileExistsAtPath:path]) {
+		[fm removeItemAtPath:path error:&error];
+		if (error) {
+			NSLog(@"Cannot remove old data file - %@ --> %@", path, [error localizedDescription]);
+#warning TODO error processing!
+			return NO;
+		}
+	}
+	if (self.fileSize == 0) {
+		// file is empty no need to save it at all
+		return YES;
+	}
+	if (aschar) {
+		// Save file as ordinary char file
+		NSMutableString *resultString = [NSMutableString new];
+		for (NSInteger i = 0; i < self.fileSize; i++) {
+			MIXWORD m = self.block[i];
+			[resultString appendString:[MIXCPU charsFromWord:m]];
+		}
+		[resultString writeToFile:path atomically:NO encoding:NSUTF8StringEncoding error:&error];
+		return (error == nil);
+	} else {
+		// this is binary file, save as simple data stream, based on NSCoder protocol
+		NSData *saveData = [NSKeyedArchiver archivedDataWithRootObject:self];
+		BOOL result = [saveData writeToFile:path atomically:NO];
+		return result;
+	}
 }
+
 
 
 #pragma mark - NSCopying -
@@ -275,6 +321,10 @@ NSString * const MIX_SEQ_FILE_DEVNUM	=	@"MSCDEVNUM";
 	[encoder encodeInteger:self.fileSize forKey:MIX_SEQ_FILE_SIZE];
 	[encoder encodeObject:self.deviceName forKey:MIX_SEQ_FILE_DEVNAME];
 	[encoder encodeInteger:self.blockSize forKey:MIX_SEQ_FILE_BLOCKSIZE];
+	for (NSInteger i = 0; i < self.fileSize; i++) {
+		NSString *bf = [NSString stringWithFormat:@"%@%ld",MIX_SEQ_FILE_WORD,(long)i];
+		[self encodeMixWord:self.block[i] inCoder:encoder withKey:bf];
+	}
 }
 
 - (MIXWORD) decodeMixWord:(NSCoder *)aDecoder withKey:(NSString *)key
@@ -456,7 +506,13 @@ NSString * const MIX_SEQ_FILE_COUNT		=	@"MIX_SEQ_FILE_COUNT";
 	return nil;
 }
 
-
+- (void) clearFileCollection
+{
+	for (MIXSeqFile *mf in fileCollection) {
+		[self closeFile:mf];
+	}
+	[fileCollection removeAllObjects];
+}
 
 
 #pragma mark - NSCopying -

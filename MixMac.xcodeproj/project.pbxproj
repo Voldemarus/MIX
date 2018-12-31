@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1B55AD9021D4D68B0087A1E0 /* DemoProg.mix in Resources */ = {isa = PBXBuildFile; fileRef = 1B55AD8F21D4D68B0087A1E0 /* DemoProg.mix */; };
+		1B55AD9521D8D5370087A1E0 /* MixSeqFileTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B55AD9421D8D5370087A1E0 /* MixSeqFileTest.m */; };
 		1B79434A1A8F375400197FF3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B7943491A8F375400197FF3 /* AppDelegate.m */; };
 		1B79434C1A8F375400197FF3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B79434B1A8F375400197FF3 /* main.m */; };
 		1B79434F1A8F375400197FF3 /* Document.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B79434E1A8F375400197FF3 /* Document.m */; };
@@ -41,6 +42,7 @@
 
 /* Begin PBXFileReference section */
 		1B55AD8F21D4D68B0087A1E0 /* DemoProg.mix */ = {isa = PBXFileReference; lastKnownFileType = text; path = DemoProg.mix; sourceTree = "<group>"; };
+		1B55AD9421D8D5370087A1E0 /* MixSeqFileTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MixSeqFileTest.m; sourceTree = "<group>"; };
 		1B7943431A8F375400197FF3 /* MixMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MixMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1B7943471A8F375400197FF3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1B7943481A8F375400197FF3 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 				1BEF64611A96343A0039EBBE /* MIXTest.m */,
 				1B7943601A8F375400197FF3 /* Supporting Files */,
 				1B55AD8F21D4D68B0087A1E0 /* DemoProg.mix */,
+				1B55AD9421D8D5370087A1E0 /* MixSeqFileTest.m */,
 			);
 			path = MixMacTests;
 			sourceTree = "<group>";
@@ -324,6 +327,7 @@
 				1B7943631A8F375400197FF3 /* LoadStoreCommandCPUTests.m in Sources */,
 				1BE9D5031AA4A7D400CB5187 /* moveTest.m in Sources */,
 				1BE9D4D41AA4419200CB5187 /* testShiftOperations.m in Sources */,
+				1B55AD9521D8D5370087A1E0 /* MixSeqFileTest.m in Sources */,
 				1BEF64671A99F7F50039EBBE /* EntFamilyTest.m in Sources */,
 				1BE9D4CF1A9E008800CB5187 /* CompareTests.m in Sources */,
 			);
