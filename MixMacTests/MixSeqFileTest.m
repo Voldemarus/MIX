@@ -6,11 +6,12 @@
 //  Copyright © 2018 Geomatix Laboratoriy S.R.O. All rights reserved.
 //
 
-#import <XCTest/XCTest.h>
 
 #import "MIXFileCollection.h"
 
-@interface MixSeqFileTest : XCTestCase
+#import "MIXTest.h"
+
+@interface MixSeqFileTest : MIXTest
 {
 	MIXFileCollection *collection;
 }
@@ -91,10 +92,32 @@
 	XCTAssertTrue(ribbon.charIO == [fileParams[4] boolValue], @"Character mode should be the same as in parameters");
 	XCTAssertTrue(ribbon.charIO == YES, @"Ribbon is char oriented device");
 	
+	// Test #1 Write block to the device
+	XCTAssertTrue(ribbon.bof == YES, @"Empty file. BOF state should be ON");
+	XCTAssertTrue(ribbon.eof == YES, @"Empty file, EOF state should be ON");
 	
+	MIXWORD *testBlock = calloc(ribbon.blockSize, sizeof(MIXWORD));
 	
+	for (int i = 0; i < ribbon.blockSize; i++) {
+		testBlock[i] = [self mixWordFromInteger:i];
+//		[self printMemoryCell:testBlock[i]];
+	}
+	[ribbon writeBlock:testBlock];
+	XCTAssertTrue(ribbon.bof == NO, @"After write operation BOF should be NO");
+	XCTAssertTrue(ribbon.eof == YES, @"After write operation, EOF state should be ON");
+	XCTAssertTrue(ribbon.filePosition == ribbon.blockSize, @"File offset should be equal to blocksize");
+	
+	// rewind to the start
+	[ribbon rewindToPosition:0];
+	XCTAssertTrue(ribbon.bof == YES, @"After rewind to start BOF should be YES");
+	XCTAssertTrue(ribbon.eof == NO, @"After write operation, EOF state should be ON");
+
+	MIXWORD *readBack = [ribbon readBlock];
+	XCTAssert(readBack, @"Block should be read from the device");
+	[self compareBlock:testBlock withBlock:readBack size:ribbon.blockSize];
 	
 }
+
 
 
 
@@ -106,6 +129,30 @@
 
 }
 
+
+#pragma mark - Utility methods
+
+- (void) compareBlock:(MIXWORD *)blockA withBlock:(MIXWORD *)blockB size:(NSInteger)blockSize
+{
+	for (NSInteger i = 0; i < blockSize; i++) {
+		MIXWORD a = blockA[i];
+		MIXWORD b = blockB[i];
+		XCTAssertTrue(a.sign == b.sign, @"Signs should be eaual");
+		BOOL equal = YES;
+		for (int k = 0; k < MIX_WORD_SIZE; k++) {
+			if (a.byte[k] != b.byte[k] ) {
+				equal = NO;
+			}
+		}
+		XCTAssertTrue(equal, @"Bytes should be equal");
+
+		if (!equal) {
+			NSLog(@"Byte - %ld", (long)i);
+			[self printMemoryCell:a];
+			[self printMemoryCell:b];
+		}
+	}
+}
 
 
 @end

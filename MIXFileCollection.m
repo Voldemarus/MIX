@@ -163,7 +163,7 @@ NSString * const MIX_SEQ_FILE_DEVNUM	=	@"MSCDEVNUM";
 	}
 	int destOffset = 0;
 	for (NSInteger i = self.filePosition; i < endOfBlock; i++) {
-		[self copyMixWord:self.block[i] toNewMixWord:blockArray[destOffset++]];
+		[self copyMixWord:&self.block[i] toNewMixWord:&blockArray[destOffset++]];
 	}
 	self.filePosition = endOfBlock;
 	return blockArray;
@@ -176,13 +176,14 @@ NSString * const MIX_SEQ_FILE_DEVNUM	=	@"MSCDEVNUM";
 {
 	if (newPosition <= 0) {
 		self.filePosition = 0;
-	}
-	NSInteger blockOffset = newPosition * self.blockSize;
-	if (self.fileSize >= blockOffset) {
-		// set up to the eof position
-		self.filePosition = self.fileSize;
 	} else {
-		self.filePosition = blockOffset;
+		NSInteger blockOffset = newPosition * self.blockSize;
+		if (self.fileSize >= blockOffset) {
+			// set up to the eof position
+			self.filePosition = self.fileSize;
+		} else {
+			self.filePosition = blockOffset;
+		}
 	}
 }
 
@@ -203,10 +204,11 @@ NSString * const MIX_SEQ_FILE_DEVNUM	=	@"MSCDEVNUM";
 		}
 	}
 	for (NSInteger i = 0; i < self.blockSize; i++) {
-		[self copyMixWord:aBlock[i] toNewMixWord:self.block[self.fileSize+i]];
+		[self copyMixWord:&aBlock[i] toNewMixWord:&self.block[self.fileSize+i]];
 	}
 	self.fileSize += self.blockSize;
 	self.filePosition = self.fileSize;
+	NSLog(@"### file-size - %.ld file-position - %ld", self.fileSize, self.filePosition);
 }
 
 - (BOOL) bof
@@ -310,7 +312,7 @@ NSString * const MIX_SEQ_FILE_DEVNUM	=	@"MSCDEVNUM";
 	for (NSInteger i = 0; i < self.fileSize; i++) {
 		NSString *bf = [NSString stringWithFormat:@"%@%ld",MIX_SEQ_FILE_WORD,(long)i];
 		MIXWORD cWord = [self decodeMixWord:decoder withKey:bf];
-		[self copyMixWord:cWord toNewMixWord:self.block[i]];
+		[self copyMixWord:&cWord toNewMixWord:&self.block[i]];
 	}
 	return self;
 }
@@ -365,11 +367,11 @@ NSString * const MIX_SEQ_FILE_DEVNUM	=	@"MSCDEVNUM";
 	return new;
 }
 
-- (void) copyMixWord:(MIXWORD) old toNewMixWord:(MIXWORD)newWord
+- (void) copyMixWord:(MIXWORD *) old toNewMixWord:(MIXWORD *)newWord
 {
-	newWord.sign = old.sign;
+	newWord->sign = old->sign;
 	for (int i = 0; i < MIX_WORD_SIZE; i++) {
-		newWord.byte[i] = old.byte[i];
+		newWord->byte[i] = old->byte[i];
 	}
 }
 
