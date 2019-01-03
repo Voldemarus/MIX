@@ -178,7 +178,7 @@ NSString * const MIX_SEQ_FILE_DEVNUM	=	@"MSCDEVNUM";
 		self.filePosition = 0;
 	} else {
 		NSInteger blockOffset = newPosition * self.blockSize;
-		if (self.fileSize >= blockOffset) {
+		if (self.fileSize < blockOffset) {
 			// set up to the eof position
 			self.filePosition = self.fileSize;
 		} else {
@@ -198,7 +198,7 @@ NSString * const MIX_SEQ_FILE_DEVNUM	=	@"MSCDEVNUM";
 	if (finalPosition > self.fileSize) {
 		if (self.block) {
 			// Not enough memory allocated, assign more
-			self.block = realloc(self.block, self.fileSize+self.blockSize*sizeof(MIXWORD));
+			self.block = realloc(self.block, (self.fileSize+self.blockSize)*sizeof(MIXWORD));
 		} else {
 			self.block = malloc(self.blockSize * sizeof(MIXWORD));
 		}

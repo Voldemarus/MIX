@@ -78,6 +78,9 @@
 	XCTAssertTrue(collection.fileCollection.count == PERFOLENTA+1, @"All devices should be initialised");
 	
 }
+/**
+ 	Ribbon R/W device test.
+ */
 
 - (void) testRibbon
 {
@@ -116,6 +119,40 @@
 	XCTAssert(readBack, @"Block should be read from the device");
 	[self compareBlock:testBlock withBlock:readBack size:ribbon.blockSize];
 	
+	XCTAssertTrue(ribbon.eof == YES, @"EOF status should be set");
+	XCTAssertTrue(ribbon.bof == NO, @"BOF status should be off");
+	XCTAssertTrue(ribbon.filePosition == ribbon.blockSize, @"Pointer should be set to 1 block offset");
+	
+	// write anothe block
+	MIXWORD *testBlock2 = calloc(ribbon.blockSize, sizeof(MIXWORD));
+	
+	for (int i = 0; i < ribbon.blockSize; i++) {
+		testBlock2[i] = [self mixWordFromInteger:256+i];
+	}
+	[ribbon writeBlock:testBlock2];
+	XCTAssertTrue(ribbon.eof == YES, @"EOF status should be set");
+	XCTAssertTrue(ribbon.filePosition == ribbon.blockSize*2, @"Pointer should be set to end of the second block");
+
+	[ribbon rewindToPosition:1];
+	XCTAssertTrue(ribbon.filePosition == ribbon.blockSize, @"Pointer should be set to end of the first block");
+	XCTAssertTrue(ribbon.eof == NO, @"EOF status should not be set");
+	XCTAssertTrue(ribbon.bof == NO, @"BOF status should not be set");
+	
+	// read second block back
+	if (readBack) {
+		free(readBack);
+	}
+	readBack = [ribbon readBlock];
+	XCTAssert(readBack, @"Block should be read from the device");
+	[self compareBlock:testBlock2 withBlock:readBack size:ribbon.blockSize];
+	
+	XCTAssertTrue(ribbon.eof == YES, @"EOF status should be set");
+	XCTAssertTrue(ribbon.bof == NO, @"BOF status should be off");
+	XCTAssertTrue(ribbon.filePosition == ribbon.blockSize*2, @"Pointer should be set to 1 block offset");
+	
+	if (readBack) {
+		free(readBack);
+	}
 }
 
 
