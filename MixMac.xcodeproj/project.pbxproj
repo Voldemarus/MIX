@@ -28,6 +28,13 @@
 		1BEF64621A96343A0039EBBE /* MIXTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BEF64611A96343A0039EBBE /* MIXTest.m */; };
 		1BEF64651A96366A0039EBBE /* ArithmeticTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BEF64641A96366A0039EBBE /* ArithmeticTests.m */; };
 		1BEF64671A99F7F50039EBBE /* EntFamilyTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BEF64661A99F7F50039EBBE /* EntFamilyTest.m */; };
+		329F1C8F21DF61CF00932DB5 /* exampledefault.mixal in Resources */ = {isa = PBXBuildFile; fileRef = 329F1C8C21DF61CF00932DB5 /* exampledefault.mixal */; };
+		329F1C9021DF61CF00932DB5 /* documentIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 329F1C8D21DF61CF00932DB5 /* documentIcon.png */; };
+		329F1C9121DF61CF00932DB5 /* MIXString.m in Sources */ = {isa = PBXBuildFile; fileRef = 329F1C8E21DF61CF00932DB5 /* MIXString.m */; };
+		329F1C9421DF72A500932DB5 /* MIXAL tacherbook.html in Resources */ = {isa = PBXBuildFile; fileRef = 329F1C9321DF6D8E00932DB5 /* MIXAL tacherbook.html */; };
+		32B47B1D21E0C218000106C3 /* NoodleLineNumberMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B47B1721E0C216000106C3 /* NoodleLineNumberMarker.m */; };
+		32B47B1E21E0C218000106C3 /* NoodleLineNumberView.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B47B1921E0C217000106C3 /* NoodleLineNumberView.m */; };
+		32B47B1F21E0C218000106C3 /* MarkerLineNumberView.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B47B1C21E0C217000106C3 /* MarkerLineNumberView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +84,18 @@
 		1BEF64611A96343A0039EBBE /* MIXTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MIXTest.m; sourceTree = "<group>"; };
 		1BEF64641A96366A0039EBBE /* ArithmeticTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArithmeticTests.m; sourceTree = "<group>"; };
 		1BEF64661A99F7F50039EBBE /* EntFamilyTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EntFamilyTest.m; sourceTree = "<group>"; };
+		329F1C8B21DF61CF00932DB5 /* MIXString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MIXString.h; sourceTree = "<group>"; };
+		329F1C8C21DF61CF00932DB5 /* exampledefault.mixal */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 28; lastKnownFileType = text; path = exampledefault.mixal; sourceTree = "<group>"; tabWidth = 14; usesTabs = 1; wrapsLines = 1; };
+		329F1C8D21DF61CF00932DB5 /* documentIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = documentIcon.png; sourceTree = "<group>"; };
+		329F1C8E21DF61CF00932DB5 /* MIXString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MIXString.m; sourceTree = "<group>"; };
+		329F1C9221DF629E00932DB5 /* MixMac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MixMac.entitlements; sourceTree = "<group>"; };
+		329F1C9321DF6D8E00932DB5 /* MIXAL tacherbook.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = "MIXAL tacherbook.html"; sourceTree = "<group>"; };
+		32B47B1721E0C216000106C3 /* NoodleLineNumberMarker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoodleLineNumberMarker.m; sourceTree = "<group>"; };
+		32B47B1821E0C216000106C3 /* NoodleLineNumberView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoodleLineNumberView.h; sourceTree = "<group>"; };
+		32B47B1921E0C217000106C3 /* NoodleLineNumberView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoodleLineNumberView.m; sourceTree = "<group>"; };
+		32B47B1A21E0C217000106C3 /* MarkerLineNumberView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MarkerLineNumberView.h; sourceTree = "<group>"; };
+		32B47B1B21E0C217000106C3 /* NoodleLineNumberMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoodleLineNumberMarker.h; sourceTree = "<group>"; };
+		32B47B1C21E0C217000106C3 /* MarkerLineNumberView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarkerLineNumberView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,13 +140,17 @@
 		1B7943451A8F375400197FF3 /* MixMac */ = {
 			isa = PBXGroup;
 			children = (
-				1B7943481A8F375400197FF3 /* AppDelegate.h */,
-				1B7943491A8F375400197FF3 /* AppDelegate.m */,
+				32B47B2521E0CF1C000106C3 /* Line View */,
+				32B47B2621E0F9F3000106C3 /* Formating string */,
 				1B79434D1A8F375400197FF3 /* Document.h */,
 				1B79434E1A8F375400197FF3 /* Document.m */,
 				1B7943501A8F375400197FF3 /* Document.xib */,
+				1B7943481A8F375400197FF3 /* AppDelegate.h */,
+				1B7943491A8F375400197FF3 /* AppDelegate.m */,
 				1B7943531A8F375400197FF3 /* Images.xcassets */,
+				329F1C8D21DF61CF00932DB5 /* documentIcon.png */,
 				1B7943551A8F375400197FF3 /* MainMenu.xib */,
+				329F1C9221DF629E00932DB5 /* MixMac.entitlements */,
 				1B7943461A8F375400197FF3 /* Supporting Files */,
 				1BCC3ED71A8F8BA90010C4F6 /* Localizable.strings */,
 			);
@@ -199,8 +222,32 @@
 			children = (
 				1B7943751A8F41AF00197FF3 /* LICENSE */,
 				1B7943761A8F41CD00197FF3 /* README */,
+				329F1C9321DF6D8E00932DB5 /* MIXAL tacherbook.html */,
 			);
 			name = Documentation;
+			sourceTree = "<group>";
+		};
+		32B47B2521E0CF1C000106C3 /* Line View */ = {
+			isa = PBXGroup;
+			children = (
+				32B47B1A21E0C217000106C3 /* MarkerLineNumberView.h */,
+				32B47B1C21E0C217000106C3 /* MarkerLineNumberView.m */,
+				32B47B1B21E0C217000106C3 /* NoodleLineNumberMarker.h */,
+				32B47B1721E0C216000106C3 /* NoodleLineNumberMarker.m */,
+				32B47B1821E0C216000106C3 /* NoodleLineNumberView.h */,
+				32B47B1921E0C217000106C3 /* NoodleLineNumberView.m */,
+			);
+			name = "Line View";
+			sourceTree = "<group>";
+		};
+		32B47B2621E0F9F3000106C3 /* Formating string */ = {
+			isa = PBXGroup;
+			children = (
+				329F1C8C21DF61CF00932DB5 /* exampledefault.mixal */,
+				329F1C8B21DF61CF00932DB5 /* MIXString.h */,
+				329F1C8E21DF61CF00932DB5 /* MIXString.m */,
+			);
+			name = "Formating string";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -247,13 +294,18 @@
 		1B79433B1A8F375400197FF3 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = "Geomatix Laboratoriy S.R.O.";
 				TargetAttributes = {
 					1B7943421A8F375400197FF3 = {
 						CreatedOnToolsVersion = 6.1.1;
 						DevelopmentTeam = UKBNTL7HA9;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 1;
+							};
+						};
 					};
 					1B79435B1A8F375400197FF3 = {
 						CreatedOnToolsVersion = 6.1.1;
@@ -286,8 +338,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				1B7943521A8F375400197FF3 /* Document.xib in Resources */,
+				329F1C9421DF72A500932DB5 /* MIXAL tacherbook.html in Resources */,
 				1BCC3ED81A8F8BA90010C4F6 /* Localizable.strings in Resources */,
 				1B7943541A8F375400197FF3 /* Images.xcassets in Resources */,
+				329F1C9021DF61CF00932DB5 /* documentIcon.png in Resources */,
+				329F1C8F21DF61CF00932DB5 /* exampledefault.mixal in Resources */,
 				1B7943571A8F375400197FF3 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -310,8 +365,12 @@
 				1B79434F1A8F375400197FF3 /* Document.m in Sources */,
 				1B79436F1A8F379A00197FF3 /* MIXCPU.m in Sources */,
 				1B79437B1A8F691A00197FF3 /* MixCommands.m in Sources */,
+				329F1C9121DF61CF00932DB5 /* MIXString.m in Sources */,
 				1B79434C1A8F375400197FF3 /* main.m in Sources */,
+				32B47B1D21E0C218000106C3 /* NoodleLineNumberMarker.m in Sources */,
 				1BE9D5341AA61D5500CB5187 /* MIXFileCollection.m in Sources */,
+				32B47B1F21E0C218000106C3 /* MarkerLineNumberView.m in Sources */,
+				32B47B1E21E0C218000106C3 /* NoodleLineNumberView.m in Sources */,
 				1B79434A1A8F375400197FF3 /* AppDelegate.m in Sources */,
 				1B7943731A8F3BA400197FF3 /* Preferences.m in Sources */,
 			);
@@ -371,20 +430,32 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -412,13 +483,23 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
@@ -427,6 +508,7 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -443,6 +525,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = MixMac/MixMac.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -450,6 +533,7 @@
 				INFOPLIST_FILE = MixMac/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				PRODUCT_BUNDLE_IDENTIFIER = "geomatix.cz.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
@@ -459,6 +543,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = MixMac/MixMac.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -466,6 +551,7 @@
 				INFOPLIST_FILE = MixMac/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				PRODUCT_BUNDLE_IDENTIFIER = "geomatix.cz.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
@@ -486,6 +572,7 @@
 				);
 				INFOPLIST_FILE = MixMacTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "geomatix.cz.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MixMac.app/Contents/MacOS/MixMac";
 			};
@@ -502,6 +589,7 @@
 				);
 				INFOPLIST_FILE = MixMacTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "geomatix.cz.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MixMac.app/Contents/MacOS/MixMac";
 			};

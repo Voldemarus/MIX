@@ -9,18 +9,24 @@
 		<dict>
 			<key>CFBundleTypeExtensions</key>
 			<array>
-				<string>nvd</string>
+				<string>mixal</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
-			<string></string>
+			<string>documentIcon</string>
 			<key>CFBundleTypeName</key>
-			<string>DocumentType</string>
+			<string>MIXAL source file</string>
 			<key>CFBundleTypeOSTypes</key>
 			<array>
 				<string>????</string>
 			</array>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>geomatix.cz.MixMac.mixal</string>
+			</array>
+			<key>LSTypeIsPackage</key>
+			<integer>1</integer>
 			<key>NSDocumentClass</key>
 			<string>Document</string>
 		</dict>
@@ -30,7 +36,7 @@
 	<key>CFBundleIconFile</key>
 	<string></string>
 	<key>CFBundleIdentifier</key>
-	<string>geomatix.cz.$(PRODUCT_NAME:rfc1034identifier)</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -53,5 +59,29 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>UISupportsDocumentBrowser</key>
+	<true/>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.text</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>MIXAL source file</string>
+			<key>UTTypeIconFile</key>
+			<string>documentIcon</string>
+			<key>UTTypeIdentifier</key>
+			<string>geomatix.cz.MixMac.mixal</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>mixal</string>
+				</array>
+			</dict>
+		</dict>
+	</array>
 </dict>
 </plist>

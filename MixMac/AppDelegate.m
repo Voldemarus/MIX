@@ -15,7 +15,10 @@
 @implementation AppDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-	// Insert code here to initialize your application
+	
+    // Для открытия файлов перетаскиванием его на иконку приложения
+    [NSApp.mainWindow registerForDraggedTypes:@[NSFilenamesPboardType]];
+
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
