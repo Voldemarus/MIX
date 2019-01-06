@@ -7,8 +7,6 @@
 //
 
 #import "MIXString.h"
-#import "DebugPrint.h"
-#import "Preferences.h"
 
 NSString * const LD_source      =    @"1";
 NSString * const LD_label       =    @"2";
@@ -145,9 +143,9 @@ NSString * const LD_errors      =    @"8";
     // Общий стиль параграфа, табуляторов и выравнивания
     NSMutableParagraphStyle *parStyle = [NSMutableParagraphStyle new];
     
-    parStyle.headIndent = 226 ; // Отступ переноса строки
+    parStyle.headIndent = self.commentOnly ? 15 : 226 ; // Отступ переноса строки
     parStyle.firstLineHeadIndent = 0.0f;
-    parStyle.defaultTabInterval = 50;
+    parStyle.defaultTabInterval = 226;
     parStyle.tabStops = @[
                           // TODO: что есть options? с ходу не нашел, пусть пустые будут пока
                           [[NSTextTab alloc] initWithTextAlignment:NSTextAlignmentLeft location:80 options:@{}],

@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import <Cocoa/Cocoa.h>
+#import "DebugPrint.h"
+#import "Preferences.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
