@@ -1,4 +1,8 @@
-MixMac.xcodeproj/xcuserdata/
-MixMac.xcworkspace/
+MixMac.xcodeproj/xcuserdata/*
+MixMac.xcodeproj/xcshareddata/*
+MixMac.xcworkspace/xcuserdata/*
+MixMac.xcworkspace/xcshareddata/*
+MixMac.xcodeproj/project.xcworkspace/xcuserdata/*
+MixMac.xcodeproj/project.xcworkspace/xcshareddata/*
 Pods/
 Podfile.lock
