@@ -13,13 +13,14 @@ NSString * const LD_label       =    @"2";
 NSString * const LD_mnemonic    =    @"3";
 NSString * const LD_operand     =    @"4";
 NSString * const LD_comment     =    @"5";
-NSString * const LD_commentOnly =    @"6";
-NSString * const LD_error       =    @"7";
-NSString * const LD_errors      =    @"8";
+NSString * const LD_address     =    @"6";
+NSString * const LD_commentOnly =    @"7";
+NSString * const LD_error       =    @"8";
+NSString * const LD_errors      =    @"9";
 
 @implementation MIXString
 
-@synthesize source, label, mnemonic, operand, comment, commentOnly, error, errors;
+@synthesize source, label, mnemonic, operand, comment, address, commentOnly, error, errors;
 
 - (instancetype) init
 {
@@ -29,6 +30,8 @@ NSString * const LD_errors      =    @"8";
         self.mnemonic     = @"";
         self.operand      = @"";
         self.comment      = @"";
+        
+        self.address      = 0; // Адрес начала программы, если 0 то не назначен
         
         self.commentOnly  = NO;
         self.error        = NO;
@@ -56,6 +59,8 @@ NSString * const LD_errors      =    @"8";
         newRec.operand     = self.operand;
         newRec.comment     = self.comment;
         
+        newRec.address     = self.address;
+        
         newRec.commentOnly = self.commentOnly;
         newRec.error       = self.error;
         newRec.errors      = self.errors;
@@ -71,6 +76,8 @@ NSString * const LD_errors      =    @"8";
     [aCoder encodeObject:self.operand   forKey:LD_operand];
     [aCoder encodeObject:self.comment   forKey:LD_comment];
     
+    [aCoder encodeInteger:self.address forKey:LD_address];
+    
     [aCoder encodeBool:self.commentOnly forKey:LD_commentOnly];
     [aCoder encodeBool:self.error       forKey:LD_error];
     [aCoder encodeObject:self.errors    forKey:LD_errors];
@@ -85,6 +92,8 @@ NSString * const LD_errors      =    @"8";
         newRec.mnemonic     = [aDecoder decodeObjectForKey:LD_mnemonic];
         newRec.operand      = [aDecoder decodeObjectForKey:LD_operand];
         newRec.comment      = [aDecoder decodeObjectForKey:LD_comment];
+        
+        newRec.address      = [aDecoder decodeIntegerForKey:LD_address];
         
         newRec.commentOnly  = [aDecoder decodeBoolForKey:LD_commentOnly];
         newRec.error        = [aDecoder decodeBoolForKey:LD_error];
@@ -234,8 +243,11 @@ NSString * const LD_errors      =    @"8";
 //                if ([VALID_COMMAND containsObject:text]) {
 //                    [self.errors addObject:RStr(@"After the mnemonic, there must be a valid operand, or incorrect label")];
 //                }
-                if ([[NSRegularExpression regularExpressionWithPattern:@"^[\\*\\=\\+\\-\\,\\(\\)\\\"\\:\\/0-9A-Z]+$" options:NSRegularExpressionAnchorsMatchLines error:nil] numberOfMatchesInString:text options:0 range:NSMakeRange(0, text.length)] == 0) {
-                    [self.errors addObject:RStr(@"The operand contains invalid characters")];
+                if ([[NSRegularExpression regularExpressionWithPattern:@"^[\\s\\*\\=\\+\\-\\,\\(\\)\\\"\\:\\/0-9A-Z]+$" options:NSRegularExpressionAnchorsMatchLines error:nil] numberOfMatchesInString:text options:0 range:NSMakeRange(0, text.length)] == 0) {
+                        [self.errors addObject:RStr(@"The operand contains invalid characters")];
+                }
+                if ([self.mnemonic isEqualToString:@"ALF"] && [text hasPrefix:@"\""] && [text hasSuffix:@"\""] && text.length > 7) {
+                    [self.errors addObject:RStr(@"Memonic for ALF operand containts more then 5 symbols")];
                 }
             } else if (!commentStored){
                 //scanner.scanLocation
@@ -261,4 +273,6 @@ NSString * const LD_errors      =    @"8";
     return;
     
 }
+
+
 @end

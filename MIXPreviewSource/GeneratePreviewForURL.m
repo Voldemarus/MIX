@@ -32,7 +32,8 @@ OSStatus GeneratePreviewForURL(void *thisInterface, QLPreviewRequestRef preview,
     if (string.length < 1) {
         string = [NSString stringWithFormat:@"       ------   %@   ------       ", RStr(@"File empty or corrupt")];
     }
-    
+    string = [string stringByReplacingOccurrencesOfString:@"\r" withString:@""];
+
     // Отформатировать текст программы используя парсер из основной программы
     NSMutableAttributedString *attributedString = [NSMutableAttributedString new];
     if (string.length > 0) {

@@ -15,6 +15,12 @@
 {
     MarkerLineNumberView *lineNumberView;
     NSMutableArray <MIXString*>* arrayAllRows;
+    
+    NSMutableDictionary * equDict; // Словарь метка:значение
+    NSMutableDictionary * labelDict; // Словарь метка:адрес
+    NSMutableArray <NSDictionary*> * labelBackForwardArray; // Массив словарей специальных меток типа @"7H":@(3015)
+    NSInteger address;
+    
     BOOL errorSyntax;
 }
 
@@ -89,7 +95,7 @@
     // If you override either of these, you should also override -isEntireFileLoaded to return NO if the contents are lazily loaded.
     
     self.contentString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    
+    self.contentString = [self.contentString stringByReplacingOccurrencesOfString:@"\r" withString:@""];
     [self reloarTextView];
     
     return YES;
@@ -99,6 +105,16 @@
 //{
 //    DLog(@"%@ %@", self.documentEdited?@"был изменен:":@"не изменялся:", self.fileURL.lastPathComponent);
 //}
+
+#pragma mark - Методы делегата редактирования текста
+
+- (void) textDidChange:(NSNotification *)notification
+{
+    if (errorSyntax) {
+        [self.textView.textStorage removeAttribute:NSBackgroundColorAttributeName range:NSMakeRange(0, self.textView.textStorage.string.length)];
+    }
+    
+}
 
 #pragma mark - Формат и отображение кода
 
@@ -136,10 +152,22 @@
 
 #pragma mark - Анализ строк
 
+#warning ! Temporaly ! After, Needs move another singlton class !
+//
+// Позже перенести все это в отдельный класс-синглтон
+//
+
 - (NSAttributedString*) parceAllString:(NSString*)string
 {
     NSMutableAttributedString *result = [NSMutableAttributedString new];
     arrayAllRows = [NSMutableArray new];
+    
+    equDict = [NSMutableDictionary new]; // Словарь метка:значение
+    labelDict = [NSMutableDictionary new]; // Словарь метка:адрес
+    labelBackForwardArray = [NSMutableArray new]; // Массив словарей специальных меток типа @"7H":@(3015)
+    
+    address = 3000;
+
     if (string.length > 0) {
         NSArray <NSString*>*rows = [string componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
         for (NSInteger i = 0; i < rows.count; i++) {
@@ -151,19 +179,58 @@
             if (i>0) {
                 [result appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
             }
+
+            //  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            mixString = [self calculateLabel:mixString];
+            //  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
             [result appendAttributedString:mixString.stringAttributed];
         }
     }
+    
+    ALog(@" --- Словарь метка:значение: ---\n%@", equDict);
+    ALog(@" --- Словарь метка:адрес: ---\n%@", labelDict);
+    ALog(@" --- Массив словарей специальных меток: ---\n%@", [[[labelBackForwardArray componentsJoinedByString:@""] stringByReplacingOccurrencesOfString:@"\n" withString:@""] stringByReplacingOccurrencesOfString:@"}{   " withString:@"}\n{"]);
+
+    
     return result;
 }
 
-#pragma mark - Методы делегата редактирования текста
-- (void) textDidChange:(NSNotification *)notification
+- (MIXString*) calculateLabel:(MIXString*) mixString
 {
-    if (errorSyntax) {
-        [self.textView.textStorage removeAttribute:NSBackgroundColorAttributeName range:NSMakeRange(0, self.textView.textStorage.string.length)];
+    
+    BOOL isEQU = [mixString.mnemonic isEqualToString:@"EQU"];
+    
+    if ([mixString.mnemonic isEqualToString:@"ORIG"]) {
+        address = mixString.operand.integerValue;
+    } else if (isEQU == NO) {
+        mixString.address = address;
+        address++;
     }
-
+    NSString *label = mixString.label;
+    if (label.length > 0) {
+        if (isEQU == YES && mixString.operand.length > 0) {
+            equDict[label] = mixString.operand;
+        } else {
+            
+            if ([[NSRegularExpression regularExpressionWithPattern:@"^[1-9][H]$" options:NSRegularExpressionAnchorsMatchLines error:nil] numberOfMatchesInString:label options:0 range:NSMakeRange(0, label.length)] == 1) {
+                
+                [labelBackForwardArray addObject:@{label : @(address)}]; // типа @"7H":@"3015"
+                // потом искать нужную метку выборкой по имени и смотреть номер адреса, в зависимости от iF iB
+                
+            } else {
+                if (labelDict[label] != nil) {
+                    [mixString.errors addObject:RStr(@"Duplicate label")];
+                    mixString.error = YES;
+                    errorSyntax = YES;
+                }
+                labelDict[label] = @(address);
+            }
+        }
+        
+    }
+    return mixString;
 }
+
 
 @end
