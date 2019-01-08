@@ -32,6 +32,11 @@
 		325DDB1621E4AE7800D3E329 /* NSFont+Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = 325DDB1221E4AE7700D3E329 /* NSFont+Theme.m */; };
 		325DDB1721E4AE7800D3E329 /* NSColor+Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = 325DDB1321E4AE7700D3E329 /* NSColor+Theme.m */; };
 		325DDB1A21E4B74600D3E329 /* Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = 325DDB1921E4B74600D3E329 /* Theme.m */; };
+		325DDB1B21E4C90F00D3E329 /* Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = 325DDB1921E4B74600D3E329 /* Theme.m */; };
+		325DDB1C21E4C90F00D3E329 /* NSFont+Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = 325DDB1221E4AE7700D3E329 /* NSFont+Theme.m */; };
+		325DDB1D21E4C90F00D3E329 /* NSColor+Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = 325DDB1321E4AE7700D3E329 /* NSColor+Theme.m */; };
+		325DDB1E21E4C90F00D3E329 /* NSAttributedString+Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = 325DDB1021E4AC1800D3E329 /* NSAttributedString+Theme.m */; };
+		325DDB1F21E4C91C00D3E329 /* Preferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B7943721A8F3BA400197FF3 /* Preferences.m */; };
 		326FDA0121E2026F007C4FE4 /* MIXString.m in Sources */ = {isa = PBXBuildFile; fileRef = 329F1C8E21DF61CF00932DB5 /* MIXString.m */; };
 		329F1C8F21DF61CF00932DB5 /* exampledefault.mixal in Resources */ = {isa = PBXBuildFile; fileRef = 329F1C8C21DF61CF00932DB5 /* exampledefault.mixal */; };
 		329F1C9021DF61CF00932DB5 /* documentIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 329F1C8D21DF61CF00932DB5 /* documentIcon.png */; };
@@ -556,9 +561,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				32B47B4921E1455C000106C3 /* GenerateThumbnailForURL.m in Sources */,
+				325DDB1C21E4C90F00D3E329 /* NSFont+Theme.m in Sources */,
 				32B47B4B21E1455C000106C3 /* GeneratePreviewForURL.m in Sources */,
+				325DDB1E21E4C90F00D3E329 /* NSAttributedString+Theme.m in Sources */,
 				32B47B4D21E1455C000106C3 /* main.c in Sources */,
+				325DDB1B21E4C90F00D3E329 /* Theme.m in Sources */,
 				326FDA0121E2026F007C4FE4 /* MIXString.m in Sources */,
+				325DDB1D21E4C90F00D3E329 /* NSColor+Theme.m in Sources */,
+				325DDB1F21E4C91C00D3E329 /* Preferences.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
