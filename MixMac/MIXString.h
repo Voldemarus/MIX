@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <Cocoa/Cocoa.h>
+#import "Theme.h"
 #import "DebugPrint.h"
 #import "Preferences.h"
 
@@ -24,6 +25,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain) NSString *comment;      // Комментарий
 @property (nonatomic, readwrite) NSInteger address;   // Адрес в памяти
 @property (nonatomic, readwrite) BOOL commentOnly;    // Если YES то вся строка это комментарий
+@property (nonatomic, readwrite) BOOL errorLabel;     // Если есть ошибка в метка
+@property (nonatomic, readwrite) BOOL errorMnemonic;  // Если есть ошибка в мнемокоде
+@property (nonatomic, readwrite) BOOL errorOperand;   // Если есть ошибка в операнде
 @property (nonatomic, readwrite) BOOL error;          // Если есть ошибка в строке
 @property (nonatomic, retain) NSMutableArray *errors; // Список ошибок, пока не настроен!
 

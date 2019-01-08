@@ -28,6 +28,10 @@
 		1BEF64621A96343A0039EBBE /* MIXTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BEF64611A96343A0039EBBE /* MIXTest.m */; };
 		1BEF64651A96366A0039EBBE /* ArithmeticTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BEF64641A96366A0039EBBE /* ArithmeticTests.m */; };
 		1BEF64671A99F7F50039EBBE /* EntFamilyTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BEF64661A99F7F50039EBBE /* EntFamilyTest.m */; };
+		325DDB1121E4AC1800D3E329 /* NSAttributedString+Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = 325DDB1021E4AC1800D3E329 /* NSAttributedString+Theme.m */; };
+		325DDB1621E4AE7800D3E329 /* NSFont+Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = 325DDB1221E4AE7700D3E329 /* NSFont+Theme.m */; };
+		325DDB1721E4AE7800D3E329 /* NSColor+Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = 325DDB1321E4AE7700D3E329 /* NSColor+Theme.m */; };
+		325DDB1A21E4B74600D3E329 /* Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = 325DDB1921E4B74600D3E329 /* Theme.m */; };
 		326FDA0121E2026F007C4FE4 /* MIXString.m in Sources */ = {isa = PBXBuildFile; fileRef = 329F1C8E21DF61CF00932DB5 /* MIXString.m */; };
 		329F1C8F21DF61CF00932DB5 /* exampledefault.mixal in Resources */ = {isa = PBXBuildFile; fileRef = 329F1C8C21DF61CF00932DB5 /* exampledefault.mixal */; };
 		329F1C9021DF61CF00932DB5 /* documentIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 329F1C8D21DF61CF00932DB5 /* documentIcon.png */; };
@@ -112,6 +116,14 @@
 		1BEF64611A96343A0039EBBE /* MIXTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MIXTest.m; sourceTree = "<group>"; };
 		1BEF64641A96366A0039EBBE /* ArithmeticTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArithmeticTests.m; sourceTree = "<group>"; };
 		1BEF64661A99F7F50039EBBE /* EntFamilyTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EntFamilyTest.m; sourceTree = "<group>"; };
+		325DDB0F21E4AC1800D3E329 /* NSAttributedString+Theme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+Theme.h"; sourceTree = "<group>"; };
+		325DDB1021E4AC1800D3E329 /* NSAttributedString+Theme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+Theme.m"; sourceTree = "<group>"; };
+		325DDB1221E4AE7700D3E329 /* NSFont+Theme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFont+Theme.m"; sourceTree = "<group>"; };
+		325DDB1321E4AE7700D3E329 /* NSColor+Theme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSColor+Theme.m"; sourceTree = "<group>"; };
+		325DDB1421E4AE7700D3E329 /* NSColor+Theme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+Theme.h"; sourceTree = "<group>"; };
+		325DDB1521E4AE7800D3E329 /* NSFont+Theme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFont+Theme.h"; sourceTree = "<group>"; };
+		325DDB1821E4B74600D3E329 /* Theme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Theme.h; sourceTree = "<group>"; };
+		325DDB1921E4B74600D3E329 /* Theme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Theme.m; sourceTree = "<group>"; };
 		329F1C8B21DF61CF00932DB5 /* MIXString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MIXString.h; sourceTree = "<group>"; };
 		329F1C8C21DF61CF00932DB5 /* exampledefault.mixal */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 28; lastKnownFileType = text; path = exampledefault.mixal; sourceTree = "<group>"; tabWidth = 14; usesTabs = 1; wrapsLines = 1; };
 		329F1C8D21DF61CF00932DB5 /* documentIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = documentIcon.png; sourceTree = "<group>"; };
@@ -184,6 +196,7 @@
 		1B7943451A8F375400197FF3 /* MixMac */ = {
 			isa = PBXGroup;
 			children = (
+				325DDB0E21E4AC0B00D3E329 /* Theme */,
 				32B47B2521E0CF1C000106C3 /* Line View */,
 				32B47B2621E0F9F3000106C3 /* Formating string */,
 				1B79434D1A8F375400197FF3 /* Document.h */,
@@ -254,8 +267,8 @@
 			isa = PBXGroup;
 			children = (
 				1B7943711A8F3BA400197FF3 /* Preferences.h */,
-				1B7943781A8F46F600197FF3 /* DebugPrint.h */,
 				1B7943721A8F3BA400197FF3 /* Preferences.m */,
+				1B7943781A8F46F600197FF3 /* DebugPrint.h */,
 				1B7943771A8F461800197FF3 /* MIXExceptions.h */,
 			);
 			name = Preferences;
@@ -269,6 +282,21 @@
 				329F1C9321DF6D8E00932DB5 /* MIXAL tacherbook.html */,
 			);
 			name = Documentation;
+			sourceTree = "<group>";
+		};
+		325DDB0E21E4AC0B00D3E329 /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				325DDB1821E4B74600D3E329 /* Theme.h */,
+				325DDB1921E4B74600D3E329 /* Theme.m */,
+				325DDB1521E4AE7800D3E329 /* NSFont+Theme.h */,
+				325DDB1221E4AE7700D3E329 /* NSFont+Theme.m */,
+				325DDB1421E4AE7700D3E329 /* NSColor+Theme.h */,
+				325DDB1321E4AE7700D3E329 /* NSColor+Theme.m */,
+				325DDB0F21E4AC1800D3E329 /* NSAttributedString+Theme.h */,
+				325DDB1021E4AC1800D3E329 /* NSAttributedString+Theme.m */,
+			);
+			name = Theme;
 			sourceTree = "<group>";
 		};
 		32B47B2521E0CF1C000106C3 /* Line View */ = {
@@ -490,7 +518,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				1B79434F1A8F375400197FF3 /* Document.m in Sources */,
+				325DDB1721E4AE7800D3E329 /* NSColor+Theme.m in Sources */,
 				1B79436F1A8F379A00197FF3 /* MIXCPU.m in Sources */,
+				325DDB1A21E4B74600D3E329 /* Theme.m in Sources */,
+				325DDB1621E4AE7800D3E329 /* NSFont+Theme.m in Sources */,
 				1B79437B1A8F691A00197FF3 /* MixCommands.m in Sources */,
 				329F1C9121DF61CF00932DB5 /* MIXString.m in Sources */,
 				1B79434C1A8F375400197FF3 /* main.m in Sources */,
@@ -500,6 +531,7 @@
 				32B47B1E21E0C218000106C3 /* NoodleLineNumberView.m in Sources */,
 				1B79434A1A8F375400197FF3 /* AppDelegate.m in Sources */,
 				1B7943731A8F3BA400197FF3 /* Preferences.m in Sources */,
+				325DDB1121E4AC1800D3E329 /* NSAttributedString+Theme.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

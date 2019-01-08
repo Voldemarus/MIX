@@ -152,11 +152,6 @@
 
 #pragma mark - Анализ строк
 
-#warning ! Temporaly ! After, Needs move another singlton class !
-//
-// Позже перенести все это в отдельный класс-синглтон
-//
-
 - (NSAttributedString*) parceAllString:(NSString*)string
 {
     NSMutableAttributedString *result = [NSMutableAttributedString new];
@@ -221,6 +216,7 @@
             } else {
                 if (labelDict[label] != nil) {
                     [mixString.errors addObject:RStr(@"Duplicate label")];
+                    mixString.errorLabel = YES;
                     mixString.error = YES;
                     errorSyntax = YES;
                 }

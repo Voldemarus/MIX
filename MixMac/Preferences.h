@@ -13,6 +13,11 @@
 //
 extern NSString * const VVVbyteSizeChanged;			// Size of byte is changed
 
+typedef NS_ENUM(NSUInteger, ThemeNumber) {
+    ThemeDefault = 0,
+    ThemeCount,
+};
+
 @interface Preferences : NSObject
 
 + (Preferences *) sharedPreferences;
@@ -21,6 +26,8 @@ extern NSString * const VVVbyteSizeChanged;			// Size of byte is changed
 
 
 @property (nonatomic, readwrite) BOOL byteHas6Bit;		// YES - byte contains 6 bits, 8 otherwise
+
+@property (nonatomic, readwrite) ThemeNumber theme;       // Номер выбранной темы для будующего улучшайбера
 
 
 @end
