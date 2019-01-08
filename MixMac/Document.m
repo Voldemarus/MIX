@@ -165,6 +165,7 @@
 
     if (string.length > 0) {
         NSArray <NSString*>*rows = [string componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+        // 1 проход - форматирование строк, и создание массивов меток
         for (NSInteger i = 0; i < rows.count; i++) {
             MIXString *mixString = [[MIXString alloc] initWithText:rows[i]];
             [arrayAllRows addObject:mixString];
@@ -181,14 +182,62 @@
 
             [result appendAttributedString:mixString.stringAttributed];
         }
+        
+        ALog(@" --- Словарь метка:значение: ---\n%@", equDict);
+        ALog(@" --- Словарь метка:адрес: ---\n%@", labelDict);
+        ALog(@" --- Массив словарей специальных меток: ---\n%@", labelBackForwardArray);
+
+        // 2 проход - определение операндов и подстановка меток
+        ALog(@"------------ 2 проход и Тест ссылок вперед-назад -------------");
+
+        for (NSInteger i = 0; i < arrayAllRows.count; i++) {
+            MIXString *mixString = arrayAllRows[i];
+            //  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            [self calculateOperand:mixString];
+            //  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+        }
     }
     
-    ALog(@" --- Словарь метка:значение: ---\n%@", equDict);
-    ALog(@" --- Словарь метка:адрес: ---\n%@", labelDict);
-    ALog(@" --- Массив словарей специальных меток: ---\n%@", [[[labelBackForwardArray componentsJoinedByString:@""] stringByReplacingOccurrencesOfString:@"\n" withString:@""] stringByReplacingOccurrencesOfString:@"}{   " withString:@"}\n{"]);
 
     
     return result;
+}
+
+- (void) calculateOperand:(MIXString*) mixString
+{
+    NSString *operand = mixString.operand;
+    if (mixString.address > 0) {
+        ALog(@"текущий %ld  оператор %@   dB:%@   dF:%@", mixString.address, mixString.operand, [self valueForvardNumber:5 currentAddress:mixString.address], [self valueBackwardNumber:5 currentAddress:mixString.address]);
+    }
+}
+
+- (NSString*) valueForvardNumber:(NSInteger)linkInOperand currentAddress:(NSInteger)currentAddress
+{
+    // Возвращает значение для ссылок вперед типа dF
+    for (NSInteger i = 0; i < labelBackForwardArray.count; i++) {
+        NSDictionary *dict = labelBackForwardArray[i];
+        NSNumber *address = dict[@"address"];
+        if (address && address.integerValue > currentAddress && [dict[@"label"] integerValue] == linkInOperand) {
+            return dict[@"value"];
+            break;
+        }
+    }
+    return @"";
+}
+
+- (NSString*) valueBackwardNumber:(NSInteger)linkInOperand currentAddress:(NSInteger)currentAddress
+{
+    // Возвращает значение для ссылок назад типа dB
+    for (NSInteger i = labelBackForwardArray.count -1; i >= 0; i--) {
+        NSDictionary *dict = labelBackForwardArray[i];
+        NSNumber *address = dict[@"address"];
+        if (address && address.integerValue < currentAddress && [dict[@"label"] integerValue] == linkInOperand) {
+            return dict[@"value"];
+            break;
+        }
+    }
+    return @"";
 }
 
 - (MIXString*) calculateLabel:(MIXString*) mixString
@@ -202,15 +251,20 @@
         mixString.address = address;
         address++;
     }
+    // !! Надо как то обработать ситуацию когда типа  5H EQU  12345, в этом случае метка 5H не адрес, а значение 12345!
     NSString *label = mixString.label;
     if (label.length > 0) {
+        
         if (isEQU == YES && mixString.operand.length > 0) {
-            equDict[label] = mixString.operand;
+            if ([self isBFLabel:label] && mixString.operand.length > 0) { // Это спецметка, поэтому не адрес а значение
+                [labelBackForwardArray addObject:@{@"label":label, @"address":@(address), @"value":mixString.operand}]; // типа @"7H":@"3015"
+            } else {
+                equDict[label] = mixString.operand;
+            }
         } else {
             
-            if ([[NSRegularExpression regularExpressionWithPattern:@"^[1-9][H]$" options:NSRegularExpressionAnchorsMatchLines error:nil] numberOfMatchesInString:label options:0 range:NSMakeRange(0, label.length)] == 1) {
-                
-                [labelBackForwardArray addObject:@{label : @(address)}]; // типа @"7H":@"3015"
+            if ([self isBFLabel:label]) {
+                [labelBackForwardArray addObject:@{@"label":label, @"address" : @(address), @"value" : @(address)}]; // типа @"7H":@"3015"
                 // потом искать нужную метку выборкой по имени и смотреть номер адреса, в зависимости от iF iB
                 
             } else {
@@ -228,5 +282,10 @@
     return mixString;
 }
 
+- (BOOL) isBFLabel:(NSString*)label
+{
+    // Если это метка типа типа iH
+    return [[NSRegularExpression regularExpressionWithPattern:@"^[1-9][H]$" options:NSRegularExpressionAnchorsMatchLines error:nil] numberOfMatchesInString:label options:0 range:NSMakeRange(0, label.length)] == 1;
+}
 
 @end
