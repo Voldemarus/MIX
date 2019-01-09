@@ -27,4 +27,6 @@
 + (NSAttributedString*) mixComment:(NSString*)text;
 + (NSAttributedString*) mixError:(NSString*)text ;
 
++ (NSAttributedString*) mixDefault:(NSString *)text;
+
 @end

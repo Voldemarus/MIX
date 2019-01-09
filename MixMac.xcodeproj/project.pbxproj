@@ -49,6 +49,7 @@
 		32B47B4B21E1455C000106C3 /* GeneratePreviewForURL.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B47B4A21E1455C000106C3 /* GeneratePreviewForURL.m */; };
 		32B47B4D21E1455C000106C3 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 32B47B4C21E1455C000106C3 /* main.c */; };
 		32B47B5321E14B6E000106C3 /* MIXPreviewSource.qlgenerator in CopyFiles */ = {isa = PBXBuildFile; fileRef = 32B47B4621E1455C000106C3 /* MIXPreviewSource.qlgenerator */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		32B5549B21E5FA6500607CA5 /* SyntaxOperandTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B5549A21E5FA6500607CA5 /* SyntaxOperandTest.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -147,6 +148,7 @@
 		32B47B4A21E1455C000106C3 /* GeneratePreviewForURL.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GeneratePreviewForURL.m; sourceTree = "<group>"; };
 		32B47B4C21E1455C000106C3 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		32B47B4E21E1455C000106C3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		32B5549A21E5FA6500607CA5 /* SyntaxOperandTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SyntaxOperandTest.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -240,6 +242,7 @@
 				1BEF64661A99F7F50039EBBE /* EntFamilyTest.m */,
 				1BEF64601A96343A0039EBBE /* MIXTest.h */,
 				1BEF64611A96343A0039EBBE /* MIXTest.m */,
+				32B5549A21E5FA6500607CA5 /* SyntaxOperandTest.m */,
 				1B7943601A8F375400197FF3 /* Supporting Files */,
 				1B55AD8F21D4D68B0087A1E0 /* DemoProg.mix */,
 				1B55AD9421D8D5370087A1E0 /* MixSeqFileTest.m */,
@@ -550,6 +553,7 @@
 				1B7943631A8F375400197FF3 /* LoadStoreCommandCPUTests.m in Sources */,
 				1BE9D5031AA4A7D400CB5187 /* moveTest.m in Sources */,
 				1BE9D4D41AA4419200CB5187 /* testShiftOperations.m in Sources */,
+				32B5549B21E5FA6500607CA5 /* SyntaxOperandTest.m in Sources */,
 				1B55AD9521D8D5370087A1E0 /* MixSeqFileTest.m in Sources */,
 				1BEF64671A99F7F50039EBBE /* EntFamilyTest.m in Sources */,
 				1BE9D4CF1A9E008800CB5187 /* CompareTests.m in Sources */,

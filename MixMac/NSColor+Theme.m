@@ -10,6 +10,11 @@
 
 @implementation NSColor (Theme)
 
++ (NSColor *) mixText
+{
+    return [NSColor textColor];
+}
+
 + (NSColor *) mixLabel
 {
     return [NSColor colorWithRed:1 green:0.5 blue:0 alpha:1];
@@ -32,7 +37,8 @@
 
 + (NSColor *) mixErrorForegraund
 {
-    return [NSColor colorWithRed:1 green:1 blue:0 alpha:1];
+    //return [NSColor colorWithRed:1 green:1 blue:0 alpha:1];
+    return [NSColor systemYellowColor];
 }
 
 + (NSColor *) mixErrorBackground

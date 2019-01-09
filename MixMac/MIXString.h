@@ -23,13 +23,23 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain) NSString *mnemonic;     // Мнемокод операции
 @property (nonatomic, retain) NSString *operand;      // Параметры операции
 @property (nonatomic, retain) NSString *comment;      // Комментарий
-@property (nonatomic, readwrite) NSInteger address;   // Адрес в памяти
+@property (nonatomic, readwrite) NSInteger memoryPos; // Адрес в памяти
 @property (nonatomic, readwrite) BOOL commentOnly;    // Если YES то вся строка это комментарий
 @property (nonatomic, readwrite) BOOL errorLabel;     // Если есть ошибка в метка
 @property (nonatomic, readwrite) BOOL errorMnemonic;  // Если есть ошибка в мнемокоде
 @property (nonatomic, readwrite) BOOL errorOperand;   // Если есть ошибка в операнде
 @property (nonatomic, readwrite) BOOL error;          // Если есть ошибка в строке
 @property (nonatomic, retain) NSMutableArray *errors; // Список ошибок, пока не настроен!
+
+// Для разобраной строки:
+@property (nonatomic, retain) NSString *operandNew;      // Параметры операции
+@property (nonatomic, retain) NSString * SIGN;
+@property (nonatomic, retain) NSString * ADDRESS;
+@property (nonatomic, retain) NSString * INDEX;
+@property (nonatomic, retain) NSString * MOD;
+@property (nonatomic, retain) NSString * OPCODE;
+
+
 
 // Возвращает простую строку, с разделелителями- табуляторами
 - (NSString *) stringPlain;

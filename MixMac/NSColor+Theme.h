@@ -11,6 +11,7 @@
 
 @interface NSColor (Theme)
 
++ (NSColor *) mixText;
 + (NSColor *) mixLabel;
 + (NSColor *) mixMnemonic;
 + (NSColor *) mixOperand;

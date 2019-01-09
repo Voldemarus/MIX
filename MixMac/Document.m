@@ -16,10 +16,9 @@
     MarkerLineNumberView *lineNumberView;
     NSMutableArray <MIXString*>* arrayAllRows;
     
-    NSMutableDictionary * equDict; // Словарь метка:значение
-    NSMutableDictionary * labelDict; // Словарь метка:адрес
+    NSMutableDictionary * labelDict; // Словарь метка:адрес/Значение
     NSMutableArray <NSDictionary*> * labelBackForwardArray; // Массив словарей специальных меток типа @"7H":@(3015)
-    NSInteger address;
+    NSInteger memoryPos;
     
     BOOL errorSyntax;
 }
@@ -111,10 +110,37 @@
 - (void) textDidChange:(NSNotification *)notification
 {
     if (errorSyntax) {
-        [self.textView.textStorage removeAttribute:NSBackgroundColorAttributeName range:NSMakeRange(0, self.textView.textStorage.string.length)];
-    }
+        NSRange rangeEdit = self.textView.selectedRanges[0].rangeValue;
+        // При начале редактирования убрать форматирование строки
+//        if ([self.textView.textStorage attribute:NSBackgroundColorAttributeName atIndex:rangeEdit.location effectiveRange:nil]) {
+            //// Если есть ошибка (есть фон), то при начале редактирования строки удалить атрибуты
+            NSUInteger lineStart = 0;
+            NSUInteger lineEnd = 0;
+            [self.textView.string getLineStart:&lineStart end:&lineEnd contentsEnd:nil forRange:rangeEdit];
+            NSRange range = NSMakeRange(lineStart, lineEnd - lineStart);
+            //ALog(@"%ld - %ld =>%@<=",lineStart, lineEnd, [self.textView.textStorage.string substringWithRange:range]);
+            [self.textView.textStorage removeAttribute:NSBackgroundColorAttributeName range:range];
+            [self.textView.textStorage removeAttribute:NSForegroundColorAttributeName range:range];
+//        }
+     }
     
 }
+//- (BOOL) textView:(NSTextView *)textView shouldChangeTextInRange:(NSRange)affectedCharRange replacementString:(nullable NSString *)replacementString
+//{
+//    NSString *string = textView.textStorage.string;
+//
+//    NSUInteger lineStart = 0;
+//    NSUInteger lineEnd = 0;
+//    [string getLineStart:&lineStart end:&lineEnd contentsEnd:nil forRange:affectedCharRange];
+//    ALog(@"%ld - %ld",lineStart, lineEnd);
+//    NSRange range = NSMakeRange(lineStart, lineEnd - lineStart);
+//    string = [string substringWithRange:range];
+//    ALog(@"=>%@<=", string);
+//    [self.textView.textStorage replaceCharactersInRange:range withAttributedString:[[MIXString alloc] initWithText:string].attributeString];
+//    //[self reloarTextView];
+//    return YES;
+//}
+
 
 #pragma mark - Формат и отображение кода
 
@@ -157,34 +183,23 @@
     NSMutableAttributedString *result = [NSMutableAttributedString new];
     arrayAllRows = [NSMutableArray new];
     
-    equDict = [NSMutableDictionary new]; // Словарь метка:значение
-    labelDict = [NSMutableDictionary new]; // Словарь метка:адрес
+    labelDict = [NSMutableDictionary new]; // Словарь метка:адрес/значение
     labelBackForwardArray = [NSMutableArray new]; // Массив словарей специальных меток типа @"7H":@(3015)
     
-    address = 3000;
+    memoryPos = 1000;
 
     if (string.length > 0) {
         NSArray <NSString*>*rows = [string componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+        
         // 1 проход - форматирование строк, и создание массивов меток
         for (NSInteger i = 0; i < rows.count; i++) {
             MIXString *mixString = [[MIXString alloc] initWithText:rows[i]];
-            [arrayAllRows addObject:mixString];
-            if (!errorSyntax) {
-                errorSyntax = mixString.error;
-            }
-            if (i>0) {
-                [result appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
-            }
-
-            //  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             mixString = [self calculateLabel:mixString];
-            //  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-            [result appendAttributedString:mixString.stringAttributed];
+            if (!errorSyntax) errorSyntax = mixString.error;
+            [arrayAllRows addObject:mixString];
         }
         
-        ALog(@" --- Словарь метка:значение: ---\n%@", equDict);
-        ALog(@" --- Словарь метка:адрес: ---\n%@", labelDict);
+        ALog(@" --- Словарь метка:адрес/значение: ---\n%@", labelDict);
         ALog(@" --- Массив словарей специальных меток: ---\n%@", labelBackForwardArray);
 
         // 2 проход - определение операндов и подстановка меток
@@ -192,9 +207,14 @@
 
         for (NSInteger i = 0; i < arrayAllRows.count; i++) {
             MIXString *mixString = arrayAllRows[i];
-            //  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            [self calculateOperand:mixString];
-            //  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            mixString = [self calculateOperand:mixString];
+            if (!errorSyntax) errorSyntax = mixString.error;
+
+            if (i>0) {
+                [result appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
+            }
+
+            [result appendAttributedString:mixString.stringAttributed];
 
         }
     }
@@ -204,21 +224,59 @@
     return result;
 }
 
-- (void) calculateOperand:(MIXString*) mixString
+- (MIXString*) calculateOperand:(MIXString*) mixString
 {
-    NSString *operand = mixString.operand;
-    if (mixString.address > 0) {
-        ALog(@"текущий %ld  оператор %@   dB:%@   dF:%@", mixString.address, mixString.operand, [self valueForvardNumber:5 currentAddress:mixString.address], [self valueBackwardNumber:5 currentAddress:mixString.address]);
+    __block NSString *operand = mixString.operand;
+    if (mixString.memoryPos > 0 && ![mixString.mnemonic isEqualToString:@"ALF"]) {
+        
+        //
+        // Замена ссылок
+        //
+        // Найдем ссылки в строке операнда
+        NSRegularExpression  *regExp = [NSRegularExpression regularExpressionWithPattern:@"\\d*[A-Z]+\\d*" options:0 error:nil];
+        NSArray <NSTextCheckingResult *> * matches = [regExp matchesInString:operand options:0 range:NSMakeRange(0, operand.length)];
+        for (NSInteger i = matches.count - 1; i >=0; i--) {
+            NSRange range = matches[i].range;
+            if (range.location != NSNotFound && range.length > 0) {
+                NSString *label = [operand substringWithRange:range]; // найденная ссылка на метку
+                NSString *replace = @"";
+                if ([self isBLabel:label]) {
+                    // локальная ссылка назад
+                    replace = [self valueBackwardNumber:label.integerValue currentMemoryPos:mixString.memoryPos];
+                } else if ([self isFLabel:label]) {
+                    // локальная ссылка вперед
+                    replace = [self valueForvardNumber:label.integerValue currentMemoryPos:mixString.memoryPos];
+                } else {
+                    replace = labelDict[label];
+                    if (!replace.length) {
+                        replace = label;
+                        mixString.error = YES;
+                        mixString.errorOperand = YES;
+                        [mixString.errors addObject:RStr(@"Label or symbol not found")];
+                    }
+                }
+                ALog(@"%ld  %ld,   ==>%@<==   ==>%@<==", range.location, range.length, [operand substringWithRange:range], replace);
+                operand = [operand stringByReplacingCharactersInRange:range withString:replace];
+            }
+
+        };
+        
+        mixString.operandNew = operand;
+//        mixString.operand = operand;
+        
+        
+        //ALog(@"текущий %ld  оператор %@   dB:%@   dF:%@", mixString.memoryPos, mixString.operand, [self valueForvardNumber:5 currentMemoryPos:mixString.memoryPos], [self valueBackwardNumber:5 currentMemoryPos:mixString.memoryPos]);
     }
+    return mixString;
 }
 
-- (NSString*) valueForvardNumber:(NSInteger)linkInOperand currentAddress:(NSInteger)currentAddress
+- (NSString*) valueForvardNumber:(NSInteger)linkInOperand currentMemoryPos:(NSInteger)currentMemoryPos
 {
-    // Возвращает значение для ссылок вперед типа dF
+    // Возвращает значение для ссылок вперед типа [1-9]F
     for (NSInteger i = 0; i < labelBackForwardArray.count; i++) {
         NSDictionary *dict = labelBackForwardArray[i];
-        NSNumber *address = dict[@"address"];
-        if (address && address.integerValue > currentAddress && [dict[@"label"] integerValue] == linkInOperand) {
+        NSNumber *memoryPos = dict[@"memoryPos"];
+        if (memoryPos && memoryPos.integerValue > currentMemoryPos && [dict[@"label"] integerValue] == linkInOperand) {
             return dict[@"value"];
             break;
         }
@@ -226,13 +284,13 @@
     return @"";
 }
 
-- (NSString*) valueBackwardNumber:(NSInteger)linkInOperand currentAddress:(NSInteger)currentAddress
+- (NSString*) valueBackwardNumber:(NSInteger)linkInOperand currentMemoryPos:(NSInteger)currentMemoryPos
 {
-    // Возвращает значение для ссылок назад типа dB
-    for (NSInteger i = labelBackForwardArray.count -1; i >= 0; i--) {
+    // Возвращает значение для ссылок назад типа [1-9]B
+    for (NSInteger i = labelBackForwardArray.count - 1; i >= 0; i--) {
         NSDictionary *dict = labelBackForwardArray[i];
-        NSNumber *address = dict[@"address"];
-        if (address && address.integerValue < currentAddress && [dict[@"label"] integerValue] == linkInOperand) {
+        NSNumber *memoryPos = dict[@"memoryPos"];
+        if (memoryPos && memoryPos.integerValue < currentMemoryPos && [dict[@"label"] integerValue] == linkInOperand) {
             return dict[@"value"];
             break;
         }
@@ -246,25 +304,26 @@
     BOOL isEQU = [mixString.mnemonic isEqualToString:@"EQU"];
     
     if ([mixString.mnemonic isEqualToString:@"ORIG"]) {
-        address = mixString.operand.integerValue;
+        memoryPos = mixString.operand.integerValue;
     } else if (isEQU == NO) {
-        mixString.address = address;
-        address++;
+        mixString.memoryPos = memoryPos;
+        memoryPos++;
     }
     // !! Надо как то обработать ситуацию когда типа  5H EQU  12345, в этом случае метка 5H не адрес, а значение 12345!
     NSString *label = mixString.label;
     if (label.length > 0) {
         
         if (isEQU == YES && mixString.operand.length > 0) {
-            if ([self isBFLabel:label] && mixString.operand.length > 0) { // Это спецметка, поэтому не адрес а значение
-                [labelBackForwardArray addObject:@{@"label":label, @"address":@(address), @"value":mixString.operand}]; // типа @"7H":@"3015"
+            if ([self isBFLabel:label]) { // Это спецметка, поэтому не адрес а значение
+                [labelBackForwardArray addObject:@{@"label":label, @"memoryPos":[NSString stringWithFormat:@"%ld", memoryPos], @"value":mixString.operand}]; // типа @"7H":@"3015"
             } else {
-                equDict[label] = mixString.operand;
+                labelDict[label] = mixString.operand;
             }
         } else {
             
             if ([self isBFLabel:label]) {
-                [labelBackForwardArray addObject:@{@"label":label, @"address" : @(address), @"value" : @(address)}]; // типа @"7H":@"3015"
+                NSString *value = [NSString stringWithFormat:@"%ld", memoryPos];
+                [labelBackForwardArray addObject:@{@"label":label, @"memoryPos" : value, @"value" : value}]; // типа @"7H":@"3015"
                 // потом искать нужную метку выборкой по имени и смотреть номер адреса, в зависимости от iF iB
                 
             } else {
@@ -272,9 +331,8 @@
                     [mixString.errors addObject:RStr(@"Duplicate label")];
                     mixString.errorLabel = YES;
                     mixString.error = YES;
-                    errorSyntax = YES;
                 }
-                labelDict[label] = @(address);
+                labelDict[label] = [NSString stringWithFormat:@"%ld", memoryPos];
             }
         }
         
@@ -286,6 +344,18 @@
 {
     // Если это метка типа типа iH
     return [[NSRegularExpression regularExpressionWithPattern:@"^[1-9][H]$" options:NSRegularExpressionAnchorsMatchLines error:nil] numberOfMatchesInString:label options:0 range:NSMakeRange(0, label.length)] == 1;
+}
+
+- (BOOL) isFLabel:(NSString*)label
+{
+    // Если это метка типа типа [1-9]F
+    return [[NSRegularExpression regularExpressionWithPattern:@"^[1-9][F]$" options:NSRegularExpressionAnchorsMatchLines error:nil] numberOfMatchesInString:label options:0 range:NSMakeRange(0, label.length)] == 1;
+}
+
+- (BOOL) isBLabel:(NSString*)label
+{
+    // Если это метка типа типа [1-9]F
+    return [[NSRegularExpression regularExpressionWithPattern:@"^[1-9][B]$" options:NSRegularExpressionAnchorsMatchLines error:nil] numberOfMatchesInString:label options:0 range:NSMakeRange(0, label.length)] == 1;
 }
 
 @end

@@ -8,12 +8,16 @@
 
 #import "MIXString.h"
 
+//
+// TODO: Много лишнего! Если не сохранять класс, то это и не нужно, может удалить NSCoder?
+//
+
 NSString * const LD_source          =    @"1";
 NSString * const LD_label           =    @"2";
 NSString * const LD_mnemonic        =    @"3";
 NSString * const LD_operand         =    @"4";
 NSString * const LD_comment         =    @"5";
-NSString * const LD_address         =    @"6";
+NSString * const LD_memoryPos       =    @"6";
 NSString * const LD_commentOnly     =    @"7";
 NSString * const LD_errorLabel      =    @"8";
 NSString * const LD_errorMnemonic   =    @"9";
@@ -23,7 +27,7 @@ NSString * const LD_errors          =    @"12";
 
 @implementation MIXString
 
-@synthesize source, label, mnemonic, operand, comment, address, commentOnly, errorLabel, errorMnemonic, errorOperand, error, errors;
+@synthesize source, label, mnemonic, operand, comment, memoryPos, commentOnly, errorLabel, errorMnemonic, errorOperand, error, errors;
 
 - (instancetype) init
 {
@@ -34,7 +38,7 @@ NSString * const LD_errors          =    @"12";
         self.operand        = @"";
         self.comment        = @"";
         
-        self.address        = 0; // Адрес начала программы, если 0 то не назначен
+        self.memoryPos      = 0; // Адрес начала программы, если 0 то не назначен
         
         self.commentOnly    = NO;
         self.errorLabel     = NO;
@@ -65,7 +69,7 @@ NSString * const LD_errors          =    @"12";
         newRec.operand     = self.operand;
         newRec.comment     = self.comment;
         
-        newRec.address     = self.address;
+        newRec.memoryPos   = self.memoryPos;
         
         newRec.commentOnly    = self.commentOnly;
         newRec.errorLabel     = self.error;
@@ -85,7 +89,7 @@ NSString * const LD_errors          =    @"12";
     [aCoder encodeObject:self.operand     forKey:LD_operand];
     [aCoder encodeObject:self.comment     forKey:LD_comment];
     
-    [aCoder encodeInteger:self.address    forKey:LD_address];
+    [aCoder encodeInteger:self.memoryPos  forKey:LD_memoryPos];
     
     [aCoder encodeBool:self.commentOnly   forKey:LD_commentOnly];
     [aCoder encodeBool:self.errorLabel    forKey:LD_errorLabel];
@@ -105,7 +109,7 @@ NSString * const LD_errors          =    @"12";
         newRec.operand       = [aDecoder decodeObjectForKey:LD_operand];
         newRec.comment       = [aDecoder decodeObjectForKey:LD_comment];
         
-        newRec.address       = [aDecoder decodeIntegerForKey:LD_address];
+        newRec.memoryPos     = [aDecoder decodeIntegerForKey:LD_memoryPos];
         
         newRec.commentOnly   = [aDecoder decodeBoolForKey:LD_commentOnly];
         newRec.errorLabel    = [aDecoder decodeBoolForKey:LD_errorLabel];

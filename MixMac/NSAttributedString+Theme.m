@@ -135,4 +135,18 @@
     return [[NSAttributedString alloc] initWithString:text?text:@"" attributes:attributes];
 }
 
++ (NSAttributedString*) mixDefault:(NSString *)text
+{
+    static NSDictionary *attributes = nil;
+    if (!attributes) {
+        attributes = @{
+                       NSForegroundColorAttributeName:[NSColor mixText],
+                       NSFontAttributeName:[NSFont mixFont],
+                       NSParagraphStyleAttributeName:[self mixParagraphStyle],
+                       };
+    }
+    return [[NSAttributedString alloc] initWithString:text?text:@"" attributes:attributes];
+}
+
+
 @end
