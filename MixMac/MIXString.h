@@ -61,3 +61,6 @@ NS_ASSUME_NONNULL_END
 
 // 3 оператора не требующих аргументы
 #define OPER_WITHOUT_PARAM @[@"NOP", @"HLT", @"CHAR"]
+
+// операторы не увеличивающие счетчик памяти
+#define OPER_NO_MEMORY @[@"ORIG", @"EQU"]

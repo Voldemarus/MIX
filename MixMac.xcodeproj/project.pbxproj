@@ -28,6 +28,8 @@
 		1BEF64621A96343A0039EBBE /* MIXTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BEF64611A96343A0039EBBE /* MIXTest.m */; };
 		1BEF64651A96366A0039EBBE /* ArithmeticTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BEF64641A96366A0039EBBE /* ArithmeticTests.m */; };
 		1BEF64671A99F7F50039EBBE /* EntFamilyTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BEF64661A99F7F50039EBBE /* EntFamilyTest.m */; };
+		321C3FCC21E795770031343A /* MixMac.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 321C3FCA21E795770031343A /* MixMac.xcdatamodeld */; };
+		321C3FD021E796060031343A /* DAO.m in Sources */ = {isa = PBXBuildFile; fileRef = 321C3FCE21E796060031343A /* DAO.m */; };
 		325DDB1121E4AC1800D3E329 /* NSAttributedString+Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = 325DDB1021E4AC1800D3E329 /* NSAttributedString+Theme.m */; };
 		325DDB1621E4AE7800D3E329 /* NSFont+Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = 325DDB1221E4AE7700D3E329 /* NSFont+Theme.m */; };
 		325DDB1721E4AE7800D3E329 /* NSColor+Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = 325DDB1321E4AE7700D3E329 /* NSColor+Theme.m */; };
@@ -122,6 +124,9 @@
 		1BEF64611A96343A0039EBBE /* MIXTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MIXTest.m; sourceTree = "<group>"; };
 		1BEF64641A96366A0039EBBE /* ArithmeticTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArithmeticTests.m; sourceTree = "<group>"; };
 		1BEF64661A99F7F50039EBBE /* EntFamilyTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EntFamilyTest.m; sourceTree = "<group>"; };
+		321C3FCB21E795770031343A /* MixMac.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MixMac.xcdatamodel; sourceTree = "<group>"; };
+		321C3FCE21E796060031343A /* DAO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAO.m; sourceTree = "<group>"; };
+		321C3FCF21E796060031343A /* DAO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAO.h; sourceTree = "<group>"; };
 		325DDB0F21E4AC1800D3E329 /* NSAttributedString+Theme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+Theme.h"; sourceTree = "<group>"; };
 		325DDB1021E4AC1800D3E329 /* NSAttributedString+Theme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+Theme.m"; sourceTree = "<group>"; };
 		325DDB1221E4AE7700D3E329 /* NSFont+Theme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFont+Theme.m"; sourceTree = "<group>"; };
@@ -205,6 +210,7 @@
 			children = (
 				325DDB0E21E4AC0B00D3E329 /* Theme */,
 				32B47B2521E0CF1C000106C3 /* Line View */,
+				321C3FCD21E795820031343A /* Core Data */,
 				32B47B2621E0F9F3000106C3 /* Formating string */,
 				1B79434D1A8F375400197FF3 /* Document.h */,
 				1B79434E1A8F375400197FF3 /* Document.m */,
@@ -290,6 +296,16 @@
 				329F1C9321DF6D8E00932DB5 /* MIXAL tacherbook.html */,
 			);
 			name = Documentation;
+			sourceTree = "<group>";
+		};
+		321C3FCD21E795820031343A /* Core Data */ = {
+			isa = PBXGroup;
+			children = (
+				321C3FCF21E796060031343A /* DAO.h */,
+				321C3FCE21E796060031343A /* DAO.m */,
+				321C3FCA21E795770031343A /* MixMac.xcdatamodeld */,
+			);
+			name = "Core Data";
 			sourceTree = "<group>";
 		};
 		325DDB0E21E4AC0B00D3E329 /* Theme */ = {
@@ -528,6 +544,7 @@
 				1B79434F1A8F375400197FF3 /* Document.m in Sources */,
 				325DDB1721E4AE7800D3E329 /* NSColor+Theme.m in Sources */,
 				1B79436F1A8F379A00197FF3 /* MIXCPU.m in Sources */,
+				321C3FD021E796060031343A /* DAO.m in Sources */,
 				325DDB1A21E4B74600D3E329 /* Theme.m in Sources */,
 				325DDB1621E4AE7800D3E329 /* NSFont+Theme.m in Sources */,
 				1B79437B1A8F691A00197FF3 /* MixCommands.m in Sources */,
@@ -535,6 +552,7 @@
 				1B79434C1A8F375400197FF3 /* main.m in Sources */,
 				32B47B1D21E0C218000106C3 /* NoodleLineNumberMarker.m in Sources */,
 				1BE9D5341AA61D5500CB5187 /* MIXFileCollection.m in Sources */,
+				321C3FCC21E795770031343A /* MixMac.xcdatamodeld in Sources */,
 				32B47B1F21E0C218000106C3 /* MarkerLineNumberView.m in Sources */,
 				32B47B1E21E0C218000106C3 /* NoodleLineNumberView.m in Sources */,
 				1B79434A1A8F375400197FF3 /* AppDelegate.m in Sources */,
@@ -872,6 +890,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		321C3FCA21E795770031343A /* MixMac.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				321C3FCB21E795770031343A /* MixMac.xcdatamodel */,
+			);
+			currentVersion = 321C3FCB21E795770031343A /* MixMac.xcdatamodel */;
+			path = MixMac.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 1B79433B1A8F375400197FF3 /* Project object */;
 }

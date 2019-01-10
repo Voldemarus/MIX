@@ -17,7 +17,7 @@
     NSMutableArray <MIXString*>* arrayAllRows;
     
     NSMutableDictionary * labelDict; // Словарь метка:адрес/Значение
-    NSMutableArray <NSDictionary*> * labelBackForwardArray; // Массив словарей специальных меток типа @"7H":@(3015)
+    NSMutableArray <NSDictionary*> * labels_H_Array; // Массив словарей специальных меток типа @"7H":@(3015)
     NSInteger memoryPos;
     
     BOOL errorSyntax;
@@ -184,7 +184,7 @@
     arrayAllRows = [NSMutableArray new];
     
     labelDict = [NSMutableDictionary new]; // Словарь метка:адрес/значение
-    labelBackForwardArray = [NSMutableArray new]; // Массив словарей специальных меток типа @"7H":@(3015)
+    labels_H_Array = [NSMutableArray new]; // Массив словарей специальных меток типа @"7H":@(3015)
     
     memoryPos = 1000;
 
@@ -200,7 +200,7 @@
         }
         
         ALog(@" --- Словарь метка:адрес/значение: ---\n%@", labelDict);
-        ALog(@" --- Массив словарей специальных меток: ---\n%@", labelBackForwardArray);
+        ALog(@" --- Массив словарей специальных меток: ---\n%@", labels_H_Array);
 
         // 2 проход - определение операндов и подстановка меток
         ALog(@"------------ 2 проход и Тест ссылок вперед-назад -------------");
@@ -210,11 +210,16 @@
             mixString = [self calculateOperand:mixString];
             if (!errorSyntax) errorSyntax = mixString.error;
 
+
             if (i>0) {
                 [result appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
             }
 
+            
             [result appendAttributedString:mixString.stringAttributed];
+            
+            
+            [result mixAppendComment:[NSString stringWithFormat:@"\t* %ld", mixString.memoryPos]];
 
         }
     }
@@ -273,8 +278,8 @@
 - (NSString*) valueForvardNumber:(NSInteger)linkInOperand currentMemoryPos:(NSInteger)currentMemoryPos
 {
     // Возвращает значение для ссылок вперед типа [1-9]F
-    for (NSInteger i = 0; i < labelBackForwardArray.count; i++) {
-        NSDictionary *dict = labelBackForwardArray[i];
+    for (NSInteger i = 0; i < labels_H_Array.count; i++) {
+        NSDictionary *dict = labels_H_Array[i];
         NSNumber *memoryPos = dict[@"memoryPos"];
         if (memoryPos && memoryPos.integerValue > currentMemoryPos && [dict[@"label"] integerValue] == linkInOperand) {
             return dict[@"value"];
@@ -287,8 +292,8 @@
 - (NSString*) valueBackwardNumber:(NSInteger)linkInOperand currentMemoryPos:(NSInteger)currentMemoryPos
 {
     // Возвращает значение для ссылок назад типа [1-9]B
-    for (NSInteger i = labelBackForwardArray.count - 1; i >= 0; i--) {
-        NSDictionary *dict = labelBackForwardArray[i];
+    for (NSInteger i = labels_H_Array.count - 1; i >= 0; i--) {
+        NSDictionary *dict = labels_H_Array[i];
         NSNumber *memoryPos = dict[@"memoryPos"];
         if (memoryPos && memoryPos.integerValue < currentMemoryPos && [dict[@"label"] integerValue] == linkInOperand) {
             return dict[@"value"];
@@ -303,27 +308,21 @@
     
     BOOL isEQU = [mixString.mnemonic isEqualToString:@"EQU"];
     
-    if ([mixString.mnemonic isEqualToString:@"ORIG"]) {
-        memoryPos = mixString.operand.integerValue;
-    } else if (isEQU == NO) {
-        mixString.memoryPos = memoryPos;
-        memoryPos++;
-    }
     // !! Надо как то обработать ситуацию когда типа  5H EQU  12345, в этом случае метка 5H не адрес, а значение 12345!
     NSString *label = mixString.label;
     if (label.length > 0) {
         
         if (isEQU == YES && mixString.operand.length > 0) {
-            if ([self isBFLabel:label]) { // Это спецметка, поэтому не адрес а значение
-                [labelBackForwardArray addObject:@{@"label":label, @"memoryPos":[NSString stringWithFormat:@"%ld", memoryPos], @"value":mixString.operand}]; // типа @"7H":@"3015"
+            if ([self is_H_Label:label]) { // Это спецметка, поэтому не адрес а значение
+                [labels_H_Array addObject:@{@"label":label, @"memoryPos":[NSString stringWithFormat:@"%ld", memoryPos], @"value":mixString.operand}]; // типа @"7H":@"3015"
             } else {
                 labelDict[label] = mixString.operand;
             }
         } else {
             
-            if ([self isBFLabel:label]) {
+            if ([self is_H_Label:label]) {
                 NSString *value = [NSString stringWithFormat:@"%ld", memoryPos];
-                [labelBackForwardArray addObject:@{@"label":label, @"memoryPos" : value, @"value" : value}]; // типа @"7H":@"3015"
+                [labels_H_Array addObject:@{@"label":label, @"memoryPos" : value, @"value" : value}]; // типа @"7H":@"3015"
                 // потом искать нужную метку выборкой по имени и смотреть номер адреса, в зависимости от iF iB
                 
             } else {
@@ -337,10 +336,19 @@
         }
         
     }
+
+    // ORIG устанавливает счетчик со следующей строки!
+    if ([mixString.mnemonic isEqualToString:@"ORIG"]) {
+        memoryPos = mixString.operand.integerValue;
+    } else if (isEQU == NO && mixString.mnemonic.length > 0 && ![OPER_NO_MEMORY containsObject:mixString.mnemonic]) {
+        mixString.memoryPos = memoryPos;
+        memoryPos++;
+    }
+
     return mixString;
 }
 
-- (BOOL) isBFLabel:(NSString*)label
+- (BOOL) is_H_Label:(NSString*)label
 {
     // Если это метка типа типа iH
     return [[NSRegularExpression regularExpressionWithPattern:@"^[1-9][H]$" options:NSRegularExpressionAnchorsMatchLines error:nil] numberOfMatchesInString:label options:0 range:NSMakeRange(0, label.length)] == 1;
