@@ -9,6 +9,10 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+#import "MFiles+CoreDataClass.h"
+#import "MLine+CoreDataClass.h"
+
+
 @interface DAO : NSObject
 
 @property (nonatomic, readwrite) NSInteger counteriter; // Счетчик вызовов для отладки

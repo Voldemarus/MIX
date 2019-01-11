@@ -1,4 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18B75" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <elements/>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18B75" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+    <entity name="MFiles" representedClassName="MFiles" syncable="YES">
+        <attribute name="fileName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="lines" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="MLine" inverseName="file" inverseEntity="MLine" syncable="YES"/>
+    </entity>
+    <entity name="MLine" representedClassName="MLine" syncable="YES">
+        <attribute name="comment" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="commentOnly" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="error" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="errorLabel" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="errorMnemonic" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="errorOperand" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="errorsList" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="label" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="labelValue" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lineNumber" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="mADDRESS" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="memoryPos" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="mINDEX" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mMOD" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mnemonic" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mOPCODE" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mSIGN" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="operand" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="operandNew" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="source" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="file" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MFiles" inverseName="lines" inverseEntity="MFiles" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="MLine" positionX="-63" positionY="-18" width="128" height="358"/>
+        <element name="MFiles" positionX="-305.16796875" positionY="15.8046875" width="128" height="73"/>
+    </elements>
 </model>

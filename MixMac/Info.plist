@@ -26,7 +26,7 @@
 				<string>geomatix.cz.MixMac.mixal</string>
 			</array>
 			<key>LSTypeIsPackage</key>
-			<integer>1</integer>
+			<integer>0</integer>
 			<key>NSDocumentClass</key>
 			<string>Document</string>
 		</dict>
@@ -80,6 +80,8 @@
 				<array>
 					<string>mixal</string>
 				</array>
+				<key>public.mime-type</key>
+				<array/>
 			</dict>
 		</dict>
 	</array>

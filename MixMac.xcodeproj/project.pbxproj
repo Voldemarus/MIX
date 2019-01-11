@@ -30,27 +30,20 @@
 		1BEF64671A99F7F50039EBBE /* EntFamilyTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BEF64661A99F7F50039EBBE /* EntFamilyTest.m */; };
 		321C3FCC21E795770031343A /* MixMac.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 321C3FCA21E795770031343A /* MixMac.xcdatamodeld */; };
 		321C3FD021E796060031343A /* DAO.m in Sources */ = {isa = PBXBuildFile; fileRef = 321C3FCE21E796060031343A /* DAO.m */; };
+		321C3FE221E7A8490031343A /* MLine+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 321C3FDC21E7A8490031343A /* MLine+CoreDataClass.m */; };
+		321C3FE321E7A8490031343A /* MLine+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 321C3FDD21E7A8490031343A /* MLine+CoreDataProperties.m */; };
+		321C3FE421E7A8490031343A /* MFiles+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 321C3FE021E7A8490031343A /* MFiles+CoreDataClass.m */; };
+		321C3FE521E7A8490031343A /* MFiles+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 321C3FE121E7A8490031343A /* MFiles+CoreDataProperties.m */; };
 		325DDB1121E4AC1800D3E329 /* NSAttributedString+Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = 325DDB1021E4AC1800D3E329 /* NSAttributedString+Theme.m */; };
 		325DDB1621E4AE7800D3E329 /* NSFont+Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = 325DDB1221E4AE7700D3E329 /* NSFont+Theme.m */; };
 		325DDB1721E4AE7800D3E329 /* NSColor+Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = 325DDB1321E4AE7700D3E329 /* NSColor+Theme.m */; };
 		325DDB1A21E4B74600D3E329 /* Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = 325DDB1921E4B74600D3E329 /* Theme.m */; };
-		325DDB1B21E4C90F00D3E329 /* Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = 325DDB1921E4B74600D3E329 /* Theme.m */; };
-		325DDB1C21E4C90F00D3E329 /* NSFont+Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = 325DDB1221E4AE7700D3E329 /* NSFont+Theme.m */; };
-		325DDB1D21E4C90F00D3E329 /* NSColor+Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = 325DDB1321E4AE7700D3E329 /* NSColor+Theme.m */; };
-		325DDB1E21E4C90F00D3E329 /* NSAttributedString+Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = 325DDB1021E4AC1800D3E329 /* NSAttributedString+Theme.m */; };
-		325DDB1F21E4C91C00D3E329 /* Preferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B7943721A8F3BA400197FF3 /* Preferences.m */; };
-		326FDA0121E2026F007C4FE4 /* MIXString.m in Sources */ = {isa = PBXBuildFile; fileRef = 329F1C8E21DF61CF00932DB5 /* MIXString.m */; };
 		329F1C8F21DF61CF00932DB5 /* exampledefault.mixal in Resources */ = {isa = PBXBuildFile; fileRef = 329F1C8C21DF61CF00932DB5 /* exampledefault.mixal */; };
 		329F1C9021DF61CF00932DB5 /* documentIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 329F1C8D21DF61CF00932DB5 /* documentIcon.png */; };
-		329F1C9121DF61CF00932DB5 /* MIXString.m in Sources */ = {isa = PBXBuildFile; fileRef = 329F1C8E21DF61CF00932DB5 /* MIXString.m */; };
 		329F1C9421DF72A500932DB5 /* MIXAL tacherbook.html in Resources */ = {isa = PBXBuildFile; fileRef = 329F1C9321DF6D8E00932DB5 /* MIXAL tacherbook.html */; };
 		32B47B1D21E0C218000106C3 /* NoodleLineNumberMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B47B1721E0C216000106C3 /* NoodleLineNumberMarker.m */; };
 		32B47B1E21E0C218000106C3 /* NoodleLineNumberView.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B47B1921E0C217000106C3 /* NoodleLineNumberView.m */; };
 		32B47B1F21E0C218000106C3 /* MarkerLineNumberView.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B47B1C21E0C217000106C3 /* MarkerLineNumberView.m */; };
-		32B47B4921E1455C000106C3 /* GenerateThumbnailForURL.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B47B4821E1455C000106C3 /* GenerateThumbnailForURL.m */; };
-		32B47B4B21E1455C000106C3 /* GeneratePreviewForURL.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B47B4A21E1455C000106C3 /* GeneratePreviewForURL.m */; };
-		32B47B4D21E1455C000106C3 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 32B47B4C21E1455C000106C3 /* main.c */; };
-		32B47B5321E14B6E000106C3 /* MIXPreviewSource.qlgenerator in CopyFiles */ = {isa = PBXBuildFile; fileRef = 32B47B4621E1455C000106C3 /* MIXPreviewSource.qlgenerator */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		32B5549B21E5FA6500607CA5 /* SyntaxOperandTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B5549A21E5FA6500607CA5 /* SyntaxOperandTest.m */; };
 /* End PBXBuildFile section */
 
@@ -81,7 +74,6 @@
 			dstPath = Contents/Library/QuickLook;
 			dstSubfolderSpec = 1;
 			files = (
-				32B47B5321E14B6E000106C3 /* MIXPreviewSource.qlgenerator in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -127,6 +119,14 @@
 		321C3FCB21E795770031343A /* MixMac.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MixMac.xcdatamodel; sourceTree = "<group>"; };
 		321C3FCE21E796060031343A /* DAO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAO.m; sourceTree = "<group>"; };
 		321C3FCF21E796060031343A /* DAO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAO.h; sourceTree = "<group>"; };
+		321C3FDA21E7A8490031343A /* MLine+CoreDataProperties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MLine+CoreDataProperties.h"; sourceTree = "<group>"; };
+		321C3FDB21E7A8490031343A /* MLine+CoreDataClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MLine+CoreDataClass.h"; sourceTree = "<group>"; };
+		321C3FDC21E7A8490031343A /* MLine+CoreDataClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "MLine+CoreDataClass.m"; sourceTree = "<group>"; };
+		321C3FDD21E7A8490031343A /* MLine+CoreDataProperties.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "MLine+CoreDataProperties.m"; sourceTree = "<group>"; };
+		321C3FDE21E7A8490031343A /* MFiles+CoreDataProperties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MFiles+CoreDataProperties.h"; sourceTree = "<group>"; };
+		321C3FDF21E7A8490031343A /* MFiles+CoreDataClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MFiles+CoreDataClass.h"; sourceTree = "<group>"; };
+		321C3FE021E7A8490031343A /* MFiles+CoreDataClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "MFiles+CoreDataClass.m"; sourceTree = "<group>"; };
+		321C3FE121E7A8490031343A /* MFiles+CoreDataProperties.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "MFiles+CoreDataProperties.m"; sourceTree = "<group>"; };
 		325DDB0F21E4AC1800D3E329 /* NSAttributedString+Theme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+Theme.h"; sourceTree = "<group>"; };
 		325DDB1021E4AC1800D3E329 /* NSAttributedString+Theme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+Theme.m"; sourceTree = "<group>"; };
 		325DDB1221E4AE7700D3E329 /* NSFont+Theme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFont+Theme.m"; sourceTree = "<group>"; };
@@ -135,10 +135,8 @@
 		325DDB1521E4AE7800D3E329 /* NSFont+Theme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFont+Theme.h"; sourceTree = "<group>"; };
 		325DDB1821E4B74600D3E329 /* Theme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Theme.h; sourceTree = "<group>"; };
 		325DDB1921E4B74600D3E329 /* Theme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Theme.m; sourceTree = "<group>"; };
-		329F1C8B21DF61CF00932DB5 /* MIXString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MIXString.h; sourceTree = "<group>"; };
 		329F1C8C21DF61CF00932DB5 /* exampledefault.mixal */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 28; lastKnownFileType = text; path = exampledefault.mixal; sourceTree = "<group>"; tabWidth = 14; usesTabs = 1; wrapsLines = 1; };
 		329F1C8D21DF61CF00932DB5 /* documentIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = documentIcon.png; sourceTree = "<group>"; };
-		329F1C8E21DF61CF00932DB5 /* MIXString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MIXString.m; sourceTree = "<group>"; };
 		329F1C9221DF629E00932DB5 /* MixMac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MixMac.entitlements; sourceTree = "<group>"; };
 		329F1C9321DF6D8E00932DB5 /* MIXAL tacherbook.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = "MIXAL tacherbook.html"; sourceTree = "<group>"; };
 		32B47B1721E0C216000106C3 /* NoodleLineNumberMarker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoodleLineNumberMarker.m; sourceTree = "<group>"; };
@@ -148,11 +146,6 @@
 		32B47B1B21E0C217000106C3 /* NoodleLineNumberMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoodleLineNumberMarker.h; sourceTree = "<group>"; };
 		32B47B1C21E0C217000106C3 /* MarkerLineNumberView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarkerLineNumberView.m; sourceTree = "<group>"; };
 		32B47B2F21E13BD4000106C3 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
-		32B47B4621E1455C000106C3 /* MIXPreviewSource.qlgenerator */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MIXPreviewSource.qlgenerator; sourceTree = BUILT_PRODUCTS_DIR; };
-		32B47B4821E1455C000106C3 /* GenerateThumbnailForURL.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GenerateThumbnailForURL.m; sourceTree = "<group>"; };
-		32B47B4A21E1455C000106C3 /* GeneratePreviewForURL.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GeneratePreviewForURL.m; sourceTree = "<group>"; };
-		32B47B4C21E1455C000106C3 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
-		32B47B4E21E1455C000106C3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		32B5549A21E5FA6500607CA5 /* SyntaxOperandTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SyntaxOperandTest.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -171,13 +164,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		32B47B4321E1455C000106C3 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -189,7 +175,6 @@
 				1B79436C1A8F377500197FF3 /* CPU */,
 				1B7943451A8F375400197FF3 /* MixMac */,
 				1B79435F1A8F375400197FF3 /* MixMacTests */,
-				32B47B4721E1455C000106C3 /* MIXPreviewSource */,
 				32B47B2E21E13BD4000106C3 /* Frameworks */,
 				1B7943441A8F375400197FF3 /* Products */,
 			);
@@ -200,7 +185,6 @@
 			children = (
 				1B7943431A8F375400197FF3 /* MixMac.app */,
 				1B79435C1A8F375400197FF3 /* MixMacTests.xctest */,
-				32B47B4621E1455C000106C3 /* MIXPreviewSource.qlgenerator */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -304,6 +288,14 @@
 				321C3FCF21E796060031343A /* DAO.h */,
 				321C3FCE21E796060031343A /* DAO.m */,
 				321C3FCA21E795770031343A /* MixMac.xcdatamodeld */,
+				321C3FDB21E7A8490031343A /* MLine+CoreDataClass.h */,
+				321C3FDC21E7A8490031343A /* MLine+CoreDataClass.m */,
+				321C3FDA21E7A8490031343A /* MLine+CoreDataProperties.h */,
+				321C3FDD21E7A8490031343A /* MLine+CoreDataProperties.m */,
+				321C3FDF21E7A8490031343A /* MFiles+CoreDataClass.h */,
+				321C3FE021E7A8490031343A /* MFiles+CoreDataClass.m */,
+				321C3FDE21E7A8490031343A /* MFiles+CoreDataProperties.h */,
+				321C3FE121E7A8490031343A /* MFiles+CoreDataProperties.m */,
 			);
 			name = "Core Data";
 			sourceTree = "<group>";
@@ -340,8 +332,6 @@
 			isa = PBXGroup;
 			children = (
 				329F1C8C21DF61CF00932DB5 /* exampledefault.mixal */,
-				329F1C8B21DF61CF00932DB5 /* MIXString.h */,
-				329F1C8E21DF61CF00932DB5 /* MIXString.m */,
 			);
 			name = "Formating string";
 			sourceTree = "<group>";
@@ -354,28 +344,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		32B47B4721E1455C000106C3 /* MIXPreviewSource */ = {
-			isa = PBXGroup;
-			children = (
-				32B47B4821E1455C000106C3 /* GenerateThumbnailForURL.m */,
-				32B47B4A21E1455C000106C3 /* GeneratePreviewForURL.m */,
-				32B47B4C21E1455C000106C3 /* main.c */,
-				32B47B4E21E1455C000106C3 /* Info.plist */,
-			);
-			path = MIXPreviewSource;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
-
-/* Begin PBXHeadersBuildPhase section */
-		32B47B4121E1455C000106C3 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
 		1B7943421A8F375400197FF3 /* MixMac */ = {
@@ -387,7 +356,6 @@
 				1B7943411A8F375400197FF3 /* Resources */,
 				32B47B4021E13BD4000106C3 /* Embed App Extensions */,
 				32B47B5221E14A62000106C3 /* CopyFiles */,
-				326FDA0221E26317007C4FE4 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -416,24 +384,6 @@
 			productReference = 1B79435C1A8F375400197FF3 /* MixMacTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		32B47B4521E1455C000106C3 /* MIXPreviewSource */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 32B47B4F21E1455C000106C3 /* Build configuration list for PBXNativeTarget "MIXPreviewSource" */;
-			buildPhases = (
-				32B47B4121E1455C000106C3 /* Headers */,
-				32B47B4221E1455C000106C3 /* Sources */,
-				32B47B4321E1455C000106C3 /* Frameworks */,
-				32B47B4421E1455C000106C3 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = MIXPreviewSource;
-			productName = MIXPreviewSource;
-			productReference = 32B47B4621E1455C000106C3 /* MIXPreviewSource.qlgenerator */;
-			productType = "com.apple.product-type.bundle";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -457,11 +407,6 @@
 						CreatedOnToolsVersion = 6.1.1;
 						TestTargetID = 1B7943421A8F375400197FF3;
 					};
-					32B47B4521E1455C000106C3 = {
-						CreatedOnToolsVersion = 10.1;
-						DevelopmentTeam = UKBNTL7HA9;
-						ProvisioningStyle = Automatic;
-					};
 				};
 			};
 			buildConfigurationList = 1B79433E1A8F375400197FF3 /* Build configuration list for PBXProject "MixMac" */;
@@ -479,7 +424,6 @@
 			targets = (
 				1B7943421A8F375400197FF3 /* MixMac */,
 				1B79435B1A8F375400197FF3 /* MixMacTests */,
-				32B47B4521E1455C000106C3 /* MIXPreviewSource */,
 			);
 		};
 /* End PBXProject section */
@@ -507,48 +451,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		32B47B4421E1455C000106C3 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		326FDA0221E26317007C4FE4 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nqlmanage -r\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1B79433F1A8F375400197FF3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				321C3FE421E7A8490031343A /* MFiles+CoreDataClass.m in Sources */,
 				1B79434F1A8F375400197FF3 /* Document.m in Sources */,
 				325DDB1721E4AE7800D3E329 /* NSColor+Theme.m in Sources */,
 				1B79436F1A8F379A00197FF3 /* MIXCPU.m in Sources */,
 				321C3FD021E796060031343A /* DAO.m in Sources */,
+				321C3FE221E7A8490031343A /* MLine+CoreDataClass.m in Sources */,
 				325DDB1A21E4B74600D3E329 /* Theme.m in Sources */,
+				321C3FE521E7A8490031343A /* MFiles+CoreDataProperties.m in Sources */,
 				325DDB1621E4AE7800D3E329 /* NSFont+Theme.m in Sources */,
 				1B79437B1A8F691A00197FF3 /* MixCommands.m in Sources */,
-				329F1C9121DF61CF00932DB5 /* MIXString.m in Sources */,
+				321C3FE321E7A8490031343A /* MLine+CoreDataProperties.m in Sources */,
 				1B79434C1A8F375400197FF3 /* main.m in Sources */,
 				32B47B1D21E0C218000106C3 /* NoodleLineNumberMarker.m in Sources */,
 				1BE9D5341AA61D5500CB5187 /* MIXFileCollection.m in Sources */,
@@ -575,22 +495,6 @@
 				1B55AD9521D8D5370087A1E0 /* MixSeqFileTest.m in Sources */,
 				1BEF64671A99F7F50039EBBE /* EntFamilyTest.m in Sources */,
 				1BE9D4CF1A9E008800CB5187 /* CompareTests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		32B47B4221E1455C000106C3 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				32B47B4921E1455C000106C3 /* GenerateThumbnailForURL.m in Sources */,
-				325DDB1C21E4C90F00D3E329 /* NSFont+Theme.m in Sources */,
-				32B47B4B21E1455C000106C3 /* GeneratePreviewForURL.m in Sources */,
-				325DDB1E21E4C90F00D3E329 /* NSAttributedString+Theme.m in Sources */,
-				32B47B4D21E1455C000106C3 /* main.c in Sources */,
-				325DDB1B21E4C90F00D3E329 /* Theme.m in Sources */,
-				326FDA0121E2026F007C4FE4 /* MIXString.m in Sources */,
-				325DDB1D21E4C90F00D3E329 /* NSColor+Theme.m in Sources */,
-				325DDB1F21E4C91C00D3E329 /* Preferences.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -670,7 +574,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -717,7 +621,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
 			};
@@ -738,7 +642,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "geomatix.cz.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SKIP_INSTALL = YES;
+				SKIP_INSTALL = NO;
 			};
 			name = Debug;
 		};
@@ -757,7 +661,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "geomatix.cz.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SKIP_INSTALL = YES;
+				SKIP_INSTALL = NO;
 			};
 			name = Release;
 		};
@@ -799,57 +703,6 @@
 			};
 			name = Release;
 		};
-		32B47B5021E1455C000106C3 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = UKBNTL7HA9;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = MIXPreviewSource/Info.plist;
-				INSTALL_PATH = /Library/QuickLook;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = geomatix.cz.MIXPreviewSource;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = NO;
-				WRAPPER_EXTENSION = qlgenerator;
-			};
-			name = Debug;
-		};
-		32B47B5121E1455C000106C3 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				COPY_PHASE_STRIP = NO;
-				DEVELOPMENT_TEAM = UKBNTL7HA9;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = MIXPreviewSource/Info.plist;
-				INSTALL_PATH = /Library/QuickLook;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = geomatix.cz.MIXPreviewSource;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = NO;
-				WRAPPER_EXTENSION = qlgenerator;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -876,15 +729,6 @@
 			buildConfigurations = (
 				1B79436A1A8F375400197FF3 /* Debug */,
 				1B79436B1A8F375400197FF3 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		32B47B4F21E1455C000106C3 /* Build configuration list for PBXNativeTarget "MIXPreviewSource" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				32B47B5021E1455C000106C3 /* Debug */,
-				32B47B5121E1455C000106C3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
