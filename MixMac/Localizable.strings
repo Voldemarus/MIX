@@ -21,6 +21,8 @@
 "MIXExceptionInvalidOperationCode" = "invalid operCode - not supported by current CPU";
 
 "MIXExceptionInvalidFieldModifer" = "Invalid value for field modified, left position should be lesser or equal to the right one";
+"MIXExceptionInvalidDeviceModeNotSupported" = "Operation is not supported for the current device";
+"MIXExceptionInvalidDeviceNotFound" = "Device is absent in this Virtual CPU";
 "MIXExceptionInvalidDeviceNumber" = "Invalid device number. Outside of supported by MIX machine";
 "MIXExceptionInvalidFileHandler" = "Invalid file handler.";
 //

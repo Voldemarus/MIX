@@ -8,6 +8,7 @@
 
 #import "MIXCPU.h"
 #import "Preferences.h"
+#import "MIXFileCollection.h"
 
 #import "DebugPrint.h"
 
@@ -31,6 +32,8 @@ NSString * const MIXCPUHaltStateChanged = @"MIXCPUHaltStateChanged";
 	NSString *charList;
 	
 	BOOL		halt;
+	
+	MIXFileCollection *fileCollection;
 }
 
 @end
@@ -41,6 +44,8 @@ NSString * const MIXExceptionInvalidOperationCode	=	@"MIXExceptionInvalidOperati
 NSString * const MIXExceptionInvalidFieldModifer	=	@"MIXExceptionInvalidFieldModifer";
 NSString * const MIXExceptionInvalidFileHandler		=	@"MIXExceptionInvalidFileHandler";
 NSString * const MIXExceptionInvalidDeviceNumber	=	@"MIXExceptionInvalidDeviceNumber";
+NSString * const MIXExceptionInvalidDeviceNotFound	=	@"MIXExceptionInvalidDeviceNotFound";
+NSString * const MIXExceptionInvalidDeviceModeNotSupported = @"MIXExceptionInvalidDeviceModeNotSupported";
 
 
 NSString * const DEVICE_MT = @"MT";
@@ -72,6 +77,7 @@ NSString * const DEVICE_RIB = @"RIB";
 		commands = [MixCommands sharedInstance];	// set up commands data
 		NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
 		[nc addObserver:self selector:@selector(byteSizeChanged:) name:VVVbyteSizeChanged object:nil];
+		fileCollection = [MIXFileCollection sharedCollection];
 	}
 	return self;
 }
@@ -549,6 +555,9 @@ NSString * const DEVICE_RIB = @"RIB";
 			case CMD_SLA:		[self processSLACommand:command]; break;
 			case CMD_MOVE:		[self processMOVECommand:command]; break;
 			case CMD_HLT:		[self processHaltCommand:command]; break;
+			case CMD_IN:		[self processINCommand:command]; break;
+			case CMD_OUT:		[self processOUTCommand:command]; break;
+			case CMD_IOC:		[self processIOCCommand:command]; break;
 				
 			default: {
 				[NSException raise:MIXExceptionInvalidOperationCode
@@ -1325,6 +1334,85 @@ NSString * const DEVICE_RIB = @"RIB";
 	}
 }
 
+
+- (void) processINCommand:(MIXWORD) command
+{
+	Byte deviceNum = command.byte[3];
+	if (deviceNum > PERFOLENTA) {
+		// Invalid device Number
+		[NSException raise:MIXExceptionInvalidDeviceNumber
+					format:RStr(MIXExceptionInvalidDeviceNumber)];
+		return;
+	}
+	int effectiveAddress = (int)[self effectiveAddress:command];
+	MIXSeqFile *inputFile = [fileCollection fileByHandler:deviceNum];
+	if (!inputFile) {
+		// CPU is not configure to work with this device
+		[NSException raise:MIXExceptionInvalidDeviceNotFound
+					format:RStr(MIXExceptionInvalidDeviceNotFound)];
+		return;
+	}
+	// Check file mode
+	if (inputFile.direction == StreamDirectionOutput) {
+		// Cannot read from wrote-only file
+		[NSException raise:MIXExceptionInvalidDeviceModeNotSupported
+					format:RStr(MIXExceptionInvalidDeviceModeNotSupported)];
+		return;
+	}
+	// Read data from the device
+	MIXWORD *tmp = [inputFile readBlock];
+	// And move it into the destination memory zone
+	if (tmp) {
+		for (int i = 0; i < inputFile.blockSize; i++) {
+			[self setMemoryWord:tmp[i] forCellIndex:(int)effectiveAddress+i];
+		}
+		free(tmp);	// it was malloc'ed in readBlock
+	}
+}
+
+- (void) processOUTCommand:(MIXWORD)command
+{
+	Byte deviceNum = command.byte[3];
+	if (deviceNum > PERFOLENTA) {
+		// Invalid device Number
+		[NSException raise:MIXExceptionInvalidDeviceNumber
+					format:RStr(MIXExceptionInvalidDeviceNumber)];
+		return;
+	}
+	int effectiveAddress = (int)[self effectiveAddress:command];
+	MIXSeqFile *outFile = [fileCollection fileByHandler:deviceNum];
+	if (!outFile) {
+		// CPU is not configure to work with this device
+		[NSException raise:MIXExceptionInvalidDeviceNotFound
+					format:RStr(MIXExceptionInvalidDeviceNotFound)];
+		return;
+	}
+	// Check file mode
+	if (outFile.direction == StreamDirectionInput) {
+		// Cannot read from wrote-only file
+		[NSException raise:MIXExceptionInvalidDeviceModeNotSupported
+					format:RStr(MIXExceptionInvalidDeviceModeNotSupported)];
+		return;
+	}
+
+	// Read data from the device
+	MIXWORD *outBlock = malloc(sizeof(MIXWORD)*outFile.blockSize);
+	// And move it into the destination memory zone
+	if (outBlock) {
+		for (int i = 0; i < outFile.blockSize; i++) {
+			MIXWORD tmp = [self memoryWordForCellIndex:(effectiveAddress+i)];
+			[self copyMixWord:&tmp toNewMixWord:&outBlock[i]];
+		}
+		[outFile writeBlock:outBlock];
+		free(outBlock);	// it was malloc'ed in readBlock
+	}
+}
+
+- (void) processIOCCommand:(MIXWORD) command
+{
+	
+}
+
 - (void) processHaltCommand:(MIXWORD) command
 {
 	Byte modifier = command.byte[3];
@@ -1345,8 +1433,6 @@ NSString * const DEVICE_RIB = @"RIB";
 	if (self.PC < 0) { self.PC = MIX_MEMORY_SIZE - 1; }
 	[[NSNotificationCenter defaultCenter] postNotificationName:MIXCPUHaltStateChanged object:self];
 }
-
-#pragma mark - I/O devices spcific methods
 
 
 
@@ -1488,6 +1574,14 @@ NSString * const DEVICE_RIB = @"RIB";
 - (void) updateCPUCells
 {
 	
+}
+
+- (void) copyMixWord:(MIXWORD *) old toNewMixWord:(MIXWORD *)newWord
+{
+	newWord->sign = old->sign;
+	for (int i = 0; i < MIX_WORD_SIZE; i++) {
+		newWord->byte[i] = old->byte[i];
+	}
 }
 
 

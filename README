@@ -31,7 +31,7 @@ Commands in CPU Core debugged and supported with unit-tests for now  (8*8 Matrix
 
 0x30  STA   ST1   ST2   ST3   ST4   ST5   ST6   STX
 
-0x40  STJ   STZ    .     .     .     .     .    JMP(*)
+0x40  STJ   STZ    .    IOC    IN   OUT    .    JMP(*)
 
 0x50  JAN   J1N   J2N   J3N   J4N   J5N   J6N   JXN		F = 0
       JAZ   J1Z   J2Z   J3Z   J4Z   J5Z   J6Z   JXZ		F = 1
