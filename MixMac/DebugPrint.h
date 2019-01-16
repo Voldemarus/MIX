@@ -16,12 +16,14 @@
 
 #ifdef DEBUG
 #   define DLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
+#   define ALog(fmt, ...) printf("%s\n", [[NSString stringWithFormat:(fmt), ##__VA_ARGS__] UTF8String])
 #else
 #   define DLog(...)
+#   define ALog(...)
 #endif
 
-// ALog always displays output regardless of the DEBUG setting
-#define ALog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
+//// ALog always displays output regardless of the DEBUG setting
+//#define ALog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 
 // Вывод отладочной информации в UIAlert.
 //#ifdef DEBUG

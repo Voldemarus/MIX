@@ -21,6 +21,7 @@ NSString * const VVVbyteSizeChanged		=	@"VVVbyteSizeChanged";
 @implementation Preferences
 
 NSString * const	VVV6Bits		=	@"VVV6Bits";
+NSString * const    VVVtheme        =   @"VVVtheme";
 
 + (Preferences *) sharedPreferences
 {
@@ -39,7 +40,8 @@ NSString * const	VVV6Bits		=	@"VVV6Bits";
 	NSMutableDictionary  *defaultValues = [NSMutableDictionary dictionary];
 	// set up default parameters
 	[defaultValues setObject:@(YES) forKey:VVV6Bits];
-	
+    [defaultValues setObject:@(0) forKey:VVVtheme];
+
 	[[NSUserDefaults standardUserDefaults] registerDefaults: defaultValues];
 	
 }
@@ -72,6 +74,16 @@ NSString * const	VVV6Bits		=	@"VVV6Bits";
 	[prefs setBool:byteHas6Bit forKey:VVV6Bits];
 	[[NSNotificationCenter defaultCenter] postNotificationName:VVVbyteSizeChanged
 														object:@(byteHas6Bit)];
+}
+
+// Номер темы оформления
+- (ThemeNumber) theme
+{
+    return [prefs integerForKey:VVVtheme];
+}
+- (void) setTheme:(ThemeNumber)theme
+{
+    [prefs setInteger:theme forKey:VVVtheme];
 }
 
 @end
