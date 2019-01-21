@@ -709,13 +709,15 @@ NSString * const DEVICE_RIB = @"RIB";
 					format:RStr(MIXExceptionInvalidMemoryCellIndex)];
 		return;
 	}
-	// create empty word
-	MIXWORD emptyWord = [self createEmptyWord];
+	// get memory word from the cell being modified
+	MIXWORD emptyWord = [self memoryWordForCellIndex:(int)effectiveAddress];
+	// take up current content of J register
 	emptyWord.byte[MIX_WORD_SIZE-2] = self.J.indexByte[0];
 	emptyWord.byte[MIX_WORD_SIZE-1] = self.J.indexByte[1];
 	MIXWORD result = [self maskFieldsWithModifier:command.byte[3]
 											  forWord:memory[effectiveAddress]
 									 withModifier:emptyWord];
+	// and update this cell with new address
 	[self setMemoryWord:result forCellIndex:(int)effectiveAddress];
 
 }
