@@ -40,12 +40,12 @@
 	
 	MIXWORD oldA = cpu.A;
 	NSLog(@"LDA 2000 - accumulator before");
-	[self printMemoryCell:oldA];
+	[self printMemoryCell:oldA withTitle:@"Accumulator before"];
 	
 	[cpu executeCurrentOperation];
 	
 	NSLog(@"LDA 2000 - accumulator after");
-	[self printMemoryCell:cpu.A];
+	[self printMemoryCell:cpu.A withTitle:@"Accumulator after"];
 	BOOL isEqual = [self compareWordA:cpu.A withWordB:[cpu memoryWordForCellIndex:TEST_CELL]];
 	XCTAssertTrue(isEqual, @"LDA 2000 should copy content of cell to accumulator w/o changes");
 	
@@ -57,14 +57,14 @@
 	cpu.PC = TEST_PC;
 	cpu.A = oldA;			// clear Accumulator
 	NSLog(@"LDA 2000 (1:5) - accumulator before");
-	[self printMemoryCell:oldA];
+	[self printMemoryCell:oldA withTitle:@"Accumulator before"];
 	BOOL accIsClear = [self compareWordA:oldA withWordB:cpu.A];
 	XCTAssertTrue(accIsClear, @"accumulator property should be writable");
 	
 	[cpu executeCurrentOperation];
 	
 	NSLog(@"LDA 2000  (1:5) - accumulator after");
-	[self printMemoryCell:cpu.A];
+	[self printMemoryCell:cpu.A withTitle:@"Accumulator after"];
 	// Result should differ from the data in Memory only in sign byte.
 	MIXWORD toTest = [cpu memoryWordForCellIndex:TEST_CELL];
 	toTest.sign = !toTest.sign;
@@ -79,7 +79,7 @@
 
 	[cpu executeCurrentOperation];
 	NSLog(@"LDA 2000  (3:5) - accumulator after");
-	[self printMemoryCell:cpu.A];
+	[self printMemoryCell:cpu.A withTitle:@"Accumulator after"];
 	toTest = [cpu memoryWordForCellIndex:TEST_CELL];
 	toTest.sign = NO;
 	toTest.byte[0] = 0;
@@ -95,7 +95,7 @@
 	
 	[cpu executeCurrentOperation];
 	NSLog(@"LDA 2000  (0:3) - accumulator after");
-	[self printMemoryCell:cpu.A];
+	[self printMemoryCell:cpu.A withTitle:@"Accumulator after"];
 	toTest = [cpu memoryWordForCellIndex:TEST_CELL];
 	toTest.byte[4] = toTest.byte[2];
 	toTest.byte[3] = toTest.byte[1];
@@ -113,7 +113,7 @@
 	
 	[cpu executeCurrentOperation];
 	NSLog(@"LDA 2000  (4:4) - accumulator after");
-	[self printMemoryCell:cpu.A];
+	[self printMemoryCell:cpu.A withTitle:@"Accumulator after"];
 	XCTAssertEqual(cpu.A.byte[4], 5, @"LDA 2000 (4:4) should copy only 4th field from the memoryCell");
 	XCTAssertEqual(cpu.A.sign, NO, @"LDA 2000 (4:4) should copy only 4th field from the memoryCell");
 	for (int i = 0; i < MIX_WORD_SIZE-1; i++) {
@@ -128,7 +128,7 @@
 	
 	[cpu executeCurrentOperation];
 	NSLog(@"LDA 2000  (0:0) - accumulator after");
-	[self printMemoryCell:cpu.A];
+	[self printMemoryCell:cpu.A withTitle:@"Accumulator after"];
 	XCTAssertEqual(cpu.A.sign, YES, @"LDA 2000 (0:0) should copy only sign field from the memoryCell");
 	for (int i = 0; i < MIX_WORD_SIZE; i++) {
 		XCTAssertEqual(cpu.A.byte[i], 0, @"LDA 2000 (0:0) should copy only sign field from the memoryCell");
@@ -142,7 +142,7 @@
 	
 	[cpu executeCurrentOperation];
 	NSLog(@"LDA 2000  (1:1) - accumulator after");
-	[self printMemoryCell:cpu.A];
+	[self printMemoryCell:cpu.A  withTitle:@"Accumulator after"];
 	XCTAssertEqual(cpu.A.byte[4], 1, @"LDA 2000 (1:1) should copy only 0th field from the memoryCell");
 	XCTAssertEqual(cpu.A.sign, NO, @"LDA 2000 (1:1) should copy only 0th field from the memoryCell");
 	for (int i = 0; i < MIX_WORD_SIZE-1; i++) {
@@ -154,25 +154,25 @@
 	[cpu storeOffset:(TEST_CINDEX2 - TEST_CELL) inIndexRegister:3];			// I3
 	
 	NSLog(@"I2 = %d", [cpu offsetInIndexRegister:2]);
-	[self printIndex:cpu.index2];
+	[self printIndex:cpu.index2 withTitle:@"I2"];
 	XCTAssertEqual([cpu offsetInIndexRegister:2], (TEST_CINDEX - TEST_CELL),
 				   @"Index register should proper set positive offset");
 	
 	NSLog(@"I3 = %d", [cpu offsetInIndexRegister:3]);
-	[self printIndex:cpu.index3];
+	[self printIndex:cpu.index3 withTitle:@"I3"];
 	XCTAssertEqual([cpu offsetInIndexRegister:3], (TEST_CINDEX2 - TEST_CELL),
 				   @"Index register should proper set negative offset");
 	
 	int testvalue1 = 377;
 	[cpu storeNumber:testvalue1 forCellIndex:TEST_CINDEX];
 	NSLog(@"test value for I2 access test");
-	[self printMemoryCell:[cpu memoryWordForCellIndex:TEST_CINDEX]];
+	[self printMemoryCell:[cpu memoryWordForCellIndex:TEST_CINDEX]  withTitle:@"Cell for TEST_CINDEX"];
 	XCTAssertEqual(testvalue1, [cpu memoryContentForCellIndex:TEST_CINDEX], @"Value should be properly written to memory");
 	
 	int testValue3 = -2012;
 	NSLog(@"test value for I3 access test");
 	[cpu storeNumber:testValue3 forCellIndex:TEST_CINDEX2];
-	[self printMemoryCell:[cpu memoryWordForCellIndex:TEST_CINDEX2]];
+	[self printMemoryCell:[cpu memoryWordForCellIndex:TEST_CINDEX2]  withTitle:@"Cell for TEST_CINDEX2"];
 	XCTAssertEqual(testValue3, [cpu memoryContentForCellIndex:TEST_CINDEX2], @"Value should be properly written to memory");
 	
 	// Data prepared. synthesize command for indexed access
@@ -186,7 +186,7 @@
 
 	[cpu executeCurrentOperation];
 	NSLog(@"LDA 2000,2  - accumulator after");
-	[self printMemoryCell:cpu.A];
+	[self printMemoryCell:cpu.A withTitle:@"Accumulator after"];
 	isEqual = [self compareWordA:[cpu memoryWordForCellIndex:TEST_CINDEX] withWordB:cpu.A];
 	XCTAssertTrue(isEqual,@"value should be loaded with help of index register I2 from TEST_CINDEX cell");
 	
@@ -199,7 +199,7 @@
 
 	[cpu executeCurrentOperation];
 	NSLog(@"LDA 2000,3  - accumulator after");
-	[self printMemoryCell:cpu.A];
+	[self printMemoryCell:cpu.A withTitle:@"Accumulator after"];
 	isEqual = [self compareWordA:[cpu memoryWordForCellIndex:TEST_CINDEX2] withWordB:cpu.A];
 	XCTAssertTrue(isEqual,@"value should be loaded with help of index register I2 from TEST_CINDEX2 cell");
 }
@@ -226,12 +226,12 @@
 	
 	MIXWORD oldX = cpu.X;
 	NSLog(@"LDX 2000 - accumulator before");
-	[self printMemoryCell:oldX];
+	[self printMemoryCell:oldX withTitle:@"X before"];
 	
 	[cpu executeCurrentOperation];
 	
 	NSLog(@"LDX 2000 - accumulator after");
-	[self printMemoryCell:cpu.X];
+	[self printMemoryCell:cpu.X withTitle:@"X after"];
 	BOOL isEqual = [self compareWordA:cpu.X withWordB:[cpu memoryWordForCellIndex:TEST_CELL]];
 	XCTAssertTrue(isEqual, @"LDX 2000 should copy content of cell to accumulator w/o changes");
 	
@@ -243,14 +243,14 @@
 	cpu.PC = TEST_PC;
 	cpu.X = oldX;			// clear Accumulator
 	NSLog(@"LDX 2000 (1:5) - accumulator before");
-	[self printMemoryCell:oldX];
+	[self printMemoryCell:oldX withTitle:@"X before"];
 	BOOL accIsClear = [self compareWordA:oldX withWordB:cpu.X];
 	XCTAssertTrue(accIsClear, @"extension register property should be writable");
 	
 	[cpu executeCurrentOperation];
 	
 	NSLog(@"LDX 2000  (1:5) - accumulator after");
-	[self printMemoryCell:cpu.X];
+	[self printMemoryCell:cpu.X withTitle:@"X after"];
 	// Result should differ from the data in Memory only in sign byte.
 	MIXWORD toTest = [cpu memoryWordForCellIndex:TEST_CELL];
 	toTest.sign = !toTest.sign;
@@ -265,7 +265,7 @@
 	
 	[cpu executeCurrentOperation];
 	NSLog(@"LDX 2000  (3:5) - accumulator after");
-	[self printMemoryCell:cpu.X];
+	[self printMemoryCell:cpu.X withTitle:@"X after"];
 	toTest = [cpu memoryWordForCellIndex:TEST_CELL];
 	toTest.sign = NO;
 	toTest.byte[0] = 0;
@@ -281,7 +281,7 @@
 	
 	[cpu executeCurrentOperation];
 	NSLog(@"LDX 2000  (0:3) - accumulator after");
-	[self printMemoryCell:cpu.X];
+	[self printMemoryCell:cpu.X withTitle:@"X after"];
 	toTest = [cpu memoryWordForCellIndex:TEST_CELL];
 	toTest.byte[4] = toTest.byte[2];
 	toTest.byte[3] = toTest.byte[1];
@@ -299,7 +299,7 @@
 	
 	[cpu executeCurrentOperation];
 	NSLog(@"LDX 2000  (4:4) - accumulator after");
-	[self printMemoryCell:cpu.X];
+	[self printMemoryCell:cpu.X withTitle:@"X after"];
 	XCTAssertEqual(cpu.X.byte[4], 5, @"LDX 2000 (4:4) should copy only 4th field from the memoryCell");
 	XCTAssertEqual(cpu.X.sign, NO, @"LDX 2000 (4:4) should copy only 4th field from the memoryCell");
 	for (int i = 0; i < MIX_WORD_SIZE-1; i++) {
@@ -314,7 +314,7 @@
 	
 	[cpu executeCurrentOperation];
 	NSLog(@"LDX 2000  (0:0) - accumulator after");
-	[self printMemoryCell:cpu.X];
+	[self printMemoryCell:cpu.X withTitle:@"X after"];
 	XCTAssertEqual(cpu.X.sign, YES, @"LDX 2000 (0:0) should copy only sign field from the memoryCell");
 	for (int i = 0; i < MIX_WORD_SIZE; i++) {
 		XCTAssertEqual(cpu.X.byte[i], 0, @"LDX 2000 (0:0) should copy only sign field from the memoryCell");
@@ -328,7 +328,7 @@
 	
 	[cpu executeCurrentOperation];
 	NSLog(@"LDX 2000  (1:1) - accumulator after");
-	[self printMemoryCell:cpu.X];
+	[self printMemoryCell:cpu.X withTitle:@"X after"];
 	XCTAssertEqual(cpu.X.byte[4], 1, @"LDX 2000 (1:1) should copy only 0th field from the memoryCell");
 	XCTAssertEqual(cpu.X.sign, NO, @"LDX 2000 (1:1) should copy only 0th field from the memoryCell");
 	for (int i = 0; i < MIX_WORD_SIZE-1; i++) {
@@ -340,25 +340,25 @@
 	[cpu storeOffset:(TEST_CINDEX2 - TEST_CELL) inIndexRegister:5];			// I5
 	
 	NSLog(@"I2 = %d", [cpu offsetInIndexRegister:4]);
-	[self printIndex:cpu.index4];
+	[self printIndex:cpu.index4 withTitle:@"I4"];
 	XCTAssertEqual([cpu offsetInIndexRegister:4], (TEST_CINDEX - TEST_CELL),
 				   @"Index register should proper set positive offset");
 	
 	NSLog(@"I3 = %d", [cpu offsetInIndexRegister:5]);
-	[self printIndex:cpu.index5];
+	[self printIndex:cpu.index5 withTitle:@"I5"];
 	XCTAssertEqual([cpu offsetInIndexRegister:5], (TEST_CINDEX2 - TEST_CELL),
 				   @"Index register should proper set negative offset");
 	
 	int testvalue1 = 455;
 	[cpu storeNumber:testvalue1 forCellIndex:TEST_CINDEX];
 	NSLog(@"test value for I4 access test");
-	[self printMemoryCell:[cpu memoryWordForCellIndex:TEST_CINDEX]];
+	[self printMemoryCell:[cpu memoryWordForCellIndex:TEST_CINDEX] withTitle:@"Cell TEST_CINDEX"];
 	XCTAssertEqual(testvalue1, [cpu memoryContentForCellIndex:TEST_CINDEX], @"Value should be properly written to memory");
 	
 	int testValue3 = -117;
 	NSLog(@"test value for I3 access test");
 	[cpu storeNumber:testValue3 forCellIndex:TEST_CINDEX2];
-	[self printMemoryCell:[cpu memoryWordForCellIndex:TEST_CINDEX2]];
+	[self printMemoryCell:[cpu memoryWordForCellIndex:TEST_CINDEX2] withTitle:@"CELL_CINDEX2"];
 	XCTAssertEqual(testValue3, [cpu memoryContentForCellIndex:TEST_CINDEX2], @"Value should be properly written to memory");
 	
 	// Data prepared. synthesize command for indexed access
@@ -372,7 +372,7 @@
 	
 	[cpu executeCurrentOperation];
 	NSLog(@"LDX 2000,2  - accumulator after");
-	[self printMemoryCell:cpu.X];
+	[self printMemoryCell:cpu.X withTitle:@"X after"];
 	isEqual = [self compareWordA:[cpu memoryWordForCellIndex:TEST_CINDEX] withWordB:cpu.X];
 	XCTAssertTrue(isEqual,@"value should be loaded with help of index register I2 from TEST_CINDEX cell");
 	
@@ -385,7 +385,7 @@
 	
 	[cpu executeCurrentOperation];
 	NSLog(@"LDX 2000,3  - accumulator after");
-	[self printMemoryCell:cpu.A];
+	[self printMemoryCell:cpu.A withTitle:@"Accumulator after"];
 	isEqual = [self compareWordA:[cpu memoryWordForCellIndex:TEST_CINDEX2] withWordB:cpu.X];
 	XCTAssertTrue(isEqual,@"value should be loaded with help of index register I2 from TEST_CINDEX2 cell");
 }
@@ -415,13 +415,13 @@
 	
 		MIXINDEX oldIndex = [cpu indexRegisterValue:i];
 		NSLog(@"LD%d 2000 - index register before", i);
-		[self printIndex:oldIndex];
-		[self printMemoryCell:command];
+		[self printIndex:oldIndex withTitle:[NSString stringWithFormat:@"I%d",i]];
+		[self printMemoryCell:command withTitle:@"Command generated"];
 	
 		[cpu executeCurrentOperation];
 		
 		MIXINDEX result = [cpu indexRegisterValue:i];
-		[self printIndex:result];
+		[self printIndex:result withTitle:@"Result"];
 		
 		// test index to index load
 		int secondIndex = i + 1;
@@ -430,10 +430,10 @@
 		[cpu storeOffset:(TEST_CINDEX - TEST_CELL) inIndexRegister:secondIndex];
 		command.byte[2] = secondIndex;
 		
-		[self printMemoryCell:command];
+		[self printMemoryCell:command withTitle:@"Command"];
 		int testValue = i*24+secondIndex;
 		[cpu storeNumber:testValue forCellIndex:TEST_CINDEX];
-		[self printMemoryCell:[cpu memoryWordForCellIndex:TEST_CINDEX]];
+		[self printMemoryCell:[cpu memoryWordForCellIndex:TEST_CINDEX] withTitle:@"Cell TEST_CINDEX"];
 		XCTAssertEqual(testValue, [cpu memoryContentForCellIndex:TEST_CINDEX], @"Value should be properly written to memory");
 
 		[cpu setMemoryWord:command forCellIndex:TEST_PC];
@@ -442,7 +442,7 @@
 		[cpu executeCurrentOperation];
 		result = [cpu indexRegisterValue:i];
 		NSLog(@"loaded with indexRegister offset");
-		[self printIndex:result];
+		[self printIndex:result withTitle:[NSString stringWithFormat:@"I%d",i]];
 		XCTAssertEqual(testValue, [cpu offsetInIndexRegister:i],
 					   @"Index register should contian the same value we put into memory cell");
 	}
@@ -470,12 +470,12 @@
 		
 		MIXINDEX oldIndex = [cpu indexRegisterValue:i];
 		NSLog(@"LD%dN 2000 - index register before", i);
-		[self printIndex:oldIndex];
+		[self printIndex:oldIndex withTitle:[NSString stringWithFormat:@"I%d",i]];
 		
 		[cpu executeCurrentOperation];
 		
 		MIXINDEX result = [cpu indexRegisterValue:i];
-		[self printIndex:result];
+		[self printIndex:result withTitle:[NSString stringWithFormat:@"I%d (Result)",i]];
 		MIXWORD cell = [cpu memoryWordForCellIndex:TEST_CELL];
 		
 		BOOL isEqual = YES;
@@ -514,9 +514,9 @@
 	MIXWORD cell = [cpu memoryWordForCellIndex:TEST_CELL];
 	
 	NSLog(@"Memory Cell:");
-	[self printMemoryCell:cell];
+	[self printMemoryCell:cell withTitle:@"Cell TEST_CELL"];
 	NSLog(@"accumulator");
-	[self printMemoryCell:accum];
+	[self printMemoryCell:accum withTitle:@"A"];
 	
 	accum.sign = !accum.sign;
 	BOOL isEqual = [self compareWordA:accum withWordB:cell];
@@ -547,9 +547,9 @@
 	MIXWORD cell = [cpu memoryWordForCellIndex:TEST_CELL];
 	
 	NSLog(@"Memory Cell:");
-	[self printMemoryCell:cell];
+	[self printMemoryCell:cell withTitle:@"Cell TEST_CELL"];
 	NSLog(@"accumulator");
-	[self printMemoryCell:accum];
+	[self printMemoryCell:accum withTitle:@"X"];
 	
 	accum.sign = !accum.sign;
 	BOOL isEqual = [self compareWordA:accum withWordB:cell];
@@ -988,10 +988,10 @@
 	// LDA 2000
 	MIXWORD command;
 	command.sign = NO;
-	command.byte[0] = 2000 >> 6;
-	command.byte[1] = 2000 & 0x3f;
+	command.byte[0] = TEST_CELL >> 6;
+	command.byte[1] = TEST_CELL & 0x3f;
 	command.byte[2] = 0;				// index Register
-	command.byte[3] = 5;				// field modifier
+	command.byte[3] = MIX_F_SHORT2;		// field modifier (0:2) by default!
 	command.byte[4] = CMD_STJ;			// command code
 	
 	[cpu setMemoryWord:command forCellIndex:TEST_PC];
@@ -1010,21 +1010,21 @@
 	[cpu executeCurrentOperation];
 	
 	MIXWORD newValue = [cpu memoryWordForCellIndex:TEST_CELL];
-	MIXWORD desiredValue = [self wordWithNegativeSign:NO andByte0:0 byte1:0 byte2:0 byte3:7 byte4:8];
+	MIXWORD desiredValue = [self wordWithNegativeSign:NO andByte0:7 byte1:8 byte2:3 byte3:4 byte4:5];
 	
-//		[self printMemoryCell:oldValue];
-//		[self printMemoryCell:newValue];
-//		[self printMemoryCell:desiredValue];
+//		[self printMemoryCell:oldValue withTitle:@"Old"];
+//		[self printMemoryCell:newValue withTitle:@"New"];
+//		[self printMemoryCell:desiredValue withTitle:@"Desired"];
 
 	
 	BOOL isEqual = [self compareWordA:newValue withWordB:desiredValue];
-	XCTAssertTrue(isEqual, @"STJ should store accumulator contents into memory cell");
+	XCTAssertTrue(isEqual, @"STJ should store J conent  into memory cell address fields");
 	
 	NSLog(@"STJ (0:0) TEST_CELL");
 	
 	[cpu setMemoryWord:oldValue forCellIndex:TEST_CELL];
 	
-	command.byte[3] = 0;
+	command.byte[3] = 0;			// (0:0)
 	[cpu setMemoryWord:command forCellIndex:TEST_PC];
 	cpu.PC = TEST_PC;
 	[cpu executeCurrentOperation];
@@ -1032,18 +1032,18 @@
 	newValue = [cpu memoryWordForCellIndex:TEST_CELL];
 	desiredValue = [self wordWithNegativeSign:NO andByte0:1 byte1:2 byte2:3 byte3:4 byte4:5];
 	
-	//	[self printMemoryCell:oldValue];
-	//	[self printMemoryCell:newValue];
-	//	[self printMemoryCell:desiredValue];
-	
+//	[self printMemoryCell:oldValue withTitle:@"Old"];
+//	[self printMemoryCell:newValue withTitle:@"New"];
+//	[self printMemoryCell:desiredValue withTitle:@"Desired"];
+
 	isEqual = [self compareWordA:newValue withWordB:desiredValue];
-	XCTAssertTrue(isEqual, @"STJ  (0:0) should store sign field in target cell only");
+	XCTAssertTrue(isEqual, @"STJ  (0:0) should update the sign in address field!");
 	
 	NSLog(@"STJ (1:5) TEST_CELL");
 	
 	[cpu setMemoryWord:oldValue forCellIndex:TEST_CELL];
 	
-	command.byte[3] = 1*8+5;
+	command.byte[3] = 1*8+5;		// (1:5)
 	[cpu setMemoryWord:command forCellIndex:TEST_PC];
 	cpu.PC = TEST_PC;
 	[cpu executeCurrentOperation];
@@ -1052,10 +1052,10 @@
 	desiredValue = [self wordWithNegativeSign:YES andByte0:0 byte1:0 byte2:0 byte3:7 byte4:8];
 	
 //		[self printMemoryCell:cpu.A];
-//		[self printMemoryCell:oldValue];
-//		[self printMemoryCell:newValue];
-//		[self printMemoryCell:desiredValue];
-	
+//	[self printMemoryCell:oldValue withTitle:@"Old"];
+//	[self printMemoryCell:newValue withTitle:@"New"];
+//	[self printMemoryCell:desiredValue withTitle:@"Desired"];
+
 	isEqual = [self compareWordA:newValue withWordB:desiredValue];
 	XCTAssertTrue(isEqual, @"STJ  (1:5) should store all fields except the sign");
 	
@@ -1063,7 +1063,7 @@
 	
 	[cpu setMemoryWord:oldValue forCellIndex:TEST_CELL];
 	
-	command.byte[3] = 2*8+3;
+	command.byte[3] = 2*8+3;	// (2:3)
 	[cpu setMemoryWord:command forCellIndex:TEST_PC];
 	cpu.PC = TEST_PC;
 	[cpu executeCurrentOperation];
@@ -1072,10 +1072,10 @@
 	desiredValue = [self wordWithNegativeSign:YES andByte0:1 byte1:7 byte2:8 byte3:4 byte4:5];
 	
 	//	[self printMemoryCell:cpu.A];
-	//	[self printMemoryCell:oldValue];
-	//	[self printMemoryCell:newValue];
-	//	[self printMemoryCell:desiredValue];
-	
+//	[self printMemoryCell:oldValue withTitle:@"Old"];
+//	[self printMemoryCell:newValue withTitle:@"New"];
+//	[self printMemoryCell:desiredValue withTitle:@"Desired"];
+
 	isEqual = [self compareWordA:newValue withWordB:desiredValue];
 	XCTAssertTrue(isEqual, @"STJ  (2:3) should store last 2 bytes from accumulator in the specified fields");
 	
@@ -1083,7 +1083,7 @@
 	
 	[cpu setMemoryWord:oldValue forCellIndex:TEST_CELL];
 	
-	command.byte[3] = 0*8+1;
+	command.byte[3] = 0*8+1;		// (0:1)
 	[cpu setMemoryWord:command forCellIndex:TEST_PC];
 	cpu.PC = TEST_PC;
 	[cpu executeCurrentOperation];
@@ -1092,10 +1092,10 @@
 	desiredValue = [self wordWithNegativeSign:NO andByte0:8 byte1:2 byte2:3 byte3:4 byte4:5];
 	
 	//	[self printMemoryCell:cpu.A];
-	//	[self printMemoryCell:oldValue];
-	//	[self printMemoryCell:newValue];
-	//	[self printMemoryCell:desiredValue];
-	
+//	[self printMemoryCell:oldValue withTitle:@"Old"];
+//	[self printMemoryCell:newValue withTitle:@"New"];
+//	[self printMemoryCell:desiredValue withTitle:@"Desired"];
+
 	isEqual = [self compareWordA:newValue withWordB:desiredValue];
 	XCTAssertTrue(isEqual, @"STJ  (0:1) should store sign byte and last byte from accumulator into MSB of memoty cell");
 	
@@ -1112,10 +1112,10 @@
 	desiredValue = [self wordWithNegativeSign:YES andByte0:1 byte1:8 byte2:3 byte3:4 byte4:5];
 	
 	//	[self printMemoryCell:cpu.A];
-	//	[self printMemoryCell:oldValue];
-	//	[self printMemoryCell:newValue];
-	//	[self printMemoryCell:desiredValue];
-	
+	[self printMemoryCell:oldValue withTitle:@"Old"];
+	[self printMemoryCell:newValue withTitle:@"New"];
+	[self printMemoryCell:desiredValue withTitle:@"Desired"];
+
 	isEqual = [self compareWordA:newValue withWordB:desiredValue];
 	XCTAssertTrue(isEqual, @"STJ  (2:2) should store in selected fields two LSB from accumulator ");
 	
@@ -1158,10 +1158,10 @@
 		MIXWORD newValue = [cpu memoryWordForCellIndex:TEST_CELL];
 		MIXWORD desiredValue = [self wordWithNegativeSign:NO andByte0:0 byte1:0 byte2:0 byte3:7 byte4:8];
 		
-				[self printMemoryCell:oldValue];
-				[self printMemoryCell:newValue];
-				[self printMemoryCell:desiredValue];
-		
+		[self printMemoryCell:oldValue withTitle:@"Old"];
+		[self printMemoryCell:newValue withTitle:@"New"];
+		[self printMemoryCell:desiredValue withTitle:@"Desired"];
+
 		
 		BOOL isEqual = [self compareWordA:newValue withWordB:desiredValue];
 		XCTAssertTrue(isEqual, @"%@ should store accumulator contents into memory cell", indexName);
@@ -1198,10 +1198,10 @@
 		desiredValue = [self wordWithNegativeSign:YES andByte0:0 byte1:0 byte2:0 byte3:7 byte4:8];
 		
 		//		[self printMemoryCell:cpu.A];
-		//		[self printMemoryCell:oldValue];
-		//		[self printMemoryCell:newValue];
-		//		[self printMemoryCell:desiredValue];
-		
+		[self printMemoryCell:oldValue withTitle:@"Old"];
+		[self printMemoryCell:newValue withTitle:@"New"];
+		[self printMemoryCell:desiredValue withTitle:@"Desired"];
+
 		isEqual = [self compareWordA:newValue withWordB:desiredValue];
 		XCTAssertTrue(isEqual, @"%@ (1:5) should store all fields except the sign", indexName);
 

@@ -11,12 +11,12 @@
 // default value for F field in command
 typedef enum {
 	MIX_F_NOTDEFINED = -1,
-	MIX_F_SIGNONLY = 0,			// only sign is extracted
+	MIX_F_SIGNONLY = 0,			// only sign is extracted (0:0)
 	MIX_F_SHORT1 = 1,
-	MIX_F_SHORT2 = 2,
+	MIX_F_SHORT2 = 2,			// default for STJ	(0:2)
 	MIX_F_SHORT3 = 3,
 	MIX_F_SHORT4 = 4,
-	MIX_F_FIELD = 5,			// the whole memory cell content
+	MIX_F_FIELD = 5,			// the whole memory cell content (0:5)
 	MIX_F_SHORT6 = 6,
 	MIX_F_SHORT7 = 7,
 	MIX_F_SHORT8 = 8,

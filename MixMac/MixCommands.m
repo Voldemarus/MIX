@@ -252,7 +252,7 @@
 				@[ @"SLC",	@(MIX_F_SHORT4), @(CMD_SLA), @(2), RStr(@"Shift left AX circularly")],
 				@[ @"SRC",	@(MIX_F_FIELD), @(CMD_SLA), @(2), RStr(@"Shift right AX circularly")],
 				@[ @"MOVE",	@(MIX_F_NOTDEFINED), @(CMD_MOVE), @(1), RStr(@"Move memory block")],
-				@[ @"NOP",	@(MIX_F_NOTDEFINED), @(CMD_MOVE), @(1), RStr(@"No operation")],
+				@[ @"NOP",	@(MIX_F_NOTDEFINED), @(CMD_NOP), @(1), RStr(@"No operation")],
 				@[ @"HLT",	@(MIX_F_SHORT2), @(CMD_HLT), @(10), RStr(@"Halt CPU")],
 				@[ @"IN",	@(MIX_F_NOTDEFINED), @(CMD_IN), @(1), RStr(@"Input data")],
 				@[ @"OUT",	@(MIX_F_NOTDEFINED), @(CMD_OUT), @(1), RStr(@"Output data")],

@@ -283,12 +283,12 @@
 	MIXWORD testValue =  [self mixWordFromInteger:3];
 	[cpu setMemoryWord:testValue forCellIndex:TEST_CELL];
 	cpu.A = [self mixWordFromInteger:0];
-	cpu.x = [self mixWordFromInteger:17];
+	cpu.X = [self mixWordFromInteger:17];
 	
 //	[self printMemoryCell:cpu.A];
 //	[self printMemoryCell:cpu.X];
 	
-	[self printMemoryCell:[cpu memoryWordForCellIndex:TEST_CELL]];
+	[self printMemoryCell:[cpu memoryWordForCellIndex:TEST_CELL] withTitle:@"Cell TEST_CELL"];
 
 	[cpu executeCurrentOperation];
 	

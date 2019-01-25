@@ -89,13 +89,13 @@
 		// use default modifier for these tests
 		MIXWORD command = [self mixCommandForMnemonic:@"ENTX" withAddress:data[i] index:0 andModifier:MIX_F_NOTDEFINED];
 		
-		[self printMemoryCell:command];
+		[self printMemoryCell:command withTitle:@"Command"];
 		
 		[cpu setMemoryWord:command forCellIndex:TEST_PC];
 		
 		cpu.X = [self mixWordFromInteger:0];			// initial value to accumulator
 		
-		[self printMemoryCell:[cpu memoryWordForCellIndex:TEST_PC]];
+		[self printMemoryCell:[cpu memoryWordForCellIndex:TEST_PC] withTitle:@"Cell TEST_PC"];
 		cpu.PC = TEST_PC;
 		
 		
@@ -104,7 +104,7 @@
 		
 		[cpu executeCurrentOperation];
 		
-		[self printMemoryCell:cpu.X];
+		[self printMemoryCell:cpu.X withTitle:@"X"];
 		
 		accumulator = [self integerFromMIXWORD:cpu.X];
 		XCTAssertEqual(accumulator, data[i], @"Data should be loaded into X register properly");
@@ -137,13 +137,13 @@
 		// use default modifier for these tests
 		MIXWORD command = [self mixCommandForMnemonic:@"ENNX" withAddress:data[i] index:0 andModifier:MIX_F_NOTDEFINED];
 		
-		[self printMemoryCell:command];
+		[self printMemoryCell:command withTitle:@"Command"];
 		
 		[cpu setMemoryWord:command forCellIndex:TEST_PC];
 		
 		cpu.X = [self mixWordFromInteger:0];			// initial value to accumulator
 		
-		[self printMemoryCell:[cpu memoryWordForCellIndex:TEST_PC]];
+		[self printMemoryCell:[cpu memoryWordForCellIndex:TEST_PC] withTitle:@"Cell TEST_PC"];
 		cpu.PC = TEST_PC;
 		
 		
@@ -152,7 +152,7 @@
 		
 		[cpu executeCurrentOperation];
 		
-		[self printMemoryCell:cpu.X];
+		[self printMemoryCell:cpu.X withTitle:@"X"];
 		
 		accumulator = -[self integerFromMIXWORD:cpu.X];
 		XCTAssertEqual(accumulator, data[i], @"Data should be loaded into X register properly");

@@ -59,6 +59,13 @@
 	} else {
 		NSLog(@"%@ %ld", mnemoCode, address);
 	}
+	if ([mnemoCode isEqualToString:@"STJ"]) {
+		// Default behavior for STJ - used to set comand address field
+		if (modifier == MIX_F_NOTDEFINED) {
+			modifier = MIX_F_SHORT2;
+		}
+	}
+	
 	MixCommand *cmd = [[MixCommands sharedInstance] getCommandByMnemonic:mnemoCode];
 	XCTAssert(cmd, "@Command %@ should be present in commands list!", mnemoCode);
 	if (!cmd) {
@@ -169,9 +176,9 @@
 }
 
 
-- (void) printMemoryCell:(MIXWORD)cell
+- (void) printMemoryCell:(MIXWORD)cell withTitle:(NSString *)aTitle
 {
-	NSLog(@  "------------------------------");
+	NSLog(@  "------------------------------ %@", aTitle);
 	NSLog(@"| %@ | %2d | %2d | %2d | %2d | %2d |", (cell.sign ? @"-" : @"+"),
 		  cell.byte[0], cell.byte[1], cell.byte[2], cell.byte[3], cell.byte[4]);
 	NSLog(@  "------------------------------");
@@ -179,9 +186,9 @@
 }
 
 
-- (void) printIndex:(MIXINDEX) cell
+- (void) printIndex:(MIXINDEX) cell withTitle:(NSString *)aTitle
 {
-	NSLog(@  "---------------");
+	NSLog(@  "--------------- %@", aTitle);
 	NSLog(@"| %@ | %2d | %2d |",
 		  (cell.sign ? @"-" : @"+"),
 		  cell.indexByte[0], cell.indexByte[1]);

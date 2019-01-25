@@ -185,8 +185,8 @@
 
 		if (!equal) {
 			NSLog(@"Byte - %ld", (long)i);
-			[self printMemoryCell:a];
-			[self printMemoryCell:b];
+			[self printMemoryCell:a withTitle:@"First cell"];
+			[self printMemoryCell:b withTitle:@"Second cell"];
 		}
 	}
 }

@@ -494,7 +494,7 @@ NSString * const DEVICE_RIB = @"RIB";
 		//
 		// Decode CPU commands
 		//
-		switch (operCode) {
+		switch (cmd.commandCode) {
 			case CMD_NOP:		break;
 			case CMD_LDA:		[self processLDACommand:command negate:NO]; break;
 			case CMD_LDX:		[self processLDXCommand:command negate:NO]; break;
@@ -700,6 +700,11 @@ NSString * const DEVICE_RIB = @"RIB";
 //
 // STJ - store jump register into memory cell
 //
+//
+//  	STJ	40	L:R	if L=0, then "+" → MEMORY[m](0:0) and J(6-R:5) → MEMORY[m](1:R);
+//		if L > 0, then J(5-R+L:5) → MEMORY[m](L:R)
+
+//
 - (void) processSTJCommand:(MIXWORD) command
 {
 	NSInteger effectiveAddress = [self effectiveAddress:command];
@@ -710,15 +715,41 @@ NSString * const DEVICE_RIB = @"RIB";
 		return;
 	}
 	// get memory word from the cell being modified
-	MIXWORD emptyWord = [self memoryWordForCellIndex:(int)effectiveAddress];
-	// take up current content of J register
+	MIXWORD modifiedWord = [self memoryWordForCellIndex:(int)effectiveAddress];
+	// take up current content of J register and create its representation as a full word
+	MIXWORD emptyWord = [self createEmptyWord];
 	emptyWord.byte[MIX_WORD_SIZE-2] = self.J.indexByte[0];
 	emptyWord.byte[MIX_WORD_SIZE-1] = self.J.indexByte[1];
-	MIXWORD result = [self maskFieldsWithModifier:command.byte[3]
-											  forWord:memory[effectiveAddress]
-									 withModifier:emptyWord];
+	
+	int leftPos = (command.byte[3] >> 3) & 0x7;
+	int rightPos = command.byte[3] & 0x7;
+
+	if (rightPos < leftPos) {
+		[NSException raise:MIXExceptionInvalidFieldModifer
+					format:RStr(MIXExceptionInvalidFieldModifer)];
+	}
+	if (rightPos == 0) {
+		// update sign field only
+		modifiedWord.sign = self.J.sign;
+	} else {
+		if (leftPos == 0) {
+			modifiedWord.sign = self.J.sign;
+		}
+		int index = MIX_WORD_SIZE-1;
+		if (leftPos != 0) {
+			leftPos--;
+		}
+		for (int i = rightPos-1; leftPos <= i; i--) {
+			modifiedWord.byte[i] = emptyWord.byte[index--];
+		}
+	}
+	
+//	MIX_F modifier = command.byte[3];
+//	MIXWORD result = [self maskFieldsWithModifier:modifier
+//											  forWord:memory[effectiveAddress]
+//									 withModifier:emptyWord];
 	// and update this cell with new address
-	[self setMemoryWord:result forCellIndex:(int)effectiveAddress];
+	[self setMemoryWord:modifiedWord forCellIndex:(int)effectiveAddress];
 
 }
 
