@@ -8,7 +8,7 @@ Inсompatibility:
 Bytes 0 and 1 in memory words are interpreted separately. So commands like
 LDA MEMORY (1:1) are valid, unlike version in the book.
 
-Knuth doesn't mention Program Counter as separate hardware register. Bu to work properly
+Knuth doesn't mention Program Counter as separate hardware register. But to work properly
 I introduced this register to the CPU model. When program counter exceeds size of memory (MIX_MEMORY_SIZE)
 it resets to 0 and continue without any exceptions generated.
 

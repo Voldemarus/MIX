@@ -17,7 +17,7 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	
     // Для открытия файлов перетаскиванием его на иконку приложения
-    [NSApp.mainWindow registerForDraggedTypes:@[NSFilenamesPboardType]];
+    [NSApp.mainWindow registerForDraggedTypes:@[NSPasteboardTypeFileURL]];
 
 }
 
