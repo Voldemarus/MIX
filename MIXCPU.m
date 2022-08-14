@@ -1393,7 +1393,7 @@ NSString * const DEVICE_RIB = @"RIB";
 		return;
 	}
 	// Read data from the device
-	MIXWORD *tmp = [inputFile readBlock];
+    MIXWORD *tmp = ([inputFile readBlock]);
 	// And move it into the destination memory zone
 	if (tmp) {
 		for (int i = 0; i < inputFile.blockSize; i++) {
@@ -1436,7 +1436,7 @@ NSString * const DEVICE_RIB = @"RIB";
 			MIXWORD tmp = [self memoryWordForCellIndex:(effectiveAddress+i)];
 			[self copyMixWord:&tmp toNewMixWord:&outBlock[i]];
 		}
-		[outFile writeBlock:outBlock];
+        [outFile writeBlock:(outBlock)];
 		free(outBlock);	// it was malloc'ed in readBlock
 	}
 }

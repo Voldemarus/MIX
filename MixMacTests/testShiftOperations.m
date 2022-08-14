@@ -178,8 +178,8 @@
 	template2 = [self wordWithNegativeSign:YES andByte0:0 byte1:0 byte2:0 byte3:0 byte4:0];
 	
 	
-	[self printMemoryCell:cpu.A withTitle:@"A"];
-	[self printMemoryCell:cpu.X withTitle:@"X"];
+//	[self printMemoryCell:cpu.A withTitle:@"A"];
+//	[self printMemoryCell:cpu.X withTitle:@"X"];
 	
 	isEqual = [self compareWordA:cpu.A withWordB:template1];
 	XCTAssertTrue(isEqual, @"A register should be shifted properly");

@@ -66,6 +66,10 @@ typedef enum
 // Notificators
 extern NSString * const MIXCPUHaltStateChanged;
 
+
+@class MIXFileCollection;       // To avoid circular dependancce, use instead of #import
+// See https://stackoverflow.com/questions/13280314/xcode-ios-unknown-type-name
+
 @interface MIXCPU : NSObject
 
 @property (nonatomic, readwrite) BOOL sixBitByte;		// YES - 6 bit in bye, NO - 8 bit
@@ -94,6 +98,8 @@ extern NSString * const MIXCPUHaltStateChanged;
 @property (nonatomic, readonly) MIX_COMPARASION flag;	// comparasion result flag
 @property (nonatomic, readonly) BOOL haltStatus;		// YES if CPU in the Halt State
 
+
+@property (nonatomic, retain) MIXFileCollection *devices;	// I/O devices 
 
 + (MIXCPU *) sharedInstance;
 
