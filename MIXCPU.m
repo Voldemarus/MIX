@@ -251,6 +251,19 @@ NSString * const DEVICE_RIB = @"RIB";
 	return  index.location;
 }
 
+//  Wrappers to allow usage class methods
+
++ (NSString *) charForCode:(long) code
+{
+    return [[MIXCPU sharedInstance] charForCode:code];
+}
+
++ (long) codeForChar:(NSString *)aChar
+{
+    return [[MIXCPU sharedInstance] codeForChar:aChar];
+}
+
+
 /**
  	Converts content of the word to sequence of the chars
  */

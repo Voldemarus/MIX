@@ -17,15 +17,15 @@
 
 @property (nonatomic, readwrite) NSInteger counteriter; // Счетчик вызовов для отладки
 
-@property (readonly, strong) NSPersistentContainer * _Nonnull persistentContainer; // Хранилище
-@property (nonatomic, retain) NSManagedObjectContext * _Nonnull moc; // Основной контекст
-@property (nonatomic, strong) NSOperationQueue* _Nonnull persistentContainerQueue; // Очередь фоновой записи локальной базы
+@property (readonly, strong) NSPersistentContainer * _Nullable persistentContainer; // Хранилище
+@property (nonatomic, retain) NSManagedObjectContext * _Nullable moc; // Основной контекст
+@property (nonatomic, strong) NSOperationQueue *  _Nullable persistentContainerQueue; // Очередь фоновой записи локальной базы
 
-+ (DAO *_Nonnull) sharedInstance;
++ (DAO * _Nonnull) sharedInstance;
 
 - (void)saveContext:(NSManagedObjectContext* _Nullable)context;
 
-- (void)enqueueCoreDataBlock:(void (^_Nullable)(NSManagedObjectContext* _Nullable context))block completion:(void (^_Nullable)(void))completion;
+- (void)enqueueCoreDataBlock:(void (^ _Nonnull)(NSManagedObjectContext* _Nonnull context))block completion:(void (^ _Nullable)(void))completion;
 
 @end
 

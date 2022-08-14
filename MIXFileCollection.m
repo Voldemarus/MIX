@@ -273,7 +273,13 @@ NSString * const MIX_SEQ_FILE_DEVNUM	=	@"MSCDEVNUM";
 		return (error == nil);
 	} else {
 		// this is binary file, save as simple data stream, based on NSCoder protocol
-		NSData *saveData = [NSKeyedArchiver archivedDataWithRootObject:self];
+		NSData *saveData = [NSKeyedArchiver archivedDataWithRootObject:self requiringSecureCoding:YES error:&error];
+        if (error) {
+#ifdef DEBUG
+            NSLog(@"Cannot encode data for storing - %@", [error  localizedDescription]);
+#endif
+            return NO;
+        }
 		BOOL result = [saveData writeToFile:path atomically:NO];
 		return result;
 	}
