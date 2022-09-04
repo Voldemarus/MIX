@@ -1,0 +1,68 @@
+%{
+
+#import "ParserConsumer.h"
+#import "parser.h"
+
+%}
+
+  // output files are set via command-line params in Makefile
+  //%option header-file = "./Parser/Generated Code/lexer.h"
+  //%option outfile     = "./Parser/Generated Code/lexer.m"
+
+%option 8bit
+%option bison-bridge
+  //%option debug
+%option pointer
+  //%option nodefault
+%option noinput
+%option nounput
+%option noyywrap
+%option reentrant
+%option warn
+
+NUMBER [0-9]+
+STRING [A-Z]+
+SPACE \x20
+
+%%
+
+{NUMBER} {
+    yylval->numericValue = (int)strtoul(yytext, NULL, 10);
+
+    printf("[Lexer, number] %s\n", yytext);
+
+    return Token_Number;
+}
+
+{STRING} {
+    yylval->stringValue = strdup(yytext);
+
+    printf("[Lexer, string] %s\n", yytext);
+
+    return Token_String;
+}
+
+{SPACE} {
+    // Do nothing
+}
+
+  /**
+   this is can act as default rule when %nodefault is enabled: just echo unknown input and do nothing
+   
+   . ECHO;
+   \n ECHO;
+  */
+
+<<EOF>> {
+    printf("<<EOF>>\n");
+
+    return 0;
+}
+
+%%
+
+void yyerror (void *scanner, id <ParserConsumer> consumer, const char *msg) {
+    printf(stderr, "%s\n", msg);
+
+    abort();
+}

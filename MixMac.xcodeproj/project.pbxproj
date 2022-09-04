@@ -21,6 +21,9 @@
 		1B7943731A8F3BA400197FF3 /* Preferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B7943721A8F3BA400197FF3 /* Preferences.m */; };
 		1B79437B1A8F691A00197FF3 /* MixCommands.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B79437A1A8F691A00197FF3 /* MixCommands.m */; };
 		1BCC3ED81A8F8BA90010C4F6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1BCC3ED71A8F8BA90010C4F6 /* Localizable.strings */; };
+		1BE6BABF28C4C14D0042703C /* MixParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BE6BABE28C4C14D0042703C /* MixParser.m */; };
+		1BE6BADC28C4D0EA0042703C /* Lexer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BE6BAD828C4D0E90042703C /* Lexer.m */; };
+		1BE6BADD28C4D0EA0042703C /* Parser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BE6BADA28C4D0E90042703C /* Parser.m */; };
 		1BE9D4CF1A9E008800CB5187 /* CompareTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BE9D4CE1A9E008800CB5187 /* CompareTests.m */; };
 		1BE9D4D11A9E31E200CB5187 /* JumpTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BE9D4D01A9E31E200CB5187 /* JumpTests.m */; };
 		1BE9D4D41AA4419200CB5187 /* testShiftOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BE9D4D31AA4419200CB5187 /* testShiftOperations.m */; };
@@ -108,6 +111,16 @@
 		1B7943791A8F691A00197FF3 /* MixCommands.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MixCommands.h; path = MixMac/MixCommands.h; sourceTree = "<group>"; };
 		1B79437A1A8F691A00197FF3 /* MixCommands.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MixCommands.m; path = MixMac/MixCommands.m; sourceTree = "<group>"; };
 		1BCC3ED71A8F8BA90010C4F6 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
+		1BE6BABD28C4C14D0042703C /* MixParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MixParser.h; sourceTree = "<group>"; };
+		1BE6BABE28C4C14D0042703C /* MixParser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MixParser.m; sourceTree = "<group>"; };
+		1BE6BAC228C4C1ED0042703C /* ParserConsumer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParserConsumer.h; sourceTree = "<group>"; };
+		1BE6BAC328C4C1ED0042703C /* Parser.ym */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.yacc; path = Parser.ym; sourceTree = "<group>"; };
+		1BE6BAC428C4C1ED0042703C /* Lexer.lm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.lex; path = Lexer.lm; sourceTree = "<group>"; };
+		1BE6BAD528C4D09F0042703C /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		1BE6BAD828C4D0E90042703C /* Lexer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Lexer.m; sourceTree = "<group>"; };
+		1BE6BAD928C4D0E90042703C /* Parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Parser.h; sourceTree = "<group>"; };
+		1BE6BADA28C4D0E90042703C /* Parser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Parser.m; sourceTree = "<group>"; };
+		1BE6BADB28C4D0EA0042703C /* Lexer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Lexer.h; sourceTree = "<group>"; };
 		1BE9D4CE1A9E008800CB5187 /* CompareTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompareTests.m; sourceTree = "<group>"; };
 		1BE9D4D01A9E31E200CB5187 /* JumpTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JumpTests.m; sourceTree = "<group>"; };
 		1BE9D4D31AA4419200CB5187 /* testShiftOperations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = testShiftOperations.m; sourceTree = "<group>"; };
@@ -172,6 +185,7 @@
 		1B79433A1A8F375400197FF3 = {
 			isa = PBXGroup;
 			children = (
+				1BE6BABB28C4C0F00042703C /* Parser */,
 				1B7943741A8F419400197FF3 /* Documentation */,
 				1B7943701A8F3B8E00197FF3 /* Preferences */,
 				1B79436C1A8F377500197FF3 /* CPU */,
@@ -285,6 +299,39 @@
 			name = Documentation;
 			sourceTree = "<group>";
 		};
+		1BE6BABB28C4C0F00042703C /* Parser */ = {
+			isa = PBXGroup;
+			children = (
+				1BE6BAD528C4D09F0042703C /* Makefile */,
+				1BE6BAD328C4C2770042703C /* Generated-Code */,
+				1BE6BAD228C4C2690042703C /* Source */,
+				1BE6BABD28C4C14D0042703C /* MixParser.h */,
+				1BE6BABE28C4C14D0042703C /* MixParser.m */,
+			);
+			path = Parser;
+			sourceTree = "<group>";
+		};
+		1BE6BAD228C4C2690042703C /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				1BE6BAC428C4C1ED0042703C /* Lexer.lm */,
+				1BE6BAC328C4C1ED0042703C /* Parser.ym */,
+				1BE6BAC228C4C1ED0042703C /* ParserConsumer.h */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		1BE6BAD328C4C2770042703C /* Generated-Code */ = {
+			isa = PBXGroup;
+			children = (
+				1BE6BADB28C4D0EA0042703C /* Lexer.h */,
+				1BE6BAD828C4D0E90042703C /* Lexer.m */,
+				1BE6BAD928C4D0E90042703C /* Parser.h */,
+				1BE6BADA28C4D0E90042703C /* Parser.m */,
+			);
+			path = "Generated-Code";
+			sourceTree = "<group>";
+		};
 		321C3FCD21E795820031343A /* Core Data */ = {
 			isa = PBXGroup;
 			children = (
@@ -359,6 +406,7 @@
 				1B7943411A8F375400197FF3 /* Resources */,
 				32B47B4021E13BD4000106C3 /* Embed App Extensions */,
 				32B47B5221E14A62000106C3 /* CopyFiles */,
+				1BE6BAD428C4D0560042703C /* Parser->Code Generation */,
 			);
 			buildRules = (
 			);
@@ -457,6 +505,27 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		1BE6BAD428C4D0560042703C /* Parser->Code Generation */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Parser->Code Generation";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd $PROJECT_DIR/Parser\nmake generate\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		1B79433F1A8F375400197FF3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -476,11 +545,14 @@
 				1B79434C1A8F375400197FF3 /* main.m in Sources */,
 				32B47B1D21E0C218000106C3 /* NoodleLineNumberMarker.m in Sources */,
 				1BE9D5341AA61D5500CB5187 /* MIXFileCollection.m in Sources */,
+				1BE6BADC28C4D0EA0042703C /* Lexer.m in Sources */,
 				321C3FCC21E795770031343A /* MixMac.xcdatamodeld in Sources */,
 				32B47B1F21E0C218000106C3 /* MarkerLineNumberView.m in Sources */,
 				32B47B1E21E0C218000106C3 /* NoodleLineNumberView.m in Sources */,
 				1B79434A1A8F375400197FF3 /* AppDelegate.m in Sources */,
 				1B7943731A8F3BA400197FF3 /* Preferences.m in Sources */,
+				1BE6BABF28C4C14D0042703C /* MixParser.m in Sources */,
+				1BE6BADD28C4D0EA0042703C /* Parser.m in Sources */,
 				325DDB1121E4AC1800D3E329 /* NSAttributedString+Theme.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
