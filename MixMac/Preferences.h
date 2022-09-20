@@ -29,5 +29,6 @@ typedef NS_ENUM(NSUInteger, ThemeNumber) {
 
 @property (nonatomic, readwrite) ThemeNumber theme;       // Номер выбранной темы для будующего улучшайбера
 
+@property (nonatomic, readwrite) BOOL caseSensitive;    // YES - labels are case sensitive
 
 @end

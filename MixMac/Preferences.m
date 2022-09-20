@@ -22,6 +22,7 @@ NSString * const VVVbyteSizeChanged		=	@"VVVbyteSizeChanged";
 
 NSString * const	VVV6Bits		=	@"VVV6Bits";
 NSString * const    VVVtheme        =   @"VVVtheme";
+NSString * const    VVVcaseSence    =   @"VVVCase";
 
 + (Preferences *) sharedPreferences
 {
@@ -41,6 +42,7 @@ NSString * const    VVVtheme        =   @"VVVtheme";
 	// set up default parameters
 	[defaultValues setObject:@(YES) forKey:VVV6Bits];
     [defaultValues setObject:@(0) forKey:VVVtheme];
+    [defaultValues setObject:@NO forKey:VVVcaseSence];
 
 	[[NSUserDefaults standardUserDefaults] registerDefaults: defaultValues];
 	
@@ -84,6 +86,18 @@ NSString * const    VVVtheme        =   @"VVVtheme";
 - (void) setTheme:(ThemeNumber)theme
 {
     [prefs setInteger:theme forKey:VVVtheme];
+}
+
+
+// Case sensitive
+- (BOOL) caseSensitive
+{
+    return [prefs boolForKey:VVVcaseSence];
+}
+
+- (void) setCaseSensitive:(BOOL)caseSensitive
+{
+    [prefs setBool:caseSensitive forKey:VVVcaseSence];
 }
 
 @end

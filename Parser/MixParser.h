@@ -19,6 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface MixParser : NSObject
 
+@property (nonatomic, retain) NSMutableDictionary *labels;
+@property (nonatomic, retain) NSMutableDictionary *constants;
+
 + (MixParser *) sharedInstance;
 
 @end

@@ -1,7 +1,9 @@
 %{
 
 #import "ParserConsumer.h"
-#import "parser.h"
+#import "Parser.h"
+
+#import "MixCommands.h"
 
 %}
 
@@ -22,9 +24,165 @@
 
 NUMBER [0-9]+
 STRING [A-Z]+
-SPACE \x20
+SPACE [\t\s]+
+BINNUMBER [0-1]+[bB]
+HEXNUMBER  [0-9A-Fa-f]+[h|H]
+OCTNUMBER  [0-7]+[o|O]
+
+ID [_a-zA-Z][_a-zA-Z0-9]*
+
 
 %%
+
+
+"NOP"  {  yylval->numericValue = CMD_NOP; return NOP; }
+"CMPA" { yylval->numericValue = CMD_CMPA; return CMPA; }
+"CMP1" { yylval->numericValue = CMD_CMP1; return CMP1; }
+"CMP2" { yylval->numericValue = CMD_CMP2; return CMP2; }
+"CMP3" { yylval->numericValue = CMD_CMP3; return CMP3; }
+"CMP4" { yylval->numericValue = CMD_CMP4; return CMP4; }
+"CMP5" { yylval->numericValue = CMD_CMP5; return CMP5; }
+"CMP6" { yylval->numericValue = CMD_CMP6; return CMP6; }
+"CMP7" { yylval->numericValue = CMD_CMP7; return CMP7; }
+"ADD"  { yylval->numericValue = CMD_ADD; return ADD;  }
+"SUB"  { yylval->numericValue = CMD_SUB; return SUB; }
+"MUL"  { yylval->numericValue = CMD_MUL; return MUL; }
+"DIV"  { yylval->numericValue = CMD_DIB; return DIV;  }
+"HLT"  { yylval->numericValue = CMD_HLT; return HLT; }
+"NUM"  { yylval->numericValue = CMD_NUM; return NUM; }
+"CHR"  { yylval->numericValue = CMD_CHR; return CHR; }
+"SLA"  { yylval->numericValue = CMD_SLA; return SLA; }
+"SRA"  { yylval->numericValue = CMD_SRA; return SRA; }
+"SLAX" { yylval->numericValue = CMD_SLAX; return SLAX; }
+"SRAX" { yylval->numericValue = CMD_SRAX; return SRAX; }
+"SLC"  { yylval->numericValue = CMD_SLC; return SLC; }
+"SRC"  { yylval->numericValue = CMD_SRC; return SRC; }
+"MOVE" { yylval->numericValue = CMD_MOVE; return MOVE; }
+"LDA"  { yylval->numericValue = CMD_LDA; return LDA; }
+"LD1"  { yylval->numericValue = CMD_LD1; return LD1; }
+"LD2"  { yylval->numericValue = CMD_LD2; return LD2; }
+"LD3"  { yylval->numericValue = CMD_LD3; return LD3; }
+"LD4"  { yylval->numericValue = CMD_LD4; return LD4; }
+"LD5"  { yylval->numericValue = CMD_LD5; return LD5; }
+"LD6"  { yylval->numericValue = CMD_LD6; return LD6; }
+"LDX"  { yylval->numericValue = CMD_LDX; return LDX; }
+"LDAN" { yylval->numericValue = CMD_LDAN; return LDAN; }
+"LD1N" { yylval->numericValue = CMD_LD1N; return LD1N; }
+"LD2N" { yylval->numericValue = CMD_LD2N; return LD2N; }
+"LD3N" { yylval->numericValue = CMD_LD3N; return LD3N; }
+"LD4N" { yylval->numericValue = CMD_LD4N; return LD4N; }
+"LD5N" { yylval->numericValue = CMD_LD5N; return LD5N; }
+"LD6N" { yylval->numericValue = CMD_LD6N; return LD6N; }
+"LDXN" { yylval->numericValue = CMD_LD7N; return LDXN; }
+"STA"  { yylval->numericValue = CMD_STA; return STA; }
+"ST1"  { yylval->numericValue = CMD_STA1; return ST1; }
+"ST2"  { yylval->numericValue = CMD_STA2; return ST2; }
+"ST3"  { yylval->numericValue = CMD_STA3; return ST3; }
+"ST4"  { yylval->numericValue = CMD_STA4; return ST4; }
+"ST5"  { yylval->numericValue = CMD_STA5; return ST5; }
+"ST6"  { yylval->numericValue = CMD_STA6; return ST6; }
+"STX"  { yylval->numericValue = CMD_STX; return STX; }
+"STJ"  { yylval->numericValue = CMD_STJ; return STJ; }
+"STZ"  { yylval->numericValue = CMD_STZ; return STZ; }
+"IOC"  { yylval->numericValue = CMD_IOC; return IOC; }
+"IN"   { yylval->numericValue = CMD_IN; return IN; }
+"OUT"  { yylval->numericValue = CMD_OUT; return OUT; }
+"JMP"  { yylval->numericValue = CMD_JMP; return JMP; }
+"JSJ"  { yylval->numericValue = CMD_JSJ; return JSJ; }
+"JOV"  { yylval->numericValue = CMD_JOV; return JOV; }
+"JNOV" { yylval->numericValue = CMD_JNOV; return JNOV; }
+"JL"   { yylval->numericValue = CMD_JL; return JL; }
+"JE"   { yylval->numericValue = CMD_JE; return JE; }
+"JG"   { yylval->numericValue = CMD_JG; return JG; }
+"JGE"  { yylval->numericValue = CMD_JGE; return JGE; }
+"JNE"  { yylval->numericValue = CMD_JNE; return JNE; }
+"JLE"  { yylval->numericValue = CMD_JLE; return JLE; }
+"JAN"  { yylval->numericValue = CMD_JAN; return JAN; }
+"J1N"  { yylval->numericValue = CMD_J1N; return J1N; }
+"J2N"  { yylval->numericValue = CMD_J2N; return J2N; }
+"J3N"  { yylval->numericValue = CMD_J3N; return J3N; }
+"J4N"  { yylval->numericValue = CMD_J4N; return J4N; }
+"J5N"  { yylval->numericValue = CMD_J5N; return J5N; }
+"J6N"  { yylval->numericValue = CMD_J6N; return J6N; }
+"JXN"  { yylval->numericValue = CMD_J7N; return J7N; }
+"JAZ"  { yylval->numericValue = CMD_JAZ; return JAZ; }
+"J1Z"  { yylval->numericValue = CMD_J1Z; return J1Z; }
+"J2Z"  { yylval->numericValue = CMD_J2Z; return J2Z; }
+"J3Z"  { yylval->numericValue = CMD_J3Z; return J3Z; }
+"J4Z"  { yylval->numericValue = CMD_J4Z; return J4Z; }
+"J5Z"  { yylval->numericValue = CMD_J5Z; return J5Z; }
+"J6Z"  { yylval->numericValue = CMD_J6Z; return J6Z; }
+"JXZ"  { yylval->numericValue = CMD_JXZ; return JXZ; }
+"JAP"  { yylval->numericValue = CMD_JAP; return JAP; }
+"J1P"  { yylval->numericValue = CMD_J1P; return J1P; }
+"J2P"  { yylval->numericValue = CMD_J2P; return J2P; }
+"J3P"  { yylval->numericValue = CMD_J3P; return J3P; }
+"J4P"  { yylval->numericValue = CMD_J4P; return J4P; }
+"J5P"  { yylval->numericValue = CMD_J5P; return J5P; }
+"J6P"  { yylval->numericValue = CMD_J6P; return J6P; }
+"JXP"  { yylval->numericValue = CMD_JXP; return JXP; }
+"JANN" { yylval->numericValue = CMD_JANN; return JANN; }
+"J1NN" { yylval->numericValue = CMD_J1NN; return J1NN; }
+"J2NN" { yylval->numericValue = CMD_J2NN; return J2NN; }
+"J3NN" { yylval->numericValue = CMD_J3NN; return J3NN; }
+"J4NN" { yylval->numericValue = CMD_J4NN; return J4NN; }
+"J5NN" { yylval->numericValue = CMD_J5NN; return J5NN; }
+"J6NN" { yylval->numericValue = CMD_J6NN; return J6NN; }
+"JXNN" { yylval->numericValue = CMD_JXNN; return JXNN; }
+"JANZ" { yylval->numericValue = CMD_JANZ; return JANZ; }
+"J1NZ" { yylval->numericValue = CMD_J1NZ; return J1NZ; }
+"J2NZ" { yylval->numericValue = CMD_J2NZ; return J2NZ; }
+"J3NZ" { yylval->numericValue = CMD_J3NZ; return J3NZ; }
+"J4NZ" { yylval->numericValue = CMD_J4NZ; return J4NZ; }
+"J5NZ" { yylval->numericValue = CMD_J5NZ; return J5NZ; }
+"J6NZ" { yylval->numericValue = CMD_J6NZ; return J6NZ; }
+"JXNZ" { yylval->numericValue = CMD_JXNZ; return JXNZ; }
+"JANP" { yylval->numericValue = CMD_JANP; return JANP; }
+"J1NP" { yylval->numericValue = CMD_J1NP; return J1NP; }
+"J2NP" { yylval->numericValue = CMD_J2NP; return J2NP; }
+"J3NP" { yylval->numericValue = CMD_J3NP; return J3NP; }
+"J4NP" { yylval->numericValue = CMD_J4NP; return J4NP; }
+"J5NP" { yylval->numericValue = CMD_J5NP; return J5NP; }
+"J6NP" { yylval->numericValue = CMD_J6NP; return J6NP; }
+"JXNP" { yylval->numericValue = CMD_JXNP; return JXNP; }
+"INCA" { yylval->numericValue = CMD_INCA; return INCA; }
+"INC1" { yylval->numericValue = CMD_INC1; return INC1; }
+"INC2" { yylval->numericValue = CMD_INC2; return INC2; }
+"INC3" { yylval->numericValue = CMD_INC3; return INC3; }
+"INC4" { yylval->numericValue = CMD_INC4; return INC4; }
+"INC5" { yylval->numericValue = CMD_INC5; return INC5; }
+"INC6" { yylval->numericValue = CMD_INC6; return INC6; }
+"INCX" { yylval->numericValue = CMD_INCX; return INCX; }
+"DECA" { yylval->numericValue = CMD_DECA; return DECA; }
+"DEC1" { yylval->numericValue = CMD_DEC1; return DEC1; }
+"DEC2" { yylval->numericValue = CMD_DEC2; return DEC2; }
+"DEC3" { yylval->numericValue = CMD_DEC3; return DEC3; }
+"DEC4" { yylval->numericValue = CMD_DEC4; return DEC4; }
+"DEC5" { yylval->numericValue = CMD_DEC5; return DEC5; }
+"DEC6" { yylval->numericValue = CMD_DEC6; return DEC6; }
+"DECX" { yylval->numericValue = CMD_DECX; return DECX; }
+"ENTA" { yylval->numericValue = CMD_ENTA; return ENTA; }
+"ENT1" { yylval->numericValue = CMD_ENT1; return ENT1; }
+"ENT2" { yylval->numericValue = CMD_ENT2; return ENT2; }
+"ENT3" { yylval->numericValue = CMD_ENT3; return ENT3; }
+"ENT4" { yylval->numericValue = CMD_ENT4; return ENT4; }
+"ENT5" { yylval->numericValue = CMD_ENT5; return ENT5; }
+"ENT6" { yylval->numericValue = CMD_ENT6; return ENT6; }
+"ENTX" { yylval->numericValue = CMD_ENTX; return ENTX; }
+"ENNA" { yylval->numericValue = CMD_ENNA; return ENNA; }
+"ENN1" { yylval->numericValue = CMD_ENN1; return ENN1; }
+"ENN2" { yylval->numericValue = CMD_ENN2; return ENN2; }
+"ENN3" { yylval->numericValue = CMD_ENN3; return ENN3; }
+"ENN4" { yylval->numericValue = CMD_ENN4; return ENN4; }
+"ENN5" { yylval->numericValue = CMD_ENN5; return ENN5; }
+"ENN6" { yylval->numericValue = CMD_ENN6; return ENN6; }
+"ENNX" { yylval->numericValue = CMD_ENNX; return ENNX; }
+
+{ID}   {
+        yylval->stringValue = strdup(yytext);
+        retun Token_Label;
+}
+
 
 {NUMBER} {
     yylval->numericValue = (int)strtoul(yytext, NULL, 10);
@@ -34,6 +192,61 @@ SPACE \x20
     return Token_Number;
 }
 
+{BINNUMBER} {
+
+    int result = 0;
+    char *str = strdup(yytext);
+
+    for (int i = 0; i < strlen(str)-1; i++) {
+        result = result << 1;
+        int bit = (str[i] == '1' ? 1 : 0);
+        result += bit;
+    }
+    yylval->numericValue = result;
+
+    printf("[Lexer, number] %s\n", yytext);
+
+    return Token_Number;
+}
+
+{OCTNUMBER} {
+    int result = 0;
+    char *str = strdup(yytext);
+
+    for (int i = 0; i < strlen(str) -1; i++) {
+        result *= 8;
+        int bit = (str[i] - '0');
+        result += bit;
+    }
+    yylval->numericValue = result;
+
+    printf("[Lexer, number] %s\n", str);
+
+    return Token_Number;
+}
+
+{HEXNUMBER} {
+    int result = 0;
+    char *str = strdup(yytext);
+
+    for (int i = 0; i < strlen(str)-1; i++) {
+        result *= 16;
+        int bit = 0;
+        if (str[i] <= 9) {
+            bit =  str[i] - '0';
+        } else {
+            bit = str[i] - 'A' + 10;
+        }
+        result += bit;
+    }
+    yylval->numericValue = result;
+
+    printf("[Lexer, number] %s\n", str);
+
+    return Token_Number;
+}
+
+
 {STRING} {
     yylval->stringValue = strdup(yytext);
 
@@ -42,9 +255,7 @@ SPACE \x20
     return Token_String;
 }
 
-{SPACE} {
-    // Do nothing
-}
+{SPACE} {}
 
   /**
    this is can act as default rule when %nodefault is enabled: just echo unknown input and do nothing

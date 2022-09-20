@@ -27,6 +27,6 @@ $(OUT_PATH): $(PARSER_FILES)
 	mkdir -p $(OUT_PATH)
 
 	/usr/local/bin/flex --header-file=$(OUT_PATH)/Lexer.h --outfile=$(OUT_PATH)/Lexer.m $(PARSER_PATH)/Lexer.lm 
-	/usr/local/bin/bison --defines=$(OUT_PATH)/Parser.h --output=$(OUT_PATH)/Parser.m $(PARSER_PATH)/Parser.ym
+	/usr/local/bin/bison -Wcounterexamples --defines=$(OUT_PATH)/Parser.h --output=$(OUT_PATH)/Parser.m $(PARSER_PATH)/Parser.ym
 	touch $(OUT_PATH)
 
